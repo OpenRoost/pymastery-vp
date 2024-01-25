@@ -128,6 +128,6 @@ their administration tools, extra services, and price.
     :name: linux
     :caption: Contents
 
-    utils
+    commands
     filesys
     users

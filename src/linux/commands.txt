@@ -1,0 +1,72 @@
+*******************************************************************************
+                                 Base Commands
+*******************************************************************************
+
+A computer's operation, no matter which operating system it is running, can be
+loosely described in three steps:
+
+#.  The computer waits for user input
+#.  The user selects a command and enters it via keyboard or mouse
+#.  The computer executes the command
+
+In a Linux system, the shell displays a "prompt", meaning that commands can be
+entered. This prompt usually consists of a user and host (computer) name, the
+current directory, and a final character:
+
+::
+
+    user@host: /home/user >
+
+Command structure
+=================
+
+A command is essentially a sequence of characters which is ends with a press
+of the **enter** key and is subsequently evaluated by the shell. Many commands
+are vaguely inspired by the English language and form part of a dedicated
+"command language". Commands in this language must follow certain rules,
+a "syntax", for the shell to be able to interpret them.
+
+To interpret a command line, the shell first tries to divide the line into
+words. Just like in real life, words are separated by spaces. The first word
+on a line is usually the actual command. All other words on the line are
+parameters that explain what is wanted in more detail.
+
+Parameters starting with a dash (``-``) are called **options**.
+These are usually optional -- the details depend on the command in question.
+They are "switches" that allow certain aspects of the command to be switched
+on or off. If you want to pass several options to a command, they can be
+accumulated behind a single dash, i.e. the options sequence ``-a -l -F``
+corresponds to ``-alF``. Many programs have more options that can be
+conveniently mapped to single characters or support *long options* for
+readability (frequently in addition to equivalent single-character options).
+Long options most often start with two dashes and cannot be accumulated:
+``--foo --bar --foobar``.
+
+Parameters with no leading dash are called **arguments**. These are often the
+names of files that the command should process.
+
+The general command structure can be displayed as follows:
+
+:command: what to do?
+:options: how to do it?
+:arguments: what to do it with?
+
+Internal and external commands
+------------------------------
+
+In shells, there are essentially two kinds of commands:
+
+-   **Internal commands**
+
+    These commands are made available by the shell itself.
+    The Bourne-again shell contains approximately 30 such commands,
+    which can be executed very quickly. Some commands (such as ``exit`` or
+    ``cd``) alter the state of the shell itself and cannot be provided
+    externally.
+
+-   **External commands**
+
+    The shell does not execute these commands by itself but launches executable
+    files, which within the file system are found in directories like */bin* or
+    */usr/bin*. As a user, you can provide your own programs, which the shell
+    will execute like other external commands.
