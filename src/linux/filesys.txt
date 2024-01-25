@@ -78,7 +78,7 @@ structure.
 
 The tree of the file system starts at the trunk or *slash*, indicated by
 a forward slash (``/``). This directory, containing all underlying directories
-and files, is also called the *root directory* or the **root* of the file
+and files, is also called the *root directory* or the *root* of the file
 system.
 
 Directories that are only one level below the root directory are often preceded
