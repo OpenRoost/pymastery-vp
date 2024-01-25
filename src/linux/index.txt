@@ -12,7 +12,67 @@ domains, from embedded systems to supercomputers. It is known for its
 stability, security, and flexibility, making it a preferred choice for
 developers, especially in server environments.
 
-.. rubric:: What is operating system?
+.. rubric:: What is an Operating System?
+
+.. _os_overview:
+
+An operating system (OS) is the primary software that manages all the hardware
+and other software on a computer.
+It acts as an intermediary between the physical hardware and the user
+applications, providing essential services needed for the applications
+to execute.
+
+.. _os_functions:
+
+The operating system is the fundamental suite of software on a device that
+keeps everything together. It interacts with the device's hardware components,
+handling everything from input devices like keyboards and mice to output
+devices like displays and printers. The OS sits between the applications you
+run and the hardware, using hardware drivers as an interface between them.
+For instance, when an application wants to print a document, it hands off
+the task to the OS. The OS then sends instructions to the printer using printer
+drivers to send the correct signals. The printing application does not need
+to understand the specifics of the printer or how it works.
+The OS handles the details.
+
+OS includes a variety of software components such as system services,
+libraries, and :abbr:`APIs (Application Programming Interfaces)` that
+developers use to write applications that run on the OS.
+
+The OS also manages multitasking, allocating hardware resources among multiple
+running programs. It controls which processes are running, distributing them
+among various CPUs if you have a computer with multiple processors or cores,
+allowing multiple processes to run in parallel. It also manages the system's
+internal memory, allocating memory among running applications.
+
+When we say "computers" run operating systems, we don't just mean traditional
+desktop PCs and laptops. Your smartphone is a computer, as are tablets,
+smart TVs, gaming consoles, smartwatches, and Wi-Fi routers. An Amazon Echo or
+Google Home is a computer device running under the management of an operating
+system.
+
+Familiar desktop operating systems include Microsoft Windows, Apple MacOS,
+Google's Chrome OS, and Linux. The primary operating systems for smartphones
+are Apple's iOS and Google's Android.
+
+Other devices, like a Wi-Fi router, may run "embedded operating systems".
+These are specialized operating systems with fewer features than a typical
+operating system, designed specifically for a single task - like operating
+a Wi-Fi router, navigating, or controlling an ATM.
+
+Operating systems also include other software, including the user interface,
+which allows people to interact with the device. This could be the desktop on
+a PC, the touch interface on a phone, or the voice interface on a digital
+assistant.
+
+The operating system is a large piece of software made up of many different
+applications and processes. The line between what is the operating system and
+what is a program can sometimes be a bit blurred.
+There isn't a strict official definition of an operating system.
+
+For instance, in Windows, the File Explorer application is an integral part of
+the Windows operating system -- it even handles drawing your user interface --
+and an application running on that operating system.
 
 .. rubric:: Linux pros
 
@@ -30,10 +90,23 @@ developers, especially in server environments.
 
 .. rubric:: Linux -- the Kernel and distributions
 
+The core of an operating system is the kernel.
+
+At a low level, the "kernel" is the core computer program at the base of your
+operating system. This single program is one of the first things loaded when
+your operating system starts. It handles memory allocation, converts software
+functions into instructions for your computer's CPU, and processes input and
+output from hardware devices. The kernel typically runs in an isolated area
+to prevent it from being used by other software on your computer.
+The kernel of an operating system is crucial, but it's just one part of
+the operating system.
+
 Strictly speaking, the name **"Linux"** only applies to the operating system
 kernel, which performs the actual operating system tasks. It takes care of
 elementary functions like memory and process management and hardware control.
 Application programs must call upon the kernel to, e.g. access files on disk.
+
+However, Linux is still often referred to as an operating system.
 
 To accomplish useful work, a multitude of system and application programs,
 libraries, documentation etc. is necessary. "Distributions" are nothing but
