@@ -132,3 +132,4 @@ their administration tools, extra services, and price.
     filesys
     users
     ssh
+    symlinks
