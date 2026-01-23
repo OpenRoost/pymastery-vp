@@ -1,812 +1,1341 @@
-# Урок 32. Формы, реквест, юзер, авторизация.
+# Лекция 32. Asyncio. Aiohttp. Асинхронное программирование на практике.
 
-![](http://memesmix.net/media/created/uuyoh3.jpg)
+### Оглавление курса
 
-## HTML формы
+<details>
+  <summary>Блок 1 — Python Basic (1–6)</summary>
 
-`HTML форма` - это специальный тег, который "сообщает" браузеру, что данные из этого тега нужно сгруппировать и подготовить
-к отправке на сервер.
+  - [Лекция 1. Введение. Типизации. Переменные. Строки и числа. Булева алгебра. Ветвление](lesson01.md)
+  - [Лекция 2. Обработка исключений. Списки, строки детальнее, срезы, циклы.](lesson02.md)
+  - [Лекция 3: None. Range, list comprehension, sum, max, min, len, sorted, all, any. Работа с файлами](lesson03.md)
+  - [Лекция 4. Хэш таблицы. Set, frozenset. Dict. Tuple. Немного об импортах. Namedtuple, OrderedDict](lesson04.md)
+  - [Лекция 5. Функции, типизация, lambda. Map, zip, filter.](lesson05.md)
+  - [Лекция 6. Алгоритмы и структуры данных](lesson06.md)
+</details>
 
-Принимает два параметра `action` и `method`.
+<details>
+  <summary>Блок 2 — Git (7–8)</summary>
 
-`action` описывает, куда форма по результату должна обращаться (в нашем случае это будет `url`), если не указан явно, то
-форма будет отправлена на тот же урл, на котором сейчас находится.
+  - [Лекция 7. Git. История системы контроля версий. Локальный репозиторий. Базовые команды управления репозиторием.](lesson07.md)
+  - [Лекция 8. Git. Удаленный репозиторий. Remote, push, pull. GitHub, Bitbucket, GitLab, etc. Pull request.](lesson08.md)
+</details>
 
-`method` отвечает за метод отправки, варианты - `get` и `post`. `get` будет использован по умолчанию, если не указан
-явно.
+<details>
+  <summary>Блок 3 — Python Advanced (9–14)</summary>
 
-Формы с методом `POST` используются для передачи данных, не подлежащих огласке, например, логин и пароль. 
-Формы с методом `GET` используются для общедоступной информации, например, строки поиска.
+  - [Лекция 9. Введение в ООП. Основные парадигмы ООП. Классы и объекты. Множественное наследование.](lesson09.md)
+  - [Лекция 10. Magic methods. Итераторы и генераторы.](lesson10.md)
+  - [Лекция 11. Imports. Standard library. PEP8](lesson11.md)
+  - [Лекция 12. Декораторы. Декораторы с параметрами. Декораторы классов (staticmethod, classmethod, property)](lesson12.md)
+  - [Лекция 13. Тестирование](lesson13.md)
+  - [Лекция 14. Проектирование. Паттерны. SOLID.](lesson14.md)
+</details>
 
-Внутри формы мы указываем нужное количество тегов `<input>` с нужными типами. Именно эти данные будут впоследствии переданы
-серверу.
+<details>
+  <summary>Блок 4 — SQL (15–17)</summary>
 
-[Ссылка на общее описание форм](https://www.w3schools.com/html/html_forms.asp)
+  - [Лекция 15. СУБД. PostgreSQL. SQL. DDL. Пользователи. DCL. DML. Связи.](lesson15.md)
+  - [Лекция 16. СУБД. DQL. SELECT. Индексы. Group by. Joins.](lesson16.md)
+  - [Лекция 17. СУБД. Нормализация. Аномалии. Транзакции. ACID. TCL. Backup](lesson17.md)
+</details>
 
-#### Основные типы инпутов
+- [Лекция 18. Virtual env. Pip. Устанавливаемые модули. Pyenv.](lesson18.md)
 
-**number** - ввод числа
+<details>
+  <summary>Блок 5 — Django (19–26)</summary>
 
-**text** - ввод текста
+  - [Лекция 19. Знакомство с Django](lesson19.md)
+  - [Лекция 20. Templates. Static](lesson20.md)
+  - [Лекция 21. Модели. Связи. Meta. Abstract, proxy](lesson21.md)
+  - [Лекция 22. Django ORM](lesson22.md)
+  - [Лекция 23. Forms, ModelForms. User, Authentication](lesson23.md)
+  - [Лекция 24. ClassBaseView](lesson24.md)
+  - [Лекция 25. NoSQL. Куки, сессии, кеш](lesson25.md)
+  - [Лекция 26. Логирование. Middleware. Signals. Messages. Manage commands](lesson26.md)
+</details>
 
-**checkbox** - чекбокс (выбор нескольких элементов через галочки)
+<details>
+  <summary>Блок 6 — Django Rest Framework (27–30)</summary>
 
-**radio** - радиобаттон (выбор только одного элемента из списка)
+  - [Лекция 27. Что такое API. REST и RESTful. Django REST Framework](lesson27.md)
+  - [Лекция 28. @api_view, APIView, ViewSets, Pagination, Routers](lesson28.md)
+  - [Лекция 29. REST аутентификация. Авторизация. Permissions. Фильтрация](lesson29.md)
+  - [Лекция 30. Тестирование. Django, REST API.](lesson30.md)
+</details>
 
-**button** - классическая кнопка (если в форме есть один такой элемент, но нет сабмита, браузер автоматически посчитает
-его сабмитом)
+<details open>
+  <summary>Блок 7 — Python async (31–33)</summary>
 
-**hidden** - скрытое поле, чаще всего нужно для целей безопасности или добавления информации и данных, не отображая их 
-(не отображается)
+  - [Лекция 31. Celery. Multithreading. GIL. Multiprocessing](lesson31.md)
+  - ▶ **Лекция 32. Asyncio. Aiohttp. Асинхронное программирование на практике.**
+  - [Лекция 33. Сокеты. Django channels.](lesson33.md)
+</details>
 
-**submit** - отправка формы
+<details>
+  <summary>Блок 8 — Deployment (34–35)</summary>
 
-Это далеко не все типы инпутов, которые могут быть.
-[Ссылка на типы инпутов](https://www.w3schools.com/html/html_form_input_types.asp)
+  - [Лекция 34. Linux. Все что нужно знать для деплоймента.](lesson34.md)
+  - [Лекция 35. Deployment](lesson35.md)
+</details>
 
-## GET форма
+- [Лекция 36. Методологии разработки. CI/CD. Монолит и микросервисы. Docker](lesson36.md)
 
-Создадим простейшую форму. Для этого создадим url, функцию для обработки и HTML страницу.
+> **Напоминание:** Базовые концепции `async`/`await` мы рассмотрели в [Лекции 10](lesson10.md).
+> Здесь мы углубимся в практическое использование библиотеки `asyncio`.
 
-В urls.py
+## Asyncio
+
+![](http://risovach.ru/upload/2020/10/mem/internet_253267592_orig_.jpg)
+
+**Документация:** https://docs.python.org/3/library/asyncio.html
+
+`asyncio` — это стандартная библиотека Python для написания асинхронного кода с использованием синтаксиса `async`/`await`.
+
+Ключевые концепции:
+- **Корутина (coroutine)** — функция, объявленная через `async def`
+- **Event loop** — цикл событий, который управляет выполнением корутин
+- **Task** — обёртка над корутиной для параллельного выполнения
+- **await** — приостанавливает корутину до завершения асинхронной операции
 
 ```python
+import asyncio
+
+
+async def say_hello(name, delay):
+    await asyncio.sleep(delay)
+    print(f"Привет, {name}!")
+
+
+async def main():
+    # Запускаем две корутины параллельно
+    await asyncio.gather(
+        say_hello("Мир", 2),
+        say_hello("Python", 1),
+    )
+
+
+asyncio.run(main())
+
+# Вывод (через 1 сек):
+# Привет, Python!
+# (через 2 сек):
+# Привет, Мир!
+```
+
+## Asyncio. Loop, run, create_task, gather, etc.
+
+### loop
+
+`loop` — один набор событий, до версии Python 3.7 любые корутины запускались исключительно внутри `loop`
+
+Давайте рассмотрим пример, где отдельная корутина вычисляет факториал последовательно (сначала 2, потом 3, потом 4 и т.
+д.) и делает паузу на одну секунду перед следующим вычислением:
+
+```python
+import asyncio
+
+
+async def factorial(name, number):
+    f = 1
+    for i in range(2, number + 1):
+        print(f"Task {name}: Compute factorial({i})...")
+        await asyncio.sleep(1)
+        f *= i
+    print(f"Task {name}: factorial({number}) = {f}")
+
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(factorial('A', 4))
+```
+
+Обратите внимание, этот код будет работать на Python 3.6+
+
+### run
+
+То же самое для Python 3.7+ будет выглядеть так:
+
+```python
+import asyncio
+
+
+async def factorial(name, number):
+    f = 1
+    for i in range(2, number + 1):
+        print(f"Task {name}: Compute factorial({i})...")
+        await asyncio.sleep(1)
+        f *= i
+    print(f"Task {name}: factorial({number}) = {f}")
+
+
+asyncio.run(factorial('A', 4))  # Добавлено в 3.7
+
+# Output:
+# Task A: Compute factorial(2)...
+# Task A: Compute factorial(3)...
+# Task A: Compute factorial(4)...
+# Task A: factorial(4) = 24
+```
+
+### create_tasks
+
+Рассмотрим код, в котором основная корутина запускает две других.
+
+```python
+import asyncio
+import time
+
+
+async def say_after(delay, what):
+    await asyncio.sleep(delay)
+    print(what)
+
+
+async def main():
+    print(f"Started at {time.strftime('%X')}")
+
+    await say_after(1, 'hello,')
+    await say_after(2, 'world')
+
+    print(f"finished at {time.strftime('%X')}")
+
+
+asyncio.run(main())
+
+# Output:
+# Started at 16:28:52
+# hello,
+# world
+# finished at 16:28:55
+```
+
+Обязаны ли мы задавать параметры там же, где и запускаем корутину? Нет, мы можем сделать это через `create_task`
+
+```python
+async def main():
+    task1 = asyncio.create_task(
+        say_after(1, 'hello,'))
+
+    task2 = asyncio.create_task(
+        say_after(2, 'world'))
+
+    print(f"started at {time.strftime('%X')}")
+
+    # Подождите, пока обе задачи не будут выполнены (должно пройти около 2 секунд.)
+    await task1
+    await task2
+```
+
+Попытка запустить асинхронный метод синхронно не приведёт ни к чему, это просто не будет работать.
+
+```python
+import asyncio
+
+
+async def nested():
+    return 42
+
+
+async def main():
+    # Ничего не произойдет, если мы просто вызовем "nested()".
+    # Объект корутины создан, но не await,
+    # так что *не будет работать вообще*.
+    nested()
+
+    # Let's do it differently now and await it:
+    print(await nested())  # will print "42".
+
+
+asyncio.run(main())
+```
+
+### gather
+
+Что если нам необходимо запустить асинхронно несколько одинаковых задач с разными параметрами? Нам поможет `gather`.
+
+Вернёмся к коду с факториалами:
+
+```python
+import asyncio
+
+
+async def factorial(name, number):
+    f = 1
+    for i in range(2, number + 1):
+        print(f"Task {name}: Compute factorial({i})...")
+        await asyncio.sleep(1)
+        f *= i
+    print(f"Task {name}: factorial({number}) = {f}")
+
+
+async def main():
+    # Запланировать дерево вызовов *конкурентно*:
+    await asyncio.gather(
+        factorial("A", 2),
+        factorial("B", 3),
+        factorial("C", 4),
+    )
+
+
+asyncio.run(main())
+
+# Ожидаемый вывод:
+#
+#     Task A: Compute factorial(2)...
+#     Task B: Compute factorial(2)...
+#     Task C: Compute factorial(2)...
+#     Task A: factorial(2) = 2
+#     Task B: Compute factorial(3)...
+#     Task C: Compute factorial(3)...
+#     Task B: factorial(3) = 6
+#     Task C: Compute factorial(4)...
+#     Task C: factorial(4) = 24
+```
+
+Обратите внимание, если вам необходимо вернуть значения, вы свободно можете использовать `return`, где это необходимо.
+
+```python
+import asyncio
+
+
+async def factorial(name, number):
+    f = 1
+    for i in range(2, number + 1):
+        print(f"Task {name}: Compute factorial({i})...")
+        await asyncio.sleep(1)
+        f *= i
+    print(f"Task {name}: factorial({number}) = {f}")
+    return f
+
+
+async def main():
+    # Запланировать дерево вызовов *конкурентно*:
+    res = await asyncio.gather(
+        factorial("A", 4),
+        factorial("B", 3),
+        factorial("C", 2),
+    )
+    print(res)
+
+
+asyncio.run(main())
+
+# Output:
+# Task A: Compute factorial(2)...
+# Task B: Compute factorial(2)...
+# Task C: Compute factorial(2)...
+# Task C: factorial(2) = 2
+# Task A: Compute factorial(3)...
+# Task B: Compute factorial(3)...
+# Task B: factorial(3) = 6
+# Task A: Compute factorial(4)...
+# Task A: factorial(4) = 24
+# [24, 6, 2]
+```
+
+Вы можете быть уверены в том, что в переменную `res` результаты придут именно в том порядке, в котором вы их запросили,
+в примере результат всегда будет [24, 6, 2], никакой неожиданности.
+
+### Ограничение параллелизма (concurrency limits)
+
+Иногда важно ограничить одновременное число выполняющихся задач (например, чтобы не перегружать API/БД).
+
+**Семафор**
+```python
+import asyncio
+
+sem = asyncio.Semaphore(10)
+
+async def fetch(url):
+    async with sem:          # одновременно не более 10
+        return await do_io(url)
+
+await asyncio.gather(*(fetch(u) for u in urls))
+```
+
+**BoundedSemaphore**
+```python
+sem = asyncio.BoundedSemaphore(10)  # выбросит ошибку, если кто-то «вернёт» семафор лишний раз
+```
+
+**Пакетная обработка (батчи)**
+```python
+BATCH = 20
+for i in range(0, len(urls), BATCH):
+    chunk = urls[i:i+BATCH]
+    await asyncio.gather(*(fetch(u) for u in chunk))
+```
+
+**Worker pool через очередь**
+```python
+import asyncio
+
+async def worker(name, q):
+    while True:
+        url = await q.get()
+        try:
+            await fetch(url)
+        finally:
+            q.task_done()
+
+q = asyncio.Queue()
+for u in urls:
+    q.put_nowait(u)
+
+workers = [asyncio.create_task(worker(i, q)) for i in range(5)]
+await q.join()
+for w in workers:
+    w.cancel()
+```
+
+### Таймауты, ошибки и отмена
+
+**Таймауты** (оборачиваем awaited-операцию)
+```python
+await asyncio.wait_for(fetch(url), timeout=5)
+```
+
+**Ошибки в gather**
+```python
+results = await asyncio.gather(*tasks, return_exceptions=True)
+```
+
+**Отмена задач**
+```python
+task = asyncio.create_task(fetch(url))
 ...
-from .views import form_view
-
-...
-
-...
-path('form-url/', form_view, name='form-view'),
-...
+task.cancel()
+try:
+    await task
+except asyncio.CancelledError:
+    pass
 ```
 
-Во views.py
+### TaskGroup (Python 3.11+)
+
+`TaskGroup` — структурированный способ управления группой задач. Если одна задача падает с ошибкой, остальные автоматически отменяются:
 
 ```python
-def form_view(request):
-    return render(request, 'form.html')
+import asyncio
+
+
+async def fetch(url):
+    await asyncio.sleep(1)
+    return f"Result from {url}"
+
+
+async def main():
+    async with asyncio.TaskGroup() as tg:
+        task1 = tg.create_task(fetch("/a"))
+        task2 = tg.create_task(fetch("/b"))
+
+    # После выхода из контекста все задачи гарантированно завершены
+    print(task1.result(), task2.result())
+
+
+asyncio.run(main())
 ```
 
-В form.html
+### asyncio.timeout() (Python 3.11+)
 
-```html
-{% extends 'base.html' %}
-
-{% block content %}
-<form method="get" action="{% url 'form-view' %}">
-    <label>
-        <input type="text" name="my_name">
-    </label>
-    <button type="submit">Send name</button>
-</form>
-{% endblock %}
-```
-
-Обратите внимание, мы указали `GET` форму, `action` - урл на эту же страницу, который обрабатывается нашей же
-функцией `form_view`.
-
-В форме у нас один `input`, которому мы указали 2 атрибута `type` и `name`.
-
-Атрибут `name` нам необходим для того, чтобы мы смогли обработать данные во view.
-
-Также у нас есть кнопка `submit`, она необходима для того, чтобы отправить запрос на сервер.
-
-При нажатии на кнопку формируется и отправляется request.
-
-Примерно вот так будет выглядеть наша страница если зайти на адрес http://127.0.0.1:8000/form-url/:
-
-![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson32/clean_get_form.png)
-
-### request
-
-Объект `request` мы принимаем первым параметром функции обработчика и его же передаём первым в
-функцию `render`. Зачем он нужен и из чего он состоит?
-
-Зачем нужен? Чтобы обрабатывать любые пользовательские или служебные данные, которые были переданы.
-
-Из чего состоит? Состоит из переданных данных или файлов (если были переданы) и служебной информации (информации о
-пользователе, методе запроса, о том, на какой url был запрос, из какого браузера, другой системной информации, о ней
-отдельная лекция).
-
-### Давайте отправим request
-
-![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson32/filled_get_form.png)
-
-Что будет после нажатия кнопки `Send name`?
-
-Будет сформирован `GET` (метод формы) запрос со всеми заполненными нами данными и отправлен на сервер.
-
-Обратите внимание на новый url.
-
-![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson32/data_get_form.png)
-
-`my_name` - это предварительно указанный атрибут `name` на нашей форме, а `Vlad` - значение, которое я передал в этот
-инпут.
-
-В случае `GET` запроса данные передаются явно, прям в url в виде ключ-значение. Если бы значений было больше одного,
-они были бы соединены при помощи символа `&` (например, если бы я добавил к полю с указанным атрибутом `name` еще и поле
-с атрибутом `age` и заполнил бы его значением 26, то url после запроса выглядел бы так `/form-url/?my_name=Vlad&age=26`).
-Никакой разницы между заполнением формы или записью этих данных руками прям в строке браузера для `GET` запроса нет.
-
-### Обработка данных во view
-
-Мы можем обработать данные во `view` при помощи переменной `request`. Данные из `GET` запроса будут находиться в
-переменной `request.GET`
-
-![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson32/get_request_view.png)
-
-Данные находятся в виде словаря, где ключами являются атрибуты `name` в каждом инпуте формы.
-
-Эти данные можно использовать для любых целей, но чаще всего через `GET` передаются данные по фильтрации или
-дополнительные параметры отображения. Например, когда вы добавляете фильтры в интернет магазине, пишете текст в поиске,
-или когда на YouTube пересылаете ссылку с таймкодом, она тоже передаётся как `GET` параметр.
-
-## POST запрос
-
-Давайте заменим метод нашей формы с `GET` на `POST`:
-
-В `form.html`:
-
-```html
-{% extends 'base.html' %}
-
-{% block content %}
-<form method="post" action="{% url 'form-view' %}">{# Тут я поменял метод #}
-    <label>
-        <input type="text" name="my_name">
-    </label>
-    <button type="submit">Send name</button>
-</form>
-{% endblock %}
-```
-
-Что произойдёт при отправке такого запроса?
-
-Произойдёт примерно такая ошибка:
-
-![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson32/csrf_failure.png)
-
-Это ошибка CSRF токена.
-
-Чтобы понять, что это, нужно понимать разницу того, где используются разные запросы.
-
-`GET` запросы - это запросы общедоступные и информационные: открыть страницу, отфильтровать данные и т. д.
-
-`POST` запросы - это запросы с чувствительными данными: создание записей в базе, передача пароля, отправка денег со счёта
-на счёт и т. д.
-
-Так вот, если `GET` запрос отправить 5 раз подряд, то с точки зрения сервера ничего не изменится, вы просто 5 раз подряд
-запросите одну и туже информацию.
-
-Если изменить параметры, то тоже ничего страшного не произойдёт, просто запросятся другие данные.
-
-А вот если повторить несколько раз или подделать данные в `POST` запросе, то можно совершить разные проблемные действия:
-создание лишних записей в базе данных, перевод средств на счёт злоумышленников вместо ожидаемого и т. д.
-
-Поэтому в Django изначально есть дополнительное требование к `POST` формам - это еще одно скрытое поле, заранее
-сгенерированное сервером. Оно называется `CSRF токен`, где он проверяется и почему мы видим ошибку, мы разберём на
-следующих занятиях.
-
-Чтобы добавить нужный токен, используется специальный темплейт тег `{% csrf_token %}`. Его нужно добавить в
-любом месте внутри тега `<form>`.
-
-```html
-{% extends 'base.html' %}
-
-{% block content %}
-<form method="post" action="{% url 'form-view' %}">
-    {% csrf_token %}{# Тут я добавил темплейт тег #}
-    <label>
-        <input type="text" name="my_name">
-    </label>
-    {# А мог и тут #}
-    <button type="submit">Send name</button>
-    {# Или тут, не имеет значения #}
-</form>
-{% endblock %}
-```
-
-Что изменится с точки зрения `HTML`:
-
-![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson32/csrf_html.png)
-
-Появилось поле типа `hidden`. Это значит, что оно не будет отображаться, но эти данные все равно попадут на сервер. Это
-часто используется, когда вам нужно передать данные, которые у вас уже есть при отрисовке, но их не видно явно. Допустим,
-если мы пишем комментарий к комментарию, то чтобы грамотно его создать, нам нужен `id` родителя, его обычно и передают
-как `hidden` поле.
-
-Теперь наш запрос отправится успешно.
-
-Обратите внимание, что url не изменится!
-
-Потому что данные отправленные через `POST` не должны быть общедоступны.
-
-### Обработка во view
-
-Обработать данные из `POST` запроса можно точно также, данные будут находиться в переменной `request.POST`, если это
-просто данные, и в `request.FILES`, если были переданы файлы.
-
-![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson32/post_request_view.png)
-
-Обратите внимание, что вместе с нашими данными был передан и `csrf` токен. Обычно при обработке данных он не нужен, но
-данные были переданы, а значит они придут на сервер.
-
-### Django Forms
-
-Django предоставляет нам возможность генерировать `HTML` формы из кода на Python!
-
-Что для этого нужно? Создадим в нашем приложении файл `forms.py`
-
-Внутри этого файла укажем:
-
-`forms.py`
+Новый контекстный менеджер для таймаутов, более удобный, чем `wait_for`:
 
 ```python
-from django import forms
+import asyncio
 
 
-class MyForm(forms.Form):
-    nickname = forms.CharField(label='My nickname', max_length=100)
-    age = forms.IntegerField(label='My age')
+async def long_operation():
+    await asyncio.sleep(10)
+    return "done"
+
+
+async def main():
+    try:
+        async with asyncio.timeout(5):
+            result = await long_operation()
+    except TimeoutError:
+        print("Операция превысила таймаут!")
+
+
+asyncio.run(main())
 ```
 
-Обработчик для урла заменим на:
+Также есть `asyncio.timeout_at(when)` для указания абсолютного времени.
 
-Во views.py заменим нашу функцию на:
+### asyncio.to_thread() (Python 3.9+)
+
+Позволяет запускать синхронный (блокирующий) код в отдельном потоке, не блокируя event loop:
 
 ```python
-from django.shortcuts import render
+import asyncio
+import time
 
-from .forms import MyForm
+
+def blocking_io():
+    """Синхронная функция, которая блокирует поток"""
+    time.sleep(2)
+    return "Результат блокирующей операции"
 
 
-def form_view(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = MyForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # some actions
-            return render(request, 'form_was_valid.html')
+async def main():
+    print("Запускаем блокирующую операцию в отдельном потоке...")
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = MyForm()
+    # Запускаем синхронную функцию в отдельном потоке
+    result = await asyncio.to_thread(blocking_io)
 
-    return render(request, 'form.html', {'form': form})
+    print(f"Получили: {result}")
+
+
+asyncio.run(main())
 ```
 
-**Не забываем импортировать форму**
+Это особенно полезно для:
+- Работы с библиотеками, не поддерживающими async (например, `requests`, `PIL`)
+- CPU-bound операций (хотя для них лучше использовать `ProcessPoolExecutor`)
+- Файловых операций
 
-Изменим файл `form.html`:
+### Асинхронные итераторы и контекстные менеджеры
 
-```html
-{% extends 'base.html' %}
+#### async with
 
-{% block content %}
-<form method="post" action="{% url 'form-view' %}">
-    {% csrf_token %}
-    {{ form }} {# Инпуты были заменены на переменную, в которой лежит объект класса Form #}
-    <button type="submit">Send form</button>
-</form>
-{% endblock %}
-```
-
-и создадим файл `form_was_valid.html`:
-
-```html
-{% extends 'base.html' %}
-
-{% block content %}
-<div style="background-color: deeppink"> FORM WAS VALID</div>
-<a href="{% url 'form-view' %}">To the form page</a>
-{% endblock %}
-```
-
-Что именно мы сделали?
-
-### Описание формы
-
-В файле `forms.py` мы создали класс формы, в котором описали два атрибута `nickname` и `age`.
-
-Они будут соответствовать двум инпутам, текстовому и числовому.
-
-Естественно, типов существует гораздо больше.
-
-Основные типы:
-
-`BooleanField` - булево значение
-
-`CharField` - текст
-
-`ChoiceField` - поле для выбора
-
-`DateTimeField` - дата/время
-
-`EmailField` - имейл
-
-`FileField` - файл
-
-`IntegerField` - целое число
-
-`MultipleChoiceField` - множественный выбор
-
-И многие другие, почитать про них
-нужно [тут](https://docs.djangoproject.com/en/4.2/ref/forms/fields/#built-in-field-classes)
-
-У полей формы есть такое понятие как виджет. Он отвечает за то, как именно будет отображаться конкретное поле, например,
-для текста - это текстовое поле, а для даты и времени - это встроенный пикер (выпадающее окно с календарём и часами)
-и т. д.
-
-Виджет можно указать отличающийся от стандартного.
-
-Прочитать про виджеты нужно [тут](https://docs.djangoproject.com/en/4.2/ref/forms/widgets/#built-in-widgets).
-
-Каждому полю мы можем указать дополнительные аттрибуты:
-
-`required - является ли поле обязательным
-
-`label`- лейбл, подпись к инпуту
-
-`label_suffix` - символ между `label` и инпутом
-
-`initial` - значение по умолчанию
-
-`widget` - читай выше
-
-`help_text` - подсказка к инпуту
-
-`error_messages` - переписать стандартные тексты для ошибок типов полей
-
-`validators` - дополнительные проверки поля
-
-`localize` - информация о переводе формы на другие языки
-
-`disabled` - сделать поле не активным (без возможности изменения)
-
-### Описание view
-
-В переменной `request` хранится информация о том, какой именно тип запроса к нам пришел, а это значит, что простым if мы
-можем разграничить логику, которая будет обрабатывать разные типы запросов.
-
-Если мы просто открываем страницу в браузере, то на самом деле мы посылаем обыкновенный `GET` запрос.
-
-Взглянем на код. При `GET` запросе мы не попадаем в первое условие, переменной `form` назначаем объект класса `MyForm`
-без каких-либо данных, и после этого рендерим страницу, передав на страницу пустой объект класса формы.
-
-При рендере объекта класса формы в шаблоне этот объект преобразуется в набор инпутов с уже указанными
-атрибутами `name`
-
-![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson32/django_form_get.png)
-
-Если мы заполним данные и нажмём на кнопку `Send form`, то мы отправим по этому же url запрос, но уже типа `POST` с
-заполненными данными.
-
-Посмотрим в код еще раз, мы попадём в первый if и переменной `form` назначим объект класса `MyFrom`, но предварительно
-передав туда данные через `request.POST`.
-
-А значит на этом этапе у нас есть объект с данными, переданными нам от клиента.
-
-Данные, которые мы получили из реквеста, всегда нужно валидировать (проверять).
-
-## Валидация формы
-
-[Тут](https://docs.djangoproject.com/en/4.2/ref/forms/validation/) вся дока по валидации.
-
-За валидацию данных в форме отвечает встроенный метод `is_valid()` который применяется к объекту класса формы.
-
-Этот метод возвращает нам булево значение: `True`, если данные валидны, `False`, если нет.
-
-После вызова этого метода у переменной, к которой он был вызван (в нашем случае переменная `form`), появляются
-дополнительные атрибуты.
-
-Если форма валидна, то появляется дополнительный аттрибут `cleaned_data` - это словарь, в котором хранятся все
-данные, присланные нам пользователем (например, логин и пароль).
-
-Если форма не валидна, то появляется дополнительные аттрибут `errors`, который хранит в себе информацию об ошибках
-конкретных полей или общих ошибках.
-
-Этот атрибут сразу хранит информацию о том, как отображать эти ошибки в шаблоне, если они существуют.
-
-### Валидность
-
-Что же такое валидность?
-
-Валидность - это соответствие заданным критериям. Например, если мы ожидаем в поле возраста получить числовой тип, а
-пользователь отправляет текст, то данные не валидны.
-
-Некоторые распространённые виды валидаций можно указать как атрибут поля формы, например, максимальную длину для
-строки, максимальное и минимальное значение для числа.
-
-#### clean_`field`()
-
-Если мы вызываем метод `is_valid()`, мы проверяем все описанные валидации. Но где они описаны, и можем ли мы добавить
-свои?
-
-Описаны они в классе формы, и да, мы можем добавить свои.
-
-Все базовые валидации были описаны при создании полей.
-
-Но допустим, что мы считаем, что для нашей формы валидным является только чётный возраст, как нам это проверить?
-
-Для проверки конкретного поля в форме класса нужно указать метод, который будет начинаться со слова `clean_` и после
-этого название поля, которое мы валидируем.
-
-Все данные будут лежать в аттрибуте `self.cleaned_data`.
-
-Если значение валидно, то метод должен возвращать значение этого аттрибута.
-
-Если значение не валидно, то метод должен возбуждать ошибку `ValidationError` с описанием ошибки, которая позже будет
-отображаться в `html`.
-
-В forms.py:
+`async with` используется для асинхронных контекстных менеджеров — объектов с методами `__aenter__` и `__aexit__`:
 
 ```python
-from django import forms
-from django.core.exceptions import ValidationError
+import asyncio
 
 
-class MyForm(forms.Form):
-    nickname = forms.CharField(label='My nickname', max_length=100)
-    age = forms.IntegerField(label='My age')
+class AsyncResource:
+    async def __aenter__(self):
+        print("Открываем ресурс...")
+        await asyncio.sleep(1)
+        return self
 
-    def clean_age(self):
-        age = self.cleaned_data.get('age')
-        if not age % 2:
-            raise ValidationError('Age should be even.')
-        return age
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        print("Закрываем ресурс...")
+        await asyncio.sleep(0.5)
+
+    async def do_something(self):
+        return "Работа с ресурсом"
+
+
+async def main():
+    async with AsyncResource() as resource:
+        result = await resource.do_something()
+        print(result)
+
+
+asyncio.run(main())
 ```
 
-#### clean()
+#### async for
 
-А что делать если нужно проверить соответствие данных между собой? Например, что пользователь не использовал свой
-возраст, как часть своего никнейма?
-
-Для этого мы можем использовать метод `clean()`, в котором можем выполнить все необходимые нам проверки.
-
-Для выполнения всех базовых проверок обычно используется `super()`.
-
-В forms.py
+`async for` используется для асинхронных итераторов — объектов с методами `__aiter__` и `__anext__`:
 
 ```python
-from django import forms
-from django.core.exceptions import ValidationError
+import asyncio
 
 
-class MyForm(forms.Form):
-    nickname = forms.CharField(label='My nickname', max_length=100)
-    age = forms.IntegerField(label='My age')
+class AsyncCounter:
+    def __init__(self, stop):
+        self.current = 0
+        self.stop = stop
 
-    def clean_age(self):
-        age = self.cleaned_data.get('age')
-        if not age % 2:
-            raise ValidationError('Age should be even.')
-        return age
+    def __aiter__(self):
+        return self
 
-    def clean(self):
-        cleaned_data = super().clean()
-        age = cleaned_data.get('age')
-        nickname = cleaned_data.get('nickname')
-        if str(age) in nickname:
-            raise ValidationError('Age can\'t be in nickname')
+    async def __anext__(self):
+        if self.current >= self.stop:
+            raise StopAsyncIteration
+        await asyncio.sleep(0.5)  # Имитация асинхронной операции
+        self.current += 1
+        return self.current
+
+
+async def main():
+    async for number in AsyncCounter(5):
+        print(number)
+
+
+asyncio.run(main())
+
+# Output:
+# 1
+# 2
+# 3
+# 4
+# 5
 ```
 
-Метод `clean()` ничего не возвращает, это нормально :)
+#### Асинхронные генераторы
 
-Если при проверке у вас может быть больше одной ошибки, то `raise` вам не подходит.
-
-Для этого может использоваться метод класса формы `add_error()`. Он принимает два параметра: название поля, к которому
-относится ошибка (может быть None, если ошибка не относится к какому-либо полю), и сообщение, например, неправильные 
-имя пользователя и/или пароль.
-
-В forms.py
+Можно создавать асинхронные генераторы с помощью `async def` и `yield`:
 
 ```python
-from django import forms
-from django.core.exceptions import ValidationError
+import asyncio
 
 
-class MyForm(forms.Form):
-    nickname = forms.CharField(label='My nickname', max_length=100)
-    age = forms.IntegerField(label='My age')
+async def async_range(start, stop):
+    for i in range(start, stop):
+        await asyncio.sleep(0.1)
+        yield i
 
-    def clean_age(self):
-        age = self.cleaned_data.get('age')
-        if not age % 2:
-            raise ValidationError('Age should be even')
-        return age
 
-    def clean(self):
-        cleaned_data = super().clean()
-        age = cleaned_data.get('age')
-        nickname = cleaned_data.get('nickname')
-        if str(age) in nickname:
-            self.add_error('age', 'Age can\'t be in nickname')
-        self.add_error(None, 'This form is always incorrect')
+async def main():
+    async for num in async_range(1, 6):
+        print(num)
+
+
+asyncio.run(main())
 ```
 
-### Отображение формы в шаблоне
+Это далеко не все методы и подробности корутин, за всеми деталями
+в [документацию](https://docs.python.org/3/library/asyncio.html)
 
-Итак, если наша форма была валидна, то мы отрендерили вообще другую страницу, но если всё-таки была не валидна, то мы
-отрендерим форму, у которой есть атрибут `errors`, ошибки сразу же будут отрисованы.
+## Aiohttp.
+Документация: https://docs.aiohttp.org/
 
-Также у нас есть способы по разному отрисовывать формы:
 
-У объекта формы есть стандартные поля и методы, которые мы можем указывать в шаблоне, например:
+Как мы помним, одно из основных преимуществ использования асинхронности — это возможность отправки параллельных HTTP-запросов, не дожидаясь результатов других. К сожалению, при использовании корутин вместе с классическим `requests`
+запросы будут выполнены синхронно, т. к. сами запросы не являются `awaitable`-объектами, и результат будет таким же, как
+если бы вы использовали обычный `sleep`, а не асинхронный — соседние корутины будут ждать остальные. Чтобы такого не
+было, существует специальный пакет `aiohttp`, его необходимо устанавливать через `pip`:
 
-`{{ form.as_table }}` - рендер в виде таблицы, через теги <tr>
+```pip install aiohttp```
 
-`{{ form.as_p }}` - рендер каждого поля через теги <p> 
-
-`{{ form.as_ul }}` - рендер в виде списка через теги <li>
-
-Также можно рендерить форму не целиком, а, например, по отдельным полям, при помощи стандартного обращения через
-точку: `{{ form.name }}`.
-
-У каждого поля есть аттрибут `errors`, который хранит информацию об ошибках по этому полю, если они были
-обнаружены: `{{ form.my_field.errors }}`.
-
-Если запустить форму через `for` в итерируемом объекте будут поля.
-
-```html
-{% for field in form %}
-<div class="fieldWrapper">
-    {{ field.errors }}
-    {{ field.label_tag }} {{ field }}
-    {% if field.help_text %}
-    <p class="help">{{ field.help_text|safe }}</p>
-    {% endif %}
-</div>
-{% endfor %}
-```
-
-И многие другие атрибуты и методы, подробно можно
-прочитать [тут](https://docs.djangoproject.com/en/4.2/topics/forms/#working-with-form-templates)
-
-## Методы и свойства модели User
-
-## Модель User
-
-Django предоставляет нам встроенную модель юзера, у которой уже реализовано много полей и методов.
-
-Подробнейшая информация про юзера [тут](https://docs.djangoproject.com/en/4.2/topics/auth/default/)
-
-Стандартный юзер содержит в себе такие полезные поля как:
-
-```
-username
-password
-email
-first_name
-last_name
-```
-
-Также содержит много системных полей.
-
-Также содержит базовый метод `set_password()` и информацию о группах доступа.
-
-Для использования модели пользователя, которую нам нужно расширить (а это нужно почти всегда), используется наследование
-от базового абстрактного юзера.
-
-Выглядит примерно так:
+После чего необходимо создать асинхронный клиент, и можно выполнять запросы.
 
 ```python
-from django.contrib.auth.models import AbstractUser
-from django.db import models
+import aiohttp
+import asyncio
 
 
-class MyUser(AbstractUser):
-    birth_date = models.DateField()
-    avatar = models.ImageField(blank=True, null=True)
+async def main():
+    timeout = aiohttp.ClientTimeout(total=10)
+    async with aiohttp.ClientSession(timeout=timeout) as session:
+        async with session.get("https://httpbin.org/get") as resp:
+            print(resp.status)
+            data = await resp.json()
+            print(data.get("url"))
+
+
+asyncio.run(main())
+
+# Output:
+# 200
+# https://httpbin.org/get
 ```
 
-Чтобы Django оценивала эту модель как пользователя в `settings.py` нужно в любом месте указать:
+#### Ограничение параллельных HTTP-запросов (aiohttp + Semaphore)
 
 ```python
-AUTH_USER_MODEL = 'myapp.MyUser' 
+import aiohttp
+import asyncio
+
+sem = asyncio.Semaphore(10)
+
+async def fetch(session, url):
+    async with sem:
+        async with session.get(url, timeout=10) as r:
+            return await r.text()
+
+async def main():
+    urls = ["https://httpbin.org/get"] * 50
+    async with aiohttp.ClientSession() as session:
+        results = await asyncio.gather(*(fetch(session, u) for u in urls))
+        print(len(results))
+
+
+asyncio.run(main())
 ```
 
-Где `myapp` - название приложения, `MyUser` - название модели.
+**Замечания:**
+- Переиспользуйте один `ClientSession` для всех запросов
+- Всегда задавайте таймауты
+- Избегайте блокирующих вызовов внутри async-функций
 
-Юзер `обязательно` должен быть описан до первой миграции!! Иначе Django автоматически будет использовать базового
-встроенного юзера, и использовать сразу несколько юзеров у вас не получится. Так как по дефолту, если этой переменной 
-нет, то Django считает, что там указанна ссылка на базового юзера, и создаёт таблицу юзера, основываясь на базовом юзере,
-поменять такую таблицу нельзя.
+### Альтернатива: httpx
 
-Все возможные подробности про модель
-юзера [тут](https://docs.djangoproject.com/en/4.2/ref/contrib/auth/#django.contrib.auth.models.User)
+Документация: https://www.python-httpx.org/
 
-Кроме стандартных полей юзер содержит в себе информацию о группах, в которых состоит пользователь, о пользовательских
-правах, два поля статуса `is_staff` и `is_superuser` (чаще всего стафф - это сотрудник, которым можно в админку,
-но у них ограниченные права, суперюзеру можно всё, но всегда зависит от ситуации).
+`httpx` — современная альтернатива `aiohttp` и `requests`, которая поддерживает как синхронный, так и асинхронный API:
 
-`is_stuff` - поле для определения сотрудника (допустим, сотрудник магазина, который добавляет товары)
-
-`is_superuser` - поле для определения администратора (например, может изменять список сотрудников, а чаще всего обладает
-практически неограниченными параметрами)
-
-Также хранит инфо о последнем логине пользователя и дате создания пользователя.
-
-### Объект юзера содержит кучу полезных методов
+```bash
+pip install httpx
+```
 
 ```python
-get_username()  # получить юзернейм
+import httpx
+import asyncio
 
-get_full_name()  # получить имя и фамилию через пробел
 
-set_password(raw_password)  # установить хешированный пароль
+async def main():
+    async with httpx.AsyncClient() as client:
+        response = await client.get("https://httpbin.org/get")
+        print(response.status_code)
+        print(response.json())
 
-check_password(raw_password)  # проверить пароль на правильность
 
-set_unusable_password()  # разрешить использовать пустую строку как пароль
-
-email_user(subject, message, from_email=None, **kwargs)  # отправить пользователю имейл 
+asyncio.run(main())
 ```
 
-Например:
+Преимущества `httpx`:
+- Единый API для sync и async
+- Поддержка HTTP/2
+- Совместимость с API `requests`
+- Встроенная поддержка таймаутов
+
+### POST-запросы и отправка JSON
 
 ```python
-u = User.objects.get(username='blabla')
-u.check_password('some_cool_password')  # True
+import aiohttp
+import asyncio
+
+
+async def create_user(session, user_data):
+    async with session.post(
+        "https://httpbin.org/post",
+        json=user_data,
+        headers={"Content-Type": "application/json"}
+    ) as resp:
+        return await resp.json()
+
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        result = await create_user(session, {"name": "John", "age": 30})
+        print(result)
+
+
+asyncio.run(main())
 ```
 
-И другие методы, отвечающие за доступы, группы и т. д.
+### Обработка ошибок и retry-логика
 
-### Менеджер юзера
-
-Содержит дополнительные методы
-
-`create_user(username, email=None, password=None, **extra_fields)`
-
-`create_superuser(username, email, password, **extra_fields)`
-
-`create_user()` отличается от `create()` тем, что `create_user()` правильно задаст пароль через `set_password()`
-
-** Мы не храним пароль в чистом виде, только хешированным. **
-
-## Логин
-
-На самом деле логин состоит из нескольких частей, давайте их рассмотрим.
-
-### Аутентификация, идентификация, авторизация
-
-Аутентификация - процесс проверки подлинности доступа.
-
-Например, проверить логин и пароль на соответствие.
-
-Если говорить о бытовом примере, то когда вы проходите на любую проходную, например, заходя в университет, вы должны
-предъявить студенческий. То, что он у вас есть и есть процесс аутентификации.
-
-Идентификация - процесс определения конкретного лица.
-
-Например, получить конкретного пользователя из базы.
-
-В примере с университетом, если охранник возьмет ваш студенческий и прочитает, как ваз зовут и из какой вы группы, это и
-будет идентификация.
-
-Авторизация - процесс предоставления доступа.
-
-Охранник вас пропустит.
-
-### Как это работает?
-
-Чтобы пользователь мог авторизоваться на сайте, нам нужны его входные данные и стандартные методы `authenticate, login`
-
-Метод `authenticate` отвечает сразу за два процесса: аутентификацию и идентификацию. Он принимает имя пользователя и
-пароль, и если находит совпадение, то возвращает объект пользователя(модели), если не находит, то возвращает `None`.
-
-Если нам вернулся объект юзера, значит, аутентификация пройдена, и пользователь идентифицирован.
-
-Метод `login` принимает реквест и объект модели пользователя и отвечает за процесс авторизации, после этого действия
-во всех следующих запросах в переменной `request` будет храниться наш текущий пользователь.
-
-Поэтому стандартным способом авторизации является примерно такой код:
-
-В forms.py
+При работе с сетью ошибки неизбежны. Вот паттерн для обработки ошибок с повторными попытками:
 
 ```python
-from django.contrib.auth import authenticate
-from django import forms
+import aiohttp
+import asyncio
+from aiohttp import ClientError, ClientResponseError
 
 
-class AuthenticationForm(forms.Form):
-    username = forms.CharField(max_length=254)
-    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+async def fetch_with_retry(session, url, max_retries=3, delay=1):
+    """Запрос с повторными попытками при ошибках."""
+    for attempt in range(max_retries):
+        try:
+            async with session.get(url) as resp:
+                resp.raise_for_status()  # Вызовет исключение для 4xx/5xx
+                return await resp.json()
+        except ClientResponseError as e:
+            if e.status >= 500 and attempt < max_retries - 1:
+                # Серверная ошибка — пробуем ещё раз
+                await asyncio.sleep(delay * (attempt + 1))
+                continue
+            raise
+        except ClientError as e:
+            if attempt < max_retries - 1:
+                await asyncio.sleep(delay * (attempt + 1))
+                continue
+            raise
 
-    def clean(self):
-        cleaned_data = super().clean()
-        username = cleaned_data.get('username')
-        password = cleaned_data.get('password')
-        if username and password:
-            self.user = authenticate(username=username, password=password)
-            if self.user is None:
-                raise forms.ValidationError()
+    raise Exception(f"Не удалось получить {url} после {max_retries} попыток")
+
+
+async def main():
+    timeout = aiohttp.ClientTimeout(total=10)
+    async with aiohttp.ClientSession(timeout=timeout) as session:
+        try:
+            data = await fetch_with_retry(session, "https://httpbin.org/get")
+            print(data)
+        except Exception as e:
+            print(f"Ошибка: {e}")
+
+
+asyncio.run(main())
 ```
 
-в view.py
+## Сравнение sync vs async: бенчмарк
+
+Давайте на практике сравним синхронный и асинхронный подходы. Выполним 20 HTTP-запросов:
+
+### Синхронный вариант (requests)
 
 ```python
-from .forms import AuthenticationForm
-from django.contrib.auth import login
+import requests
+import time
 
 
-def my_login(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = AuthenticationForm(request.POST)
-        # check validity:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # some actions
-            login(request, form.user)
-            return HttpResponseRedirect('/')
+def fetch_sync(url):
+    response = requests.get(url, timeout=10)
+    return response.status_code
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = AuthenticationForm()
 
-    return render(request, 'login.html', {'form': form})
+def main_sync():
+    urls = ["https://httpbin.org/delay/1"] * 20  # Каждый запрос занимает ~1 сек
+
+    start = time.time()
+    results = [fetch_sync(url) for url in urls]
+    elapsed = time.time() - start
+
+    print(f"Синхронно: {len(results)} запросов за {elapsed:.2f} сек")
+
+
+main_sync()
+# Синхронно: 20 запросов за ~20 сек
 ```
 
-### Logout
-
-Для вывода пользователя из системы используется метод `logout`, который принимает только реквест.
+### Асинхронный вариант (aiohttp)
 
 ```python
-from django.contrib.auth import logout
+import aiohttp
+import asyncio
+import time
 
 
-def logout_view(request):
-    logout(request)
-    # Redirect to a success page.
+async def fetch_async(session, url):
+    async with session.get(url) as resp:
+        return resp.status
+
+
+async def main_async():
+    urls = ["https://httpbin.org/delay/1"] * 20
+
+    start = time.time()
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_async(session, url) for url in urls]
+        results = await asyncio.gather(*tasks)
+    elapsed = time.time() - start
+
+    print(f"Асинхронно: {len(results)} запросов за {elapsed:.2f} сек")
+
+
+asyncio.run(main_async())
+# Асинхронно: 20 запросов за ~1-2 сек
 ```
 
-### Проверка на то, что пользователь уже зашел в систему
+### Результаты
 
-В реквесте всегда есть поле `user`, у которого всегда есть аттрибут `is_authenticated`, проверяя его, мы можем 
-определять является ли пользователь авторизированным.
+| Подход      | 20 запросов (delay=1s) | Ускорение  |
+|-------------|------------------------|------------|
+| Синхронный  | ~20 сек                | 1x         |
+| Асинхронный | ~1-2 сек               | **10-20x** |
+
+### Когда async даёт выигрыш?
+
+✅ **Async эффективен для I/O-bound задач:**
+- HTTP-запросы к внешним API
+- Запросы к базам данных
+- Чтение/запись файлов
+- WebSocket-соединения
+
+❌ **Async НЕ поможет для CPU-bound задач:**
+- Математические вычисления
+- Обработка изображений
+- Шифрование
+- Парсинг больших данных
+
+Для CPU-bound задач используйте `multiprocessing` или `asyncio.to_thread()`.
+
+## Async в Django
+
+Начиная с Django 3.1, появилась поддержка асинхронных view. В Django 4.1+ эта поддержка стала более зрелой.
+
+### Async Views
 
 ```python
-request.user.is_authenticated
+# views.py
+import asyncio
+import aiohttp
+from django.http import JsonResponse
+
+
+async def fetch_external_api(request):
+    """Асинхронный view для запроса к внешнему API."""
+    async with aiohttp.ClientSession() as session:
+        async with session.get("https://api.example.com/data") as resp:
+            data = await resp.json()
+    return JsonResponse(data)
+
+
+# Можно использовать asyncio.gather для параллельных запросов
+async def fetch_multiple_apis(request):
+    """Параллельные запросы к нескольким API."""
+    async with aiohttp.ClientSession() as session:
+        tasks = [
+            session.get("https://api.example.com/users"),
+            session.get("https://api.example.com/products"),
+            session.get("https://api.example.com/orders"),
+        ]
+        responses = await asyncio.gather(*tasks)
+        data = {
+            "users": await responses[0].json(),
+            "products": await responses[1].json(),
+            "orders": await responses[2].json(),
+        }
+    return JsonResponse(data)
 ```
 
-### Закрыть страницу от незалогиненного пользователя
+### Ограничения: Django ORM
 
-Чтобы не предоставлять доступ незалогиненным пользователям, существует два способа: для функционально
-описанных views - это декоратор `@login_required`
+**⚠️ Важно:** Django ORM пока **синхронный**! Нельзя напрямую использовать ORM в async view:
 
 ```python
-from django.contrib.auth.decorators import login_required
-
-
-@login_required
-def my_view(request):
-    ...
+# ❌ НЕПРАВИЛЬНО — заблокирует event loop!
+async def bad_view(request):
+    users = User.objects.all()  # Синхронный вызов в async контексте
+    return JsonResponse({"count": len(users)})
 ```
 
-Он также может принимать ссылку на страницу логина и автоматически отправлять на эту страницу незалогиненного
-пользователя.
+### sync_to_async
+
+Для использования синхронного кода (включая ORM) в async-контексте используйте `sync_to_async`:
 
 ```python
-from django.contrib.auth.decorators import login_required
+from asgiref.sync import sync_to_async
+from django.http import JsonResponse
+from .models import User
 
 
-@login_required(login_url='/accounts/login/')
-def my_view(request):
-    ...
+@sync_to_async
+def get_users_count():
+    return User.objects.count()
+
+
+@sync_to_async
+def get_user_by_id(user_id):
+    return User.objects.get(id=user_id)
+
+
+async def users_count_view(request):
+    count = await get_users_count()
+    return JsonResponse({"count": count})
+
+
+# Или inline с декоратором
+async def user_detail_view(request, user_id):
+    get_user = sync_to_async(User.objects.get, thread_sensitive=True)
+    try:
+        user = await get_user(id=user_id)
+        return JsonResponse({"name": user.name, "email": user.email})
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)
 ```
 
-# Практика / Домашка:
+### async_to_sync
 
-1. Пишем страницы для логина и для регистрации (на каждой из них должна быть ссылка на другую).
-2. Если пользователь не залогинен, то его должно перебрасывать на страницу с логином.
-3. Добавляем в верхнюю часть главной страницы перечисление существующих топиков. При нажатии на которые мы должны видеть
-   отфильтрованный список блогов, относящихся только к выбранному топику (GET запрос).
-4. Добавляем строку для поиска по блогам. После поиска должны отображаться посты, в названии которых есть частичное
-   совпадение без учета регистра с искомыми данными. (GET форма)
-5. Добавляем возможность создания поста.
-6. На странице с деталями поста добавляем возможность писать комментарии.
+Обратная ситуация — вызов async-кода из синхронного контекста:
+
+```python
+from asgiref.sync import async_to_sync
+import aiohttp
+
+
+async def fetch_data_async(url):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as resp:
+            return await resp.json()
+
+
+# В синхронном коде (например, в management command)
+def sync_function():
+    data = async_to_sync(fetch_data_async)("https://api.example.com/data")
+    print(data)
+```
+
+### Когда использовать async views в Django?
+
+✅ **Используйте async views когда:**
+- Делаете запросы к внешним API
+- Работаете с WebSocket (Django Channels)
+- Выполняете много I/O операций параллельно
+
+❌ **Не используйте async views когда:**
+- Основная работа — с Django ORM (пока он синхронный)
+- Простые CRUD-операции
+- Нет явной выгоды от параллелизма
+
+> **Примечание:** Django 5.0+ активно развивает async ORM. Следите за обновлениями!
+
+## Паттерны и best practices
+
+### Producer-Consumer
+
+Классический паттерн для обработки потока данных:
+
+```python
+import asyncio
+import random
+
+
+async def producer(queue, name):
+    """Производитель — добавляет задачи в очередь."""
+    for i in range(5):
+        await asyncio.sleep(random.uniform(0.1, 0.5))
+        item = f"{name}-item-{i}"
+        await queue.put(item)
+        print(f"[{name}] Произведено: {item}")
+    await queue.put(None)  # Сигнал завершения
+
+
+async def consumer(queue, name):
+    """Потребитель — обрабатывает задачи из очереди."""
+    while True:
+        item = await queue.get()
+        if item is None:
+            queue.task_done()
+            break
+        await asyncio.sleep(random.uniform(0.2, 0.6))  # Имитация обработки
+        print(f"[{name}] Обработано: {item}")
+        queue.task_done()
+
+
+async def main():
+    queue = asyncio.Queue(maxsize=10)
+
+    # Запускаем производителей и потребителей
+    producers = [
+        asyncio.create_task(producer(queue, f"P{i}"))
+        for i in range(2)
+    ]
+    consumers = [
+        asyncio.create_task(consumer(queue, f"C{i}"))
+        for i in range(3)
+    ]
+
+    await asyncio.gather(*producers)
+
+    # Отправляем сигналы завершения для всех потребителей
+    for _ in consumers:
+        await queue.put(None)
+
+    await asyncio.gather(*consumers)
+
+
+asyncio.run(main())
+```
+
+### Graceful Shutdown
+
+Корректное завершение при получении сигнала (Ctrl+C):
+
+```python
+import asyncio
+import signal
+
+
+async def long_running_task(name):
+    try:
+        while True:
+            print(f"[{name}] Работаю...")
+            await asyncio.sleep(1)
+    except asyncio.CancelledError:
+        print(f"[{name}] Получен сигнал отмены, завершаюсь...")
+        # Здесь можно выполнить cleanup
+        raise
+
+
+async def main():
+    tasks = [
+        asyncio.create_task(long_running_task(f"Task-{i}"))
+        for i in range(3)
+    ]
+
+    # Обработчик сигнала
+    def shutdown():
+        print("Получен сигнал завершения!")
+        for task in tasks:
+            task.cancel()
+
+    loop = asyncio.get_running_loop()
+    for sig in (signal.SIGTERM, signal.SIGINT):
+        loop.add_signal_handler(sig, shutdown)
+
+    try:
+        await asyncio.gather(*tasks)
+    except asyncio.CancelledError:
+        print("Все задачи отменены")
+
+
+# На Windows сигналы работают иначе, используйте try/except KeyboardInterrupt
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Завершено по Ctrl+C")
+```
+
+### Типичные ошибки
+
+#### 1. Забытый await
+
+```python
+# ❌ НЕПРАВИЛЬНО
+async def bad():
+    asyncio.sleep(1)  # Забыли await — ничего не произойдёт!
+    print("Готово")
+
+# ✅ ПРАВИЛЬНО
+async def good():
+    await asyncio.sleep(1)
+    print("Готово")
+```
+
+#### 2. Блокирующий код в async-функции
+
+```python
+import time
+
+# ❌ НЕПРАВИЛЬНО — блокирует весь event loop!
+async def bad():
+    time.sleep(5)  # Синхронный sleep
+    return "done"
+
+# ✅ ПРАВИЛЬНО
+async def good():
+    await asyncio.sleep(5)  # Асинхронный sleep
+    return "done"
+
+# ✅ Или используйте to_thread для блокирующего кода
+async def also_good():
+    await asyncio.to_thread(time.sleep, 5)
+    return "done"
+```
+
+#### 3. Создание задач без ожидания
+
+```python
+# ❌ НЕПРАВИЛЬНО — задача может не выполниться
+async def bad():
+    asyncio.create_task(some_coroutine())  # Задача "потеряется"
+    return "done"
+
+# ✅ ПРАВИЛЬНО — сохраняем ссылку и ждём
+async def good():
+    task = asyncio.create_task(some_coroutine())
+    # ... другой код ...
+    await task  # Ждём завершения
+    return "done"
+```
+
+#### 4. Неправильная обработка исключений в gather
+
+```python
+# ❌ Одно исключение отменит все задачи
+async def bad():
+    await asyncio.gather(task1(), task2(), task3())
+
+# ✅ return_exceptions=True — все задачи выполнятся
+async def good():
+    results = await asyncio.gather(
+        task1(), task2(), task3(),
+        return_exceptions=True
+    )
+    for result in results:
+        if isinstance(result, Exception):
+            print(f"Ошибка: {result}")
+```
+
+### Отладка async-кода
+
+Включите debug-режим asyncio для поиска проблем:
+
+```python
+import asyncio
+
+# Способ 1: через переменную окружения
+# PYTHONASYNCIODEBUG=1 python script.py
+
+# Способ 2: программно
+asyncio.run(main(), debug=True)
+```
+
+В debug-режиме asyncio:
+- Предупреждает о корутинах, которые не были awaited
+- Показывает, где были созданы задачи
+- Логирует медленные callback'и (>100ms)
+
+---
+
+## Практика на занятии
+
+### Задание 1. Параллельные запросы
+
+Напишите асинхронную функцию, которая:
+1. Принимает список URL-адресов
+2. Делает GET-запросы ко всем URL параллельно
+3. Возвращает словарь `{url: status_code}`
+4. Обрабатывает ошибки (таймаут, недоступный сервер)
+
+```python
+import aiohttp
+import asyncio
+
+
+async def fetch_all(urls: list[str], timeout: int = 10) -> dict[str, int | str]:
+    """
+    Возвращает словарь {url: status_code} или {url: "error: описание"}
+    """
+    # Ваш код здесь
+    pass
+
+
+# Пример использования:
+urls = [
+    "https://httpbin.org/get",
+    "https://httpbin.org/status/404",
+    "https://httpbin.org/delay/2",
+    "https://invalid-url-that-does-not-exist.com",
+]
+
+results = asyncio.run(fetch_all(urls))
+print(results)
+# {'https://httpbin.org/get': 200, 'https://httpbin.org/status/404': 404, ...}
+```
+
+### Задание 2. Rate Limiter
+
+Реализуйте асинхронный rate limiter, который ограничивает количество запросов в секунду:
+
+```python
+import asyncio
+import time
+
+
+class AsyncRateLimiter:
+    def __init__(self, max_requests: int, period: float = 1.0):
+        """
+        max_requests: максимальное количество запросов
+        period: период в секундах
+        """
+        # Ваш код здесь
+        pass
+
+    async def acquire(self):
+        """Ожидает, пока можно сделать запрос."""
+        # Ваш код здесь
+        pass
+
+
+# Пример использования:
+async def main():
+    limiter = AsyncRateLimiter(max_requests=5, period=1.0)
+
+    async def make_request(i):
+        await limiter.acquire()
+        print(f"[{time.strftime('%H:%M:%S')}] Запрос {i}")
+
+    tasks = [make_request(i) for i in range(15)]
+    await asyncio.gather(*tasks)
+
+
+asyncio.run(main())
+# Должно выводить по 5 запросов в секунду
+```
+
+---
+
+## Домашняя работа
+
+### Задание 1. Асинхронный веб-скрапер
+
+Напишите асинхронный скрапер, который:
+1. Получает список URL страниц
+2. Скачивает HTML каждой страницы параллельно (с ограничением в 5 одновременных запросов)
+3. Извлекает заголовок страницы (`<title>`)
+4. Возвращает словарь `{url: title}`
+
+Используйте `asyncio.Semaphore` для ограничения параллелизма.
+
+```python
+async def scrape_titles(urls: list[str], max_concurrent: int = 5) -> dict[str, str]:
+    """Возвращает {url: title} для каждой страницы."""
+    # Ваш код здесь
+    pass
+
+
+# Пример:
+urls = [
+    "https://python.org",
+    "https://docs.python.org",
+    "https://pypi.org",
+]
+titles = asyncio.run(scrape_titles(urls))
+print(titles)
+```
+
+### Задание 2. Producer-Consumer с обработкой ошибок
+
+Реализуйте систему producer-consumer, где:
+1. Producer генерирует случайные числа и кладёт их в очередь
+2. Consumer берёт числа из очереди и проверяет, простые ли они
+3. Если число простое — сохраняет в результат
+4. Обработайте graceful shutdown по Ctrl+C
+
+```python
+async def is_prime(n: int) -> bool:
+    """Проверяет, является ли число простым."""
+    # Ваш код здесь
+    pass
+
+
+async def producer(queue: asyncio.Queue, count: int):
+    """Генерирует count случайных чисел."""
+    # Ваш код здесь
+    pass
+
+
+async def consumer(queue: asyncio.Queue, results: list):
+    """Проверяет числа на простоту."""
+    # Ваш код здесь
+    pass
+
+
+async def main():
+    # Ваш код здесь
+    pass
+```
+
+### Задание 3. ⭐ Async Context Manager для API-клиента
+
+Создайте асинхронный контекстный менеджер для работы с API:
+
+```python
+class AsyncAPIClient:
+    def __init__(self, base_url: str, rate_limit: int = 10):
+        """
+        base_url: базовый URL API
+        rate_limit: максимум запросов в секунду
+        """
+        pass
+
+    async def __aenter__(self):
+        # Инициализация сессии
+        pass
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        # Закрытие сессии
+        pass
+
+    async def get(self, endpoint: str) -> dict:
+        # GET-запрос с rate limiting
+        pass
+
+    async def post(self, endpoint: str, data: dict) -> dict:
+        # POST-запрос с rate limiting
+        pass
+
+
+# Пример использования:
+async def main():
+    async with AsyncAPIClient("https://httpbin.org", rate_limit=5) as client:
+        # Параллельные запросы с автоматическим rate limiting
+        tasks = [client.get("/get") for _ in range(20)]
+        results = await asyncio.gather(*tasks)
+        print(f"Получено {len(results)} ответов")
+
+
+asyncio.run(main())
+```
+
+---
+
+[← Лекция 31: Celery. Multithreading. GIL. Multiprocessing](lesson31.md) | [Лекция 33: Сокеты. Django Channels. →](lesson33.md)

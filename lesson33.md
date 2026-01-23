@@ -1,1209 +1,1136 @@
-# Урок 33. ModelForm, ClassBaseView
+# Лекция 33. Сокеты. Django channels.
 
-![](http://memesmix.net/media/created/lm6uyu.jpg)
+### Оглавление курса
 
-## ModelForm
+<details>
+  <summary>Блок 1 — Python Basic (1–6)</summary>
 
-Дока [Тут](https://docs.djangoproject.com/en/4.2/topics/forms/modelforms/)
+  - [Лекция 1. Введение. Типизации. Переменные. Строки и числа. Булева алгебра. Ветвление](lesson01.md)
+  - [Лекция 2. Обработка исключений. Списки, строки детальнее, срезы, циклы.](lesson02.md)
+  - [Лекция 3: None. Range, list comprehension, sum, max, min, len, sorted, all, any. Работа с файлами](lesson03.md)
+  - [Лекция 4. Хэш таблицы. Set, frozenset. Dict. Tuple. Немного об импортах. Namedtuple, OrderedDict](lesson04.md)
+  - [Лекция 5. Функции, типизация, lambda. Map, zip, filter.](lesson05.md)
+  - [Лекция 6. Алгоритмы и структуры данных](lesson06.md)
+</details>
 
-ModelForm - это тип формы, который генерируется напрямую из модели. Это очень мощный инструмент работы с моделями.
+<details>
+  <summary>Блок 2 — Git (7–8)</summary>
 
-`models.py`
+  - [Лекция 7. Git. История системы контроля версий. Локальный репозиторий. Базовые команды управления репозиторием.](lesson07.md)
+  - [Лекция 8. Git. Удаленный репозиторий. Remote, push, pull. GitHub, Bitbucket, GitLab, etc. Pull request.](lesson08.md)
+</details>
 
-```python
-from django.db import models
+<details>
+  <summary>Блок 3 — Python Advanced (9–14)</summary>
 
-TITLE_CHOICES = [
-    ('MR', 'Mr.'),
-    ('MRS', 'Mrs.'),
-    ('MS', 'Ms.'),
-]
+  - [Лекция 9. Введение в ООП. Основные парадигмы ООП. Классы и объекты. Множественное наследование.](lesson09.md)
+  - [Лекция 10. Magic methods. Итераторы и генераторы.](lesson10.md)
+  - [Лекция 11. Imports. Standard library. PEP8](lesson11.md)
+  - [Лекция 12. Декораторы. Декораторы с параметрами. Декораторы классов (staticmethod, classmethod, property)](lesson12.md)
+  - [Лекция 13. Тестирование](lesson13.md)
+  - [Лекция 14. Проектирование. Паттерны. SOLID.](lesson14.md)
+</details>
 
+<details>
+  <summary>Блок 4 — SQL (15–17)</summary>
 
-class Author(models.Model):
-    name = models.CharField(max_length=100)
-    title = models.CharField(max_length=3, choices=TITLE_CHOICES)
-    birth_date = models.DateField(blank=True, null=True)
+  - [Лекция 15. СУБД. PostgreSQL. SQL. DDL. Пользователи. DCL. DML. Связи.](lesson15.md)
+  - [Лекция 16. СУБД. DQL. SELECT. Индексы. Group by. Joins.](lesson16.md)
+  - [Лекция 17. СУБД. Нормализация. Аномалии. Транзакции. ACID. TCL. Backup](lesson17.md)
+</details>
 
-    def __str__(self):
-        return self.name
+- [Лекция 18. Virtual env. Pip. Устанавливаемые модули. Pyenv.](lesson18.md)
 
+<details>
+  <summary>Блок 5 — Django (19–26)</summary>
 
-class Book(models.Model):
-    name = models.CharField(max_length=100)
-    authors = models.ManyToManyField(Author)
-```
+  - [Лекция 19. Знакомство с Django](lesson19.md)
+  - [Лекция 20. Templates. Static](lesson20.md)
+  - [Лекция 21. Модели. Связи. Meta. Abstract, proxy](lesson21.md)
+  - [Лекция 22. Django ORM](lesson22.md)
+  - [Лекция 23. Forms, ModelForms. User, Authentication](lesson23.md)
+  - [Лекция 24. ClassBaseView](lesson24.md)
+  - [Лекция 25. NoSQL. Куки, сессии, кеш](lesson25.md)
+  - [Лекция 26. Логирование. Middleware. Signals. Messages. Manage commands](lesson26.md)
+</details>
 
-`forms.py`
+<details>
+  <summary>Блок 6 — Django Rest Framework (27–30)</summary>
 
-```python
-from django.forms import ModelForm
+  - [Лекция 27. Что такое API. REST и RESTful. Django REST Framework](lesson27.md)
+  - [Лекция 28. @api_view, APIView, ViewSets, Pagination, Routers](lesson28.md)
+  - [Лекция 29. REST аутентификация. Авторизация. Permissions. Фильтрация](lesson29.md)
+  - [Лекция 30. Тестирование. Django, REST API.](lesson30.md)
+</details>
 
+<details open>
+  <summary>Блок 7 — Python async (31–33)</summary>
 
-class AuthorForm(ModelForm):
-    class Meta:
-        model = Author
-        fields = ['name', 'title', 'birth_date']
+  - [Лекция 31. Celery. Multithreading. GIL. Multiprocessing](lesson31.md)
+  - [Лекция 32. Asyncio. Aiohttp. Асинхронное программирование на практике.](lesson32.md)
+  - ▶ **Лекция 33. Сокеты. Django channels**
+</details>
 
+<details>
+  <summary>Блок 8 — Deployment (34–35)</summary>
 
-class BookForm(ModelForm):
-    class Meta:
-        model = Book
-        fields = ['name', 'authors']
-```
+  - [Лекция 34. Linux. Все что нужно знать для деплоймента.](lesson34.md)
+  - [Лекция 35. Deployment](lesson35.md)
+</details>
 
-Поле `fields` или поле `exclude` являются обязательными.
+- [Лекция 36. Методологии разработки. CI/CD. Монолит и микросервисы. Docker](lesson36.md)
 
-Такой вид форм эквивалентен обычной форме с объявлением всех полей:
+![](https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUybzBodTR3NTVqbjBuZjk0Z3A5NTFsb200dWtvYm1qYmNocnN5NnFlbyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/9r75ILTJtiDACKOKoY/200w.gif)
 
-`forms.py`
+## Протокол
 
-```python
-from django import forms
+### Реализация чата
 
+Допустим вы хотите реализовать на своём сайте чат. Вы знаете протокол HTTP, который подразумевает систему запрос-ответ.
 
-class AuthorForm(forms.Form):
-    name = forms.CharField(max_length=100)
-    title = forms.CharField(
-        max_length=3,
-        widget=forms.Select(choices=TITLE_CHOICES),
-    )
-    birth_date = forms.DateField(required=False)
+Но что делать, если вам необходимо обновить информацию у клиента, хотя он её не запрашивал (вам пишут сообщение, но вы не
+знаете, когда именно оно будет написано)?
 
+Какие существуют варианты решения этой проблемы?
 
-class BookForm(forms.Form):
-    name = forms.CharField(max_length=100)
-    authors = forms.ModelMultipleChoiceField(queryset=Author.objects.all())
-```
+#### Множество запросов
 
-### Валидация
+Мы можем делать большое количество запросов в надежде, что уже кто-то прислал нам сообщение
 
-Помимо стандартного метода `is_valid()` у ModelForm существует также встроенный метод `full_clean()`
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson44/lots_requests.png)
 
-Если первый отвечает за валидацию формы, то второй отвечает за валидацию для объекта модели.
+Чем плох такой подход?
 
-### Метод save() у формы
+Мы отправляем огромное количество запросов в «пустоту», расходуя ресурсы и выполняя ненужные запросы.
 
-Метод `save()` в ModelForm объекте выполняет по сути два действия: получает объект модели, основываясь на переданных 
-данных, и вызывает метод `save()`, но уже для модели.
+#### Длинное соединение (long polling)
 
-Метод `save()` может принимать аргумент `commit`, по умолчанию - `True`. Если указать `commit=False`, метод `save()`
-модели не будет вызван (объект не будет сохранён в базу), будет только создан предварительный объект модели. Такой
-подход используется, когда нужно "дополнить" данные перед сохранением в базу. Очень часто используется! Например,
-добавление пользователя из `request`.
+Мы можем отдавать ответ только когда сообщение пришло.
 
-```python
-form = PartialAuthorForm(request.POST)
-author = form.save(commit=False)
-author.title = 'Mr'
-author.save()
-``` 
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson44/long_polling.png)
 
-### Передача объекта
+Как это реализовать? Например, в коде можно использовать вечный цикл и опрос какого-либо хранилища, например `redis`.
+Если данные появились — отдавать ответ.
 
-Такая форма может принимать не только данные, но и целый объект из базы:
+Чем плох такой подход?
 
-```python
-from myapp.models import Article
-from myapp.forms import ArticleForm
+«Пустые» HTTP-запросы заменяются на «пустые» запросы к хранилищу данных, что ничем особо не лучше — мы всё ещё тратим
+большое количество ресурсов. Большинство серверов и браузеров имеют ограничение на время запроса, что тоже является
+проблемой для такого подхода.
 
-# Create a form instance from POST data.
-f = ArticleForm(request.POST)
+#### Сокеты
 
-# Save a new Article object from the form's data.
-new_article = f.save()
-
-# Create a form to edit an existing Article, but use
-# POST data to populate the form.
-a = Article.objects.get(pk=1)
-f = ArticleForm(request.POST, instance=a)
-f.save()
-```
-
-По аналогии, мы можем не только создавать новый объект, но и обновлять существующий.
-
-# Class-Based View
-
-С этого момента мы переходим на использование `view`, основанных исключительно на классах.
-
-Все основные существующие классы описаны [Тут](https://ccbv.co.uk/)
-
-## Class View
-
-[Дока](https://ccbv.co.uk/projects/Django/4.2/django.views.generic.base/View/)
-
-Основой всех классов, используемых во `view`, является класс `View`. Методы этого класса используются всеми остальными
-классами.
-
-Основные атрибуты:
-
-```http_method_names = ['get', 'post', 'put', 'patch', 'delete', 'head', 'options', 'trace']```
-
-Этот атрибут нужен для определения того, какие виды HTTP методов будут доступны для запросов.
-
-Основные функции:
-
-`as_view()` - метод который всегда вызывается, чтобы использовать класс в `urls.py`, внутри вызывает методы `setup`
-и `dispatch`
-
-`setup()` - метод, который добавляет `request` в `self`, благодаря чему `request` будет доступен в абсолютно любом методе
-всех наших `view` классов
-
-`http_method_not_allowed()` - метод, который генерирует ошибку запроса (не могу обработать, например, POST запрос).
-
-`dispatch()` - метод, отвечающий за вызов обработчика при запросе.
-
-```python
-def dispatch(self, request, *args, **kwargs):
-    # Try to dispatch to the right method; if a method doesn't exist,
-    # defer to the error handler. Also defer to the error handler if the      
-    # request method isn't on the approved list.
-    if request.method.lower() in self.http_method_names:  # Если запрос находится в списке разрешенных, то заходим.
-        handler = getattr(self, request.method.lower(),
-                          self.http_method_not_allowed)  # Пытаемся из self получить атрибут или метод, совпадающий названием с методом запроса (POST - post, GET - get), если не получается, то вернуть метод http_method_not_allowed
-    else:
-        handler = self.http_method_not_allowed  # Вернуть метод http_method_not_allowed
-    return handler(request, *args,
-                   **kwargs)  # Вызвать метод, который мы получили ранее, если удалось, то, например, get(), или post(), если нет, то http_method_not_allowed()
-```
+Сокет — это специальный вид соединения поверх HTTP для создания постоянного соединения.
 
 Как это работает?
 
-Если наследоваться от этого класса, то мы можем описать функцию `get` и/или `post`, чтобы описать, что необходимо делать
-при запросе методами `GET` или `POST`.
+![](https://www.pubnub.com/wp-content/uploads/2013/09/WebSockets2.png)
 
-И можем описать, какие вообще запросы мы ожидаем принимать в аттрибуте `http_method_names`
+Клиент отправляет запрос на соединение с сокетом сервера.
 
-Например:
+Сервер принимает это соединение.
 
-Во `views.py`
+Клиент шлёт сообщение серверу.
 
-```python
-from django.views import View
-from django.shortcuts import render
+Сервер рассылает это сообщение другим клиентам.
 
+В любой момент обе стороны могут разорвать соединение, если это необходимо.
 
-class MyView(View):
-    http_method_names = ['get', ]
+Запросы для сокетов проходят по протоколу WebSocket и выполняются на адреса, которые начинаются с `ws://`, а
+не `http://`
 
-    def get(self, request, *args, **kwargs):
-        return render(request, 'index.html')
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson44/socket.png)
+
+### Сфера применения
+
+Где стоит применять веб-сокеты? Основные сферы применения:
+
+- Чаты
+
+- Приложения реального времени (например, отображение курса валют, стоимости криптовалют и т. д.)
+
+- IoT-приложения (IoT — Internet of Things, интернет вещей, любые смарт-предметы: смарт-чайники, телевизоры, датчики
+  дыма, кофемашины и т. д.)
+
+- Онлайн игры
+
+Но если необходимо, то можно применять где угодно.
+
+## Django channels
+
+Естественно, для Python существует готовый пакет для поддержки этого протокола с поддержкой Django
+
+[Дока](https://channels.readthedocs.io/en/stable/)
+
+Устанавливается через `pip`
+
+```pip install "channels[daphne]"```
+
+### Туториал
+
+Давайте напишем простой чат при помощи Django
+
+Создаём виртуальное окружение, устанавливаем Django и Channels, создаём Django-проект
+
+```django-admin startproject chatsite```
+
+Получим такую структуру:
+
+```
+chatsite/
+    manage.py
+    chatsite/
+        __init__.py
+        asgi.py
+        settings.py
+        urls.py
+        wsgi.py
 ```
 
-В `urls.py`:
+В современных версиях Django `asgi.py` создаётся автоматически (Django 3.0+). Если у вас очень старая версия, файл можно
+создать вручную.
 
-```python
-...
-path('some-url/', MyView.as_view(), name='some-name')
-...
+Файлы `wsgi.py` и `asgi.py` необходимы для запуска серверов: `wsgi` — для синхронных, `asgi` — для асинхронных. WebSocket —
+асинхронная технология.
+
+Создадим приложение для чата
+
+```python3 manage.py startapp chat```
+
+Получим примерно такую структуру файлов:
+
+```
+chat/
+    __init__.py
+    admin.py
+    apps.py
+    migrations/
+        __init__.py
+    models.py
+    tests.py
+    views.py
 ```
 
-Чем такая конструкция лучше, чем обычная функция? Тем, что обычная функция обязана принимать любой запрос и дальше
-только при помощи `if` разделять разные запросы.
+Для простоты предлагаю удалить всё, кроме `views.py` и `__init__.py`, и создать папку `templates`:
 
-Такой класс будет принимать только запросы описанных методов, отклоняя все остальные, и каждый запрос будет написан в
-отдельном методе, что сильно улучшает читабельность кода.
+Полученная структура:
 
-## Class TemplateView
-
-[Дока](https://ccbv.co.uk/projects/Django/4.2/django.views.generic.base/TemplateView/)
-
-Класс, необходимый для рендера html файлов
-
-Основные атрибуты:
-
-```python
-template_name = None  # Имя html файла, который нужно рендерить
-extra_content = None  # Словарь с контентом
+```
+chat/
+    __init__.py
+    templates/
+    views.py
 ```
 
-Основные методы:
+Добавляем наше приложение в `INSTALLED_APPS` в `settings.py`
 
-Описан метод `get()`
-
-```python
-def get(self, request, *args, **kwargs):
-    context = self.get_context_data(**kwargs)
-    return self.render_to_response(context)
 ```
-
-`get_context_data()` - метод, возвращающий данные, которые будут добавлены в контекст
-
-Как этим пользоваться?
-
-```python
-from django.views.generic.base import TemplateView
-
-from articles.models import Article
-
-
-class HomePageView(TemplateView):
-    template_name = "home.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['latest_articles'] = Article.objects.all()[:5]
-        return context
-```
-
-Мы описали класс, который будет рендерить файл `home.html`, в контексте которого будет переменная `latest_articles`, в
-которой будет коллекция из объектов модели.
-
-То же самое можно было сделать через `extra_context`:
-
-```python
-from django.views.generic.base import TemplateView
-
-from articles.models import Article
-
-
-class HomePageView(TemplateView):
-    template_name = "home.html"
-    extra_context = {"latest_articles": Article.objects.all()[:5]}
-```
-
-## Class RedirectView
-
-[Дока](https://ccbv.co.uk/projects/Django/4.2/django.views.generic.base/RedirectView/)
-
-Класс, необходимый для перенаправления запросов с одного URL на другой.
-
-Основные атрибуты:
-
-```python 
-query_string = False # сохранить ли квери параметры (то, что в строке браузера после ?) при редиректе
-url = None # URL, на который надо перейти
-pattern_name = None # Имя URL, на который надо перейти
-```
-
-Основные методы:
-
-Описаны все HTTP методы, и все они ссылаются на `get()`, например, `delete()`:
-
-```python
-def delete(self, request, *args, **kwargs):
-    return self.get(request, *args, **kwargs)
-```
-
-Метод `get_redirect_url()` отвечает за то, чтобы получить URL, на который надо перейти
-
-Как пользоваться
-
-```python
-class ArticleRedirectView(RedirectView):
-    query_string = True
-    pattern_name = 'article-detail'
-```
-
-## Class DetailView
-
-[Дока](https://ccbv.co.uk/projects/Django/4.2/django.views.generic.detail/DetailView/)
-
-Класс, который необходим для того, чтобы сделать страницу для просмотра одного объекта.
-
-Ему необходимо передать `pk` либо `slug`, и это позволит отобразить один объект (статью, товар и т. д.)
-
-Как этим пользоваться?
-
-Например:
-
-Во views.py
-
-```python
-from django.views.generic.detail import DetailView
-
-from articles.models import Article
-
-
-class ArticleDetailView(DetailView):
-    model = Article
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['now'] = timezone.now()  # Просто добавляем текущее время к контексту
-        return context
-```
-
-В urls.py:
-
-```python
-from django.urls import path
-
-from article.views import ArticleDetailView
-
-urlpatterns = [
-    path('<pk:pk>/', ArticleDetailView.as_view(), name='article-detail'),
+# chatsite/settings.py
+INSTALLED_APPS = [
+    'chat',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 ]
 ```
 
-Этого уже достаточно, чтобы отрисовать страницу деталей объекта. Если `template_name` не указан явно, то Django будет
-пытаться отобразить `templates/app_name/model_detail.html`, где `app_name` - название приложения, `model` - название
-модели, `detail` - константа.
+Создадим папку `templates` и добавим её в `settings.py`
 
-В контекст будет передана переменная `object`. Методы `post`, `put` и т. д. не определены.
-
-Важные параметры.
-
-```python
-pk_url_kwarg = 'pk'  # Как переменная называется в urls.py, например, `<int:my_id>`
-queryset = None  # если указан, то возможность ограничить доступ только для части объектов (например, убрать из возможности обновления деактивированные объекты).
-template_name = None  # указать имя шаблона.
-model = None  # класс модели, если не указан queryset, сгенерирует queryset из модели.
-```
-
-Важные методы:
-
-`get_queryset()` - переопределить queryset
-
-`get_context_data()` - то же, что и у TemplateView
-
-`get_object()` - определяет логику получения объекта
-
-## Class ListView
-
-[Дока](https://ccbv.co.uk/projects/Django/4.2/django.views.generic.list/ListView/)
-
-Класс, необходимый для отображения списка объектов.
-
-Добавляет в контекст список объектов и информацию о пагинации.
-
-Как пользоваться?
-
-```python
-class CommentListView(ListView):
-    paginate_by = 10
-    template_name = 'comments_list.html'
-    queryset = Comment.objects.filter(parent__isnull=True)
-```
-
-### Пагинация
-
-[Дока](https://docs.djangoproject.com/en/4.2/topics/pagination/)
-
-Очень часто наше приложение хранит большое количество данных, и при отображении нам не нужно показывать прям всё 
-(допустим у нас блог на 1 000 000 000 статей). Логично отдавать данные порциями - это и называется пагинация, 
-или разбиение на страницы.
-
-При прокрутке ленты в соцсети вы подгружаете всё новые и новые страницы, просто при помощи JavaScript это сделано
-так, что вы этого не замечаете.
-
-За это отвечает параметр:
-
-```python
-paginate_by = None  # можно указать, сколько должно быть объектов на одной странице 
-```
-
-В шаблон будут переданы как список объектов, так и данные по пагинации
-
-```python
-context = {
-    'paginator': paginator,  # объект класса пагинации, хранит все подробности, которые только могут быть.
-    'page_obj': page,
-    # информация о текущей странице, какая это страница, сколько всего страниц, URL на следующую и предыдущую страницу
-    'is_paginated': is_paginated,
-    # были ли данные вообще пагинированы, возможно у вас 10 объектов на страницу, а их всего 5, тогда нет смысла в пагинации
-    'object_list': queryset  # Сам queryset с объектами
-}
-```
-
-Важные параметры такие же как у DetailView и еще новые
-
-```python
-allow_empty = True  # разрешить ли отображение пустого списка
-ordering = None     # явно указать порядок сортировки
-```
-
-Всё еще описан только метод `get()`. Методы `post()`, `put()` и т. д. не разрешены.
-
-Важные методы:
-
-`get_queryset()` - переопределить queryset
-
-`get_context_data()` - то же, что и у TemplateView
-
-`get_paginator()` - определяет логику получения класса Paginator
-
-`get_paginate_by()` - определяет логику получения значение paginate_by
-
-`get_ordering()` - определяет логику получения переменной ordering
-
-`get_allow_empty()` - определяет логику получения переменной allow_empty
-
-## Class FormView
-
-[Дока](https://ccbv.co.uk/projects/Django/4.2/django.views.generic.edit/FormView/)
-
-Не все классы предназначены только для чтения данных.
-
-FormView класс необходим для обработки формы.
-
-Как пользоваться?
-
-В `forms.py`:
-
-```python
-from django import forms
-
-
-class ContactForm(forms.Form):
-    name = forms.CharField()
-    message = forms.CharField(widget=forms.Textarea)
-
-    def send_email(self):
-        # send email using the self.cleaned_data dictionary
-        pass
-```
-
-Во `views.py`:
-
-```python
-from myapp.forms import ContactForm
-from django.views.generic.edit import FormView
-
-
-class ContactView(FormView):
-    template_name = 'contact.html'
-    form_class = ContactForm
-    success_url = '/thanks/'
-
-    def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
-        form.send_email()
-        return super().form_valid(form)
-```
-
-В  `contact.html`:
+Создадим файл `index.html` в папке `templates`:
 
 ```html
-
-<form method="post"> {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Send message">
-</form>
-```
-
-Важные параметры:
-
-Такие же, как у TemplateView, и еще свои
-
-```python
-form_class = None   # сам класс формы
-success_url = None  # на какую страницу перейти, если форма была валидна
-initial = {}        # словарь с базовыми значениями формы
-```
-
-Важные методы:
-
-Тут наконец определён метод `post()`:
-
-```python
-def post(self, request, *args, **kwargs):
-    """
-    Handle POST requests: instantiate a form instance with the passed
-    POST variables and then check if it's valid.
-    """
-    form = self.get_form()
-    if form.is_valid():
-        return self.form_valid(form)
-    else:
-        return self.form_invalid(form)
-```
-
-Так же все методы из TemplateView
-
-`get_context_data()` - дополнительно добавляет переменную `form` в темплейт
-
-`get_form()` - получить объект формы
-
-`get_form_class()` - получить класс формы
-
-`form_valid()` - что делать, если форма валидна
-
-`form_invalid()` - что делать, если форма не валидна
-
-`get_success_url()` - переопределить генерацию URL, на который будет совершен переход, если форма валидна
-
-## Class CreateView
-
-[Дока](https://ccbv.co.uk/projects/Django/4.2/django.views.generic.edit/CreateView/)
-
-Класс для создания объектов.
-
-Как этим пользоваться?
-
-Во `views.py`
-
-```python
-from django.views.generic.edit import CreateView
-from myapp.models import Author
-
-
-class AuthorCreate(CreateView):
-    template_name = 'author_create.html'
-    model = Author
-    fields = ['name']
-```
-
-В `author_create.html`:
-
-```html
-
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save">
-</form>
-```
-
-В класс нужно передать либо ModelForm, либо модель и поля, чтобы класс сам сгенерировал такую форму.
-
-Метод `get()` откроет страницу, на которой будет переменная `form`, как и другие view, к которым добавляется форма.
-
-Метод `post()` выполнит те же действия, что и FormView, но в случае валидности формы предварительно
-выполнит `form.save()`
-
-Важные параметры:
-
-Такие же, как у FormView, и еще свои.
-
-```python
-form_class = None  # Должен принимать ModelForm
-model = None       # Можно указать модель вместо формы, чтобы сгенерировать её на ходу
-fields = None      # Поля модели, если не указана форма
-```
-
-Важные методы:
-
-Все методы из FormView, но дополненные под создание объекта:
-
-`post()` - предварительно добавит классу атрибут `self.object = None`
-
-`form_valid()` - дополнительно выполнит такую строку `self.object = form.save()`
-
-# Class UpdateView
-
-[Дока](https://ccbv.co.uk/projects/Django/4.2/django.views.generic.edit/UpdateView/)
-
-Класс для обновления объекта. Как пользоваться?
-
-Во `views.py`:
-
-```python
-from django.views.generic.edit import UpdateView
-from myapp.models import Author
-
-
-class AuthorUpdate(UpdateView):
-    model = Author
-    fields = ['name']
-    template_name_suffix = '_update_form'
-```
-
-В `myapp/author_update_form.html`:
-
-```html
-
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Update">
-</form>
-```
-
-Методы и атрибуты почти полностью совпадают с CreateView, только UpdateView перед действиями вызывает
-метод `get_object()` для получения нужного объекта, и url должен принимать `pk` для определения этого объекта.
-
-## Class DeleteView
-
-[Дока](https://ccbv.co.uk/projects/Django/4.2/django.views.generic.edit/DeleteView/)
-
-Класс для удаления объектов.
-
-Как пользоваться?
-
-Во views.py:
-
-```python
-from django.urls import reverse_lazy
-from django.views.generic.edit import DeleteView
-from myapp.models import Author
-
-
-class AuthorDelete(DeleteView):
-    model = Author
-    success_url = reverse_lazy('author-list')
-```
-
-В html:
-
-```html
-
-<form method="post">{% csrf_token %}
-    <p>Are you sure you want to delete "{{ object }}"?</p>
-    <input type="submit" value="Confirm">
-</form>
-```
-
-Не принимает форму! Принимает модель или queryset и обязательно url, должен принимать идентификатор для определения
-объекта.
-
-## Class LoginView
-
-[Дока](https://ccbv.co.uk/projects/Django/4.2/django.contrib.auth.views/LoginView/)
-
-Класс, реализующий логику логина.
-
-Основан на FormView, если форма не была заменена, то по умолчанию использует 
-`django.contrib.auth.forms.AuthenticationForm`. Эта форма содержит два поля, `username` и `password`, и
-проверяет, что данные валидны, и в случае, если данные валидны и пользователь активен, добавляет пользователя в объект
-формы.
-
-Также в LoginView переписан метод form_valid():
-
-```python
-def form_valid(self, form):
-    """Security check complete. Log the user in."""
-    auth_login(self.request, form.get_user())
-    return HttpResponseRedirect(self.get_success_url())
-```
-
-Если форма валидна, то провести авторизацию.
-
-## Class LogoutView
-
-[Дока](https://ccbv.co.uk/projects/Django/4.2/django.contrib.auth.views/LogoutView/)
-
-Класс для логаута.
-
-У LogoutView переписан метод `dispatch`, так что, каким бы методом вы не обратились к классу, вы всё равно будете
-разлогинены.
-
-## Регистрация
-
-По сути регистрация - это CreateView со своими особенностями (пароль хешируется), поэтому для регистрации используют
-просто CreateView, и существует заранее описанная форма UserCreationForm()
-
-```python
-class UserCreationForm(forms.ModelForm):
-    """
-    A form that creates a user, with no privileges, from the given username and
-    password.
-    """
-    error_messages = {
-        'password_mismatch': _("The two password fields didn't match."),
-    }
-    password1 = forms.CharField(label=_("Password"),
-                                widget=forms.PasswordInput)
-    password2 = forms.CharField(label=_("Password confirmation"),
-                                widget=forms.PasswordInput,
-                                help_text=_("Enter the same password as above for verification."))
-
-    class Meta:
-        model = User
-        fields = ("username",)
-
-    def clean_password2(self):
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError(
-                self.error_messages['password_mismatch'],
-                code='password_mismatch',
-            )
-        return password2
-
-    def save(self, commit=True):
-        user = super(UserCreationForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
-        return user
-```
-
-Принимает `username` и два раза пароль, проверяет, чтобы пароли были одинаковые, и при сохранении записывает пароль в
-хешированном виде.
-
-## LoginRequiredMixin
-
-Если необходимо закрыть доступ для незалогиненных юзеров от какого-либо из классов, то используют `LoginRequiredMixin`,
-
-При наследовании его необходимо указать перед основным классом. Например:
-
-```python
-from .forms import MyForm
-from django.views.generic import FormView
-from django.contrib.auth.mixins import LoginRequiredMixin
-
-
-class MyFormView(LoginRequiredMixin, FormView):
-    template_name = 'index.html'
-    http_method_names = ['get', 'post']
-    form_class = MyForm
-    success_url = '/'
-    login_url = '/login/'
-```
-
-Добавляет в класс атрибут `login_url`, который определяет, куда нужно перейти, если пользователь пытается получить
-доступ, но он не авторизирован.
-
-## Живой пример
-
-Допустим, нам нужен сайт, на котором можно зарегистрироваться, залогиниться, разлогиниться и написать заметку, если ты
-залогинен. Заметки должны отображаться списком, последняя созданная отображается первой. Все пользователи видят все
-заметки. Возле тех, которые создал текущий пользователь, должна быть кнопка удалить.
-
-Как это сделать?
-
-Разработка всегда начинается с описания моделей, нам нужно две сущности: юзер и заметка.
-
-Мы не будем изменять юзера, нам подходит стандартный.
-
-Создадим модель заметки:
-
-В models.py:
-
-```python
-from django.contrib.auth.models import User
-from django.db import models
-
-
-class Note(models.Model):
-    text = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes')
-
-    class Meta:
-        ordering = ['-created_at', ]
-```
-
-Не забываем про миграции, и про добавление приложения в settings.py
-
-Создадим необходимые шаблоны: `base.html`, `index.html`, `login.html`, `register.html`. Пока пустые, заполним чуть позже.
-
-Создадим view. Для базовой страницы, на которой отображается список заметок, лучше всего подходит ListView, для логина,
-и логаута - существующие классы, для регистрации - CreateView.
-
-Для логина и регистрации воспользуемся готовой формой.
-
-Базовую страницу и логаут закроем от незалогиненных пользователей.
-
-Получается как-то так:
-
-Во views.py
-
-```python
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import ListView, CreateView
-
-from app.models import Note
-
-
-class NoteListView(LoginRequiredMixin, ListView):
-    model = Note
-    template_name = 'index.html'
-    login_url = 'login/'
-
-
-class Login(LoginView):
-    success_url = '/'
-    template_name = 'login.html'
-
-    def get_success_url(self):
-        return self.success_url
-
-
-class Register(CreateView):
-    form_class = UserCreationForm
-    template_name = 'register.html'
-    success_url = '/'
-
-
-class Logout(LoginRequiredMixin, LogoutView):
-    next_page = '/'
-    login_url = 'login/'
-```
-
-В urls.py проекта добавим через `include` urls.py приложения
-
-В app/urls.py:
-
-```python
-from django.urls import path
-from .views import NoteListView, Login, Logout, Register
-
-urlpatterns = [
-    path('', NoteListView.as_view(), name='index'),
-    path('login/', Login.as_view(), name='login'),
-    path('register/', Register.as_view(), name='register'),
-    path('logout/', Logout.as_view(), name='logout'),
-]
-
-```
-
-И заполним html файлы
-
-base.html
-
-```html
+<!-- templates/index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Base</title>
+    <meta charset="utf-8"/>
+    <title>Chat Rooms</title>
 </head>
 <body>
-<div>
-    {% block content %}
-    {% endblock %}
-</div>
+What chat room would you like to enter?<br>
+<input id="room-name-input" type="text" size="100"><br>
+<input id="room-name-submit" type="button" value="Enter">
+
+<script>
+    document.querySelector('#room-name-input').focus();
+    document.querySelector('#room-name-input').onkeyup = function (e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#room-name-submit').click();
+        }
+    };
+
+    document.querySelector('#room-name-submit').onclick = function (e) {
+        var roomName = document.querySelector('#room-name-input').value;
+        window.location.pathname = '/chat/' + roomName + '/';
+    };
+</script>
 </body>
 </html>
 ```
 
-index.html
+Что будет на этой странице?
 
-```html
-{% extends 'base.html' %}
+Поле для ввода и кнопка войти. Это будет возможность зайти в конкретный чат, по его названию.
 
-{% block content %}
-<div>
-    <a href="{% url 'logout' %}">Logout</a>
-</div>
-{% endblock %}
-```
+Что делает JS?
 
-login.html
+При заходе на страницу сразу выделяет поле для ввода имени чата.
 
-```html
-{% extends 'base.html' %}
+Если на инпуте нажимается Enter на клавиатуре, то имитируем нажатие на кнопку входа.
 
-{% block content %}
-<span>Wanna register? <a href="{% url 'register' %}">Sign Up</a></span>
+При нажатии на кнопку входа берём значение из инпута и переходим на страницу `/chat/<значение инпута>/` — этой страницы
+пока не существует.
 
-<form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Login">
-</form>
-{% endblock %}
-```
-
-register.html
-
-```html
-{% extends 'base.html' %}
-
-{% block content %}
-<span>Already has account? <a href="{% url 'login' %}">Login</a></span>
-
-<form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Register">
-</form>
-{% endblock %}
-```
-
-Структура для логина, логаута, и регистрации готова.
-
-Добавим отображение списка заметок:
-
-в index.html:
-
-```html
-{% extends 'base.html' %}
-
-{% block content %}
-<div>
-    <a href="{% url 'logout' %}">Logout</a>
-</div>
-
-<div>
-    {% for obj in object_list %}
-    <div>
-        {{ obj.text }} from {{ obj.author.username }}
-    </div>
-    {% endfor %}
-</div>
-{% endblock %}
-```
-
-Но как добавить создание заметок?
-
-Нам нужна форма для создания заметок и CreateView.
-
-В forms.py
+Создадим view для этой страницы.
 
 ```python
-from django.forms import ModelForm
-
-from app.models import Note
+from django.views.generic import TemplateView
 
 
-class NoteCreateForm(ModelForm):
-    class Meta:
-        model = Note
-        fields = ('text',)
+class Index(TemplateView):
+    template_name = 'index.html'
 ```
 
-В полях только текст, потому что время создания будет заполняться автоматически, id тоже, а юзера мы будем брать из
-реквеста.
+Создадим файл с урлами внутри приложения:
 
-Будем ли мы отображать отдельную страницу для создания? Нет, значит отдельный html файл нам не нужен, а раз мы не будем
-отображать страницу, то и метод `get()` нам не нужен. Оставим только `post()`.
-
-Создадим CreateView:
-
-В views.py
-
-```python
-class NoteCreateView(LoginRequiredMixin, CreateView):
-    login_url = 'login/'
-    http_method_names = ['post']
-    form_class = NoteCreateForm
-    success_url = '/'
+```
+chat/
+    __init__.py
+    urls.py
+    views.py
 ```
 
-Выведем URL под этот класс:
-
-В urls.py
-
 ```python
+# chat/urls.py
 from django.urls import path
-from .views import NoteListView, Login, Logout, Register, NoteCreateView
+
+from chat.views import Index
 
 urlpatterns = [
-    path('', NoteListView.as_view(), name='index'),
-    path('login/', Login.as_view(), name='login'),
-    path('register/', Register.as_view(), name='register'),
-    path('logout/', Logout.as_view(), name='logout'),
-    path('note/create/', NoteCreateView.as_view(), name='note-create'),
+    path('', Index.as_view(), name='index'),
 ]
 ```
 
-Достаточно ли этого, чтобы создавать заметки? Нет, потому что мы никуда не вывели форму для создания заметок. Давайте
-выведем её на нашу основную страницу.
+А в основных урлах
 
-Во views.py изменим класс `NoteListView`, добавив атрибут `extra_context = {'create_form': NoteCreateForm()}`
-
-```python
-class NoteListView(LoginRequiredMixin, ListView):
-    model = Note
-    template_name = 'index.html'
-    login_url = 'login/'
-    extra_context = {'create_form': NoteCreateForm()}
 ```
-
-Теперь мы можем вывести форму в шаблоне, изменим `index.html`
-
-```html
-{% extends 'base.html' %}
-
-{% block content %}
-<div>
-    <a href="{% url 'logout' %}">Logout</a>
-</div>
-
-<div>
-    {% for obj in object_list %}
-    <div>
-        {{ obj.text }} from {{ obj.author.username }}
-    </div>
-    {% endfor %}
-</div>
-<form method="post" action="{% url 'note-create' %}">
-    {% csrf_token %}
-    {{ create_form }}
-    <input type="submit" value="Create">
-</form>
-{% endblock %}
-```
-
-Достаточно ли этого? Нет. Наша заметка должна хранить в себе пользователя, а мы нигде его не добавляем. При попытке
-вызвать `save()` мы получим ошибку, не могу сохранить без юзера.
-
-Что будем делать? Переписывать логику `form_valid()`, мы знаем, что метод `save()` для CreateView вызывается там.
-
-Чтобы добавить пользователя, будем использовать `commit=False` для ModelForm, а пользователя возьмем из реквеста.
-
-Перепишем класс NoteCreateView:
-
-Во views.py:
-
-```python
-class NoteCreateView(LoginRequiredMixin, CreateView):
-    login_url = 'login/'
-    http_method_names = ['post']
-    form_class = NoteCreateForm
-    success_url = '/'
-
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.author = self.request.user
-        obj.save()
-        return super().form_valid(form=form)
-```
-
-Обратите внимание, после успеха мы попадаем обратно на `/` (success_url), где мы сразу же увидим новую заметку.
-
-Создание готово.
-
-Как добавить удаление? Создадим новую DeleteView, она даже не требует форму.
-
-Во views.py
-
-```python
-class NoteDeleteView(LoginRequiredMixin, DeleteView):
-    model = Note
-    success_url = '/'
-```
-
-Не забываем добавить URL
-
-В urls.py:
-
-```python
-from django.urls import path
-from .views import NoteListView, Login, Logout, Register, NoteCreateView, NoteDeleteView
+# chatsite/urls.py
+from django.urls import include, path
+from django.contrib import admin
 
 urlpatterns = [
-    path('', NoteListView.as_view(), name='index'),
-    path('login/', Login.as_view(), name='login'),
-    path('register/', Register.as_view(), name='register'),
-    path('logout/', Logout.as_view(), name='logout'),
-    path('note/create/', NoteCreateView.as_view(), name='note-create'),
-    path('note/delete/<int:pk>/', NoteDeleteView.as_view(), name='note-delete'),
+    path('chat/', include('chat.urls')),
 ]
 ```
 
-И добавляем форму для удаления в шаблон.
+Теперь, если мы запустим сервер, то увидим в консоли что-то такое:
 
-В index.html:
+```
+Performing system checks...
 
-```html
-{% extends 'base.html' %}
+System check identified no issues (0 silenced).
 
-{% block content %}
-<div>
-    <a href="{% url 'logout' %}">Logout</a>
-</div>
-
-<div>
-    {% for obj in object_list %}
-    <div>
-        {{ obj.text }} from {{ obj.author.username }}
-        <form method="post" action="{% url 'note-delete' obj.pk %}">
-            {% csrf_token %}
-            <input type="submit" value="Delete">
-        </form>
-    </div>
-    {% endfor %}
-</div>
-<form method="post" action="{% url 'note-create' %}">
-    {% csrf_token %}
-    {{ create_form }}
-    <input type="submit" value="Create">
-</form>
-{% endblock %}
+You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run 'python manage.py migrate' to apply them.
+January 11, 2026 - 10:30:00
+Django version 5.1, using settings 'chatsite.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
 ```
 
-Это уже будет работать. Но нам же нужно, чтобы кнопка для удаления была только у своих заметок. Ок, добавим `if`.
+А если зайти на страницу http://127.0.0.1:8000/chat/ то будет вот так:
 
-```html
-{% extends 'base.html' %}
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson44/chat_enter.png)
 
-{% block content %}
-<div>
-    <a href="{% url 'logout' %}">Logout</a>
-</div>
+Попытка перейти на любую страницу ни к чему не приведёт, страницы комнаты пока просто нет :)
 
-<div>
-    {% for obj in object_list %}
-    <div>
-        {{ obj.text }} from {{ obj.author.username }}
-        {% if obj.author == request.user %}
-        <form method="post" action="{% url 'note-delete' obj.pk %}">
-            {% csrf_token %}
-            <input type="submit" value="Delete">
-        </form>
-        {% endif %}
-    </div>
-    {% endfor %}
-</div>
-<form method="post" action="{% url 'note-create' %}">
-    {% csrf_token %}
-    {{ create_form }}
-    <input type="submit" value="Create">
-</form>
-{% endblock %}
-```
+### Настройка Channels
 
-Осталась маленькая деталь, сейчас мы отображаем все существующие заметки, а что если их будет миллион? Это не
-рационально, давайте добавим пагинацию.
-
-ListView уже передаёт все необходимые данные, нам нужно только добавить размер страницы и добавить отображение по
-страницам в шаблоне.
-
-Во views.py изменим NoteListView
+Для настройки необходимо изменить файл `asgi.py`; если его нет, то создать его.
 
 ```python
-class NoteListView(LoginRequiredMixin, ListView):
-    model = Note
-    template_name = 'index.html'
-    login_url = 'login/'
-    extra_context = {'create_form': NoteCreateForm()}
-    paginate_by = 5
+# chatsite/asgi.py
+import os
+
+from channels.routing import ProtocolTypeRouter
+from django.core.asgi import get_asgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chatsite.settings')
+
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
+    # Just HTTP for now. (We can add other protocols later.)
+})
 ```
 
-А в index.html:
+Что мы сделали? Мы сказали нашему приложению, что планируем разные протоколы обрабатывать по-разному. В данный
+момент мы указали только протокол `http`, а значит, фактически пока что ничего не изменится
+
+Добавляем приложение в `INSTALLED_APPS`:
+
+```python
+INSTALLED_APPS = [
+    'daphne',
+    'chat',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+```
+
+И добавляем настройку, чтобы указать, что основной сервер — `asgi.py`
+
+```python
+# mysite/settings.py
+# Channels
+ASGI_APPLICATION = 'chatsite.asgi.application'
+```
+
+Теперь при запуске приложения вы должны увидеть немного другую надпись.
+
+```
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run 'python manage.py migrate' to apply them.
+January 11, 2026 - 10:35:00
+Django version 5.1, using settings 'chatsite.settings'
+Starting ASGI/Daphne version 4.1.0 development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+```
+
+Обратите внимание на предпоследнюю строку: теперь сервер запущен с поддержкой веб-сокетов.
+
+### Создаём страницу с конкретным чатом
+
+Создадим html файл `room.html` в папке `chat/templates/`:
 
 ```html
-{% extends 'base.html' %}
+<!-- chat/templates/room.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Room</title>
+</head>
+<body>
+<textarea id="chat-log" cols="100" rows="20"></textarea><br>
+<input id="chat-message-input" type="text" size="100"><br>
+<input id="chat-message-submit" type="button" value="Send">
+{{ room_name|json_script:"room-name" }}
+<script>
+    const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
-{% block content %}
-<div>
-    <a href="{% url 'logout' %}">Logout</a>
-</div>
+    const chatSocket = new WebSocket(
+            (window.location.protocol === 'https:' ? 'wss' : 'ws') + '://' +
+            window.location.host +
+            '/ws/chat/' + roomName + '/'
+    );
 
-<div>
-    {% for obj in page_obj %} {# обратите внимание я заменил объект #}
-    <div>
-        {{ obj.text }} from {{ obj.author.username }}
-        {% if obj.author == request.user %}
-        <form method="post" action="{% url 'note-delete' obj.pk %}">
-            {% csrf_token %}
-            <input type="submit" value="Delete">
-        </form>
-        {% endif %}
-    </div>
-    {% endfor %}
-    <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
+    chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        document.querySelector('#chat-log').value += (data.message + '\n');
+    };
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
+    chatSocket.onclose = function (e) {
+        console.error('Chat socket closed unexpectedly');
+    };
 
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-    </div>
-</div>
-<form method="post" action="{% url 'note-create' %}">
-    {% csrf_token %}
-    {{ create_form }}
-    <input type="submit" value="Create">
-</form>
-{% endblock %}
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function (e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
 
-
+    document.querySelector('#chat-message-submit').onclick = function (e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+        messageInputDom.value = '';
+    };
+</script>
+</body>
+</html>
 ```
 
-Профит! Всё работает. Переходим к заданию на модуль. Все задания должны быть выполнены через Class-Based View.
+Что происходит на этой странице?
+
+Текстовое поле для отображения записей в чате. Поле для ввода нового сообщения. Кнопка для отправки.
+
+```{{ room_name|json_script:"room-name" }}```
+
+Фильтр `json_script` добавит на страницу тег `<script>` с данными из переменной. Если открыть комнату с названием `test`, то
+отрендеренная страница будет выглядеть так:
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson44/room_script.png)
+
+Нужно для того, чтобы считать переменную через JS.
+
+Что происходит в JS?
+
+В первой строке мы считываем из переменной имя комнаты.
+
+И создаём соединение с веб-сокетом по адресу (`ws://127.0.0.1:8000/ws/chat/<имя чата>/`), мы создадим серверную часть
+дальше. Обратите внимание: используется другой протокол, не `http`. При создании такого объекта запрос на соединение
+отправляется автоматически.
+
+Если по этому сокету приходит сообщение, мы добавляем его к нашему месту для текста
+
+```js
+chatSocket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+    document.querySelector('#chat-log').value += (data.message + '\n');
+};
+```
+
+Если соединение было разорвано — выводим в консоль ошибку
+
+```js
+chatSocket.onclose = function (e) {
+    console.error('Chat socket closed unexpectedly');
+};
+```
+
+В случае отправки сообщения — отправляем его по сокету.
+
+```js
+document.querySelector('#chat-message-submit').onclick = function (e) {
+    const messageInputDom = document.querySelector('#chat-message-input');
+    const message = messageInputDom.value;
+    chatSocket.send(JSON.stringify({
+        'message': message
+    }));
+    messageInputDom.value = '';
+};
+```
+
+И создать view. Обратите внимание: нужно передать `room_name` в контекст шаблона:
+
+```python
+# chat/views.py
+from django.views.generic import TemplateView
+
+
+class Index(TemplateView):
+    template_name = 'index.html'
+
+
+class Room(TemplateView):
+    template_name = 'room.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['room_name'] = self.kwargs['room_name']
+        return context
+```
+
+`urls.py`:
+
+```python
+# chat/urls.py
+from django.urls import path
+
+from chat.views import Index, Room
+
+urlpatterns = [
+    path('', Index.as_view(), name='index'),
+    path('<str:room_name>/', Room.as_view(), name='room'),
+]
+```
+
+Запускаем сервер, заходим в любую комнату, пишем любое сообщение — и видим ошибку.
+
+```WebSocket connection to 'ws://127.0.0.1:8000/ws/chat/lobby/' failed: Unexpected response code: 500```
+
+Мы не создали бэкенд для сокета. Давайте сделаем это.
+
+### Бэкенд сокета
+
+Создадим новый файл `chat/consumers.py`
+
+```
+    __init__.py
+    consumers.py
+    urls.py
+    views.py
+```
+
+```python
+# chat/consumers.py
+import json
+from channels.generic.websocket import WebsocketConsumer
+
+
+class ChatConsumer(WebsocketConsumer):
+    def connect(self):
+        self.accept()
+
+    def disconnect(self, close_code):
+        pass
+
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+
+        self.send(text_data=json.dumps({
+            'message': message
+        }))
+```
+
+Что это такое? Это класс для работы с веб-сокетом.
+
+Методы:
+
+- `connect` — что делать при запросе на соединение.
+
+- `disconnect` — что делать при разрыве соединения.
+
+- `receive` — что делать при получении сообщения.
+
+- `send` — отправить сообщение текущему клиентскому соединению. Для широковещательной отправки используйте `group_send` (через channel layer).
+
+Создаём новый файл для урлов веб-сокета `routing.py`.
+
+```
+chat/
+    __init__.py
+    consumers.py
+    routing.py
+    urls.py
+    views.py
+```
+
+```python
+# chat/routing.py
+from django.urls import re_path
+from .consumers import ChatConsumer
+
+websocket_urlpatterns = [
+    re_path(r"^ws/chat/(?P<room_name>[\w-]+)/$", ChatConsumer.as_asgi()),
+]
+```
+
+Обратите внимание: к классу был применён метод `as_asgi` — это аналог `as_view` для обычных классов.
+
+Укажем эту переменную в нашем `asgi.py`:
+
+```python
+# chatsite/asgi.py
+import os
+
+from channels.auth import AuthMiddlewareStack
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.security.websocket import AllowedHostsOriginValidator
+from django.core.asgi import get_asgi_application
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "chatsite.settings")
+# Initialize Django ASGI application early to ensure the AppRegistry
+# is populated before importing code that may import ORM models.
+django_asgi_app = get_asgi_application()
+
+from chat.routing import websocket_urlpatterns
+
+application = ProtocolTypeRouter(
+    {
+        "http": django_asgi_app,
+        "websocket": AllowedHostsOriginValidator(
+            AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
+        ),
+    }
+)
+```
+
+Обратите внимание, мы добавили новый протокол для обработки.
+**Примечание:** если используете `AllowedHostsOriginValidator`, убедитесь, что в `settings.py` добавлены `ALLOWED_HOSTS = ['127.0.0.1', 'localhost']` (для dev), иначе WebSocket-подключение может отклоняться.
+
+
+Для того чтобы сокет работал, необходимы сессии, а для этого необходимо провести миграции.
+
+```python manage.py migrate```
+
+Проверяем — это уже будет работать.
+
+**В данный момент работать будет только один чат, причем только сам с собой!!!**
+
+Мы не добавили возможность создавать разные сокеты, для разных страниц. Для этого необходимо разделить данные по слоям.
+
+### Подключаем channels
+
+Для того чтобы использовать различные непересекающиеся чаты, мы будем использовать `group`. `group` — это
+набор `channel`.
+
+Для использования необходимо какое-либо внешнее хранилище. Мы будем использовать Redis.
+
+Для этого необходимо установить ещё один внешний модуль для взаимодействия между нашими слоями и Redis.
+
+```pip install channels_redis```
+
+### Для пользователей Windows
+
+На Windows обычный Redis не будет работать с последними версиями django-channels.
+
+Необходимо установить [это](https://www.memurai.com/get-memurai) и запустить в консоли после:
+
+```memurai```
+
+Это аналог Redis, который будет работать.
+
+### Обновление settings
+
+Необходимо обновить настройки и указать, что мы будем использовать Redis:
+
+```python
+# chatsite/settings.py
+# Channels
+ASGI_APPLICATION = 'chatsite.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+```
+
+Для проверки работы Redis необходимо открыть `shell`:
+
+```bash
+python manage.py shell
+```
+
+```python
+import channels.layers
+from asgiref.sync import async_to_sync
+
+channel_layer = channels.layers.get_channel_layer()
+
+# Отправляем сообщение в канал
+async_to_sync(channel_layer.send)('test_channel', {'type': 'hello'})
+
+# Получаем сообщение из канала
+async_to_sync(channel_layer.receive)('test_channel')
+# Output: {'type': 'hello'}
+```
+
+Напоминаю: изначально WebSocket — это асинхронная технология. Для использования её синхронно мы используем
+встроенный метод `async_to_sync`.
+
+В тесте мы отправили сообщение и получили его.
+
+Теперь можно обновить `consumers.py`:
+
+```python
+# chat/consumers.py
+import json
+from asgiref.sync import async_to_sync
+from channels.generic.websocket import WebsocketConsumer
+
+
+class ChatConsumer(WebsocketConsumer):
+    def connect(self):
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_group_name = f'chat_{self.room_name}'
+
+        # Join room group
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
+
+        self.accept()
+
+    def disconnect(self, close_code):
+        # Leave room group
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    # Receive message from WebSocket
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+
+        # Send message to room group
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'message': message
+            }
+        )
+
+    # Receive message from room group
+    def chat_message(self, event):
+        message = event['message']
+
+        # Send message to WebSocket
+        self.send(text_data=json.dumps({
+            'message': message
+        }))
+```
+
+Методы:
+
+`connect` — добавили создание группы исходя из названия чата, а также вызвали метод `accept`
+
+`disconnect` — удаляем группу при разрыве соединения
+
+`receive` — при получении сообщения мы выполняем для всей группы метод `chat_message` (могли назвать абсолютно как
+угодно)
+
+`chat_message` — отправка сообщения
+
+Можем проверять. Открываем одинаковые названия чата в разных браузерах и пишем по сообщению с каждого
+
+## Запускаем всё асинхронно
+
+Допустим, мы хотим отправить другу большой файл, но хотим писать сообщения, пока файл загружается. В случае
+использования синхронного подхода это невозможно; при асинхронном — это будет работать.
+
+Перепишем `consumers.py`
+
+```python
+# chat/consumers.py
+import json
+from channels.generic.websocket import AsyncWebsocketConsumer
+
+
+class ChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_group_name = f'chat_{self.room_name}'
+
+        # Join room group
+        await self.channel_layer.group_add(
+            self.room_group_name,
+            self.channel_name
+        )
+
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        # Leave room group
+        await self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    # Receive message from WebSocket
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+
+        # Send message to room group
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'message': message
+            }
+        )
+
+    # Receive message from room group
+    async def chat_message(self, event):
+        message = event['message']
+
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message
+        }))
+```
+
+Что мы изменили? Мы наследовались не от `WebsocketConsumer`, а от `AsyncWebsocketConsumer`, заменили все функции с
+обычных на асинхронные и вызовы функций — с обычных на асинхронные.
+
+Всё — ваш чат полностью асинхронен.
+
+### Тестирование
+
+Для тестирования веб-сокетов используются специфические acceptance (приёмочные) тесты.
+
+> Для этих тестов необходимо предварительно установить Google Chrome, chromedriver и Selenium. Только Selenium
+> устанавливается через `pip`
+
+```
+pip install selenium
+```
+
+Создадим файл `chat/tests.py`
+
+Текущая структура файлов:
+
+```
+chat/
+    __init__.py
+    consumers.py
+    routing.py
+    templates/
+        index.html
+        room.html
+    tests.py
+    urls.py
+    views.py
+```
+
+Содержимое файла:
+
+```python
+# chat/tests.py
+from channels.testing import ChannelsLiveServerTestCase
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
+
+
+class ChatTests(ChannelsLiveServerTestCase):
+    serve_static = True  # emulate StaticLiveServerTestCase
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        try:
+            # NOTE: Requires "chromedriver" binary to be installed in $PATH
+            cls.driver = webdriver.Chrome()
+        except:
+            super().tearDownClass()
+            raise
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.quit()
+        super().tearDownClass()
+
+    def test_when_chat_message_posted_then_seen_by_everyone_in_same_room(self):
+        try:
+            self._enter_chat_room("room_1")
+
+            self._open_new_window()
+            self._enter_chat_room("room_1")
+
+            self._switch_to_window(0)
+            self._post_message("hello")
+            WebDriverWait(self.driver, 2).until(
+                lambda _: "hello" in self._chat_log_value,
+                "Message was not received by window 1 from window 1",
+            )
+            self._switch_to_window(1)
+            WebDriverWait(self.driver, 2).until(
+                lambda _: "hello" in self._chat_log_value,
+                "Message was not received by window 2 from window 1",
+            )
+        finally:
+            self._close_all_new_windows()
+
+    def test_when_chat_message_posted_then_not_seen_by_anyone_in_different_room(self):
+        try:
+            self._enter_chat_room("room_1")
+
+            self._open_new_window()
+            self._enter_chat_room("room_2")
+
+            self._switch_to_window(0)
+            self._post_message("hello")
+            WebDriverWait(self.driver, 2).until(
+                lambda _: "hello" in self._chat_log_value,
+                "Message was not received by window 1 from window 1",
+            )
+
+            self._switch_to_window(1)
+            self._post_message("world")
+            WebDriverWait(self.driver, 2).until(
+                lambda _: "world" in self._chat_log_value,
+                "Message was not received by window 2 from window 2",
+            )
+            self.assertTrue(
+                "hello" not in self._chat_log_value,
+                "Message was improperly received by window 2 from window 1",
+            )
+        finally:
+            self._close_all_new_windows()
+
+    # === Utility ===
+
+    def _enter_chat_room(self, room_name):
+        self.driver.get(self.live_server_url + "/chat/")
+        ActionChains(self.driver).send_keys(room_name, Keys.ENTER).perform()
+        WebDriverWait(self.driver, 2).until(
+            lambda _: room_name in self.driver.current_url
+        )
+
+    def _open_new_window(self):
+        self.driver.execute_script('window.open("about:blank", "_blank");')
+        self._switch_to_window(-1)
+
+    def _close_all_new_windows(self):
+        while len(self.driver.window_handles) > 1:
+            self._switch_to_window(-1)
+            self.driver.execute_script("window.close();")
+        if len(self.driver.window_handles) == 1:
+            self._switch_to_window(0)
+
+    def _switch_to_window(self, window_index):
+        self.driver.switch_to.window(self.driver.window_handles[window_index])
+
+    def _post_message(self, message):
+        ActionChains(self.driver).send_keys(message, Keys.ENTER).perform()
+
+    @property
+    def _chat_log_value(self):
+        return self.driver.find_element(
+            by=By.CSS_SELECTOR, value="#chat-log"
+        ).get_property("value")
+```
+
+> Для тестов должна быть указана дополнительная настройка для базы данных!
+
+```python
+# mysite/settings.py
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+        "TEST": {
+            "NAME": BASE_DIR / "db.sqlite3",
+        },
+    }
+}
+```
+
+Запускаем и наслаждаемся
+
+```
+python3 manage.py test chat.tests
+```
+
+### pytest-django: live_server (пример e2e)
+
+Для pytest можно написать аналогичный end-to-end тест, используя фикстуру live_server из pytest-django.
+
+```bash
+pip install pytest pytest-django selenium
+```
+
+Пример фикстуры браузера (Chrome в headless-режиме) в conftest.py:
+
+```python
+# conftest.py
+import pytest
+from selenium.webdriver import Chrome
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+
+
+@pytest.fixture(scope="session")
+def chrome_driver():
+    opts = ChromeOptions()
+    opts.add_argument("--headless=new")
+    opts.add_argument("--no-sandbox")
+    opts.add_argument("--disable-dev-shm-usage")
+    driver = Chrome(options=opts)
+    try:
+        yield driver
+    finally:
+        driver.quit()
+```
+
+Тест с использованием live_server:
+
+```python
+# tests/test_chat_live.py
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+
+
+def test_chat_room_e2e(live_server, chrome_driver):
+    driver = chrome_driver
+
+    # Открываем форму выбора комнаты
+    driver.get(f"{live_server.url}/chat/")
+
+    # Вводим имя комнаты и заходим
+    ActionChains(driver).send_keys("room_pytest", Keys.ENTER).perform()
+    WebDriverWait(driver, 3).until(lambda d: "room_pytest" in d.current_url)
+
+    # Отправляем сообщение Enter'ом
+    ActionChains(driver).send_keys("hello from pytest", Keys.ENTER).perform()
+
+    # Проверяем, что сообщение появилось в логах
+    def _has_message(d):
+        val = d.find_element(By.CSS_SELECTOR, "#chat-log").get_property("value")
+        return "hello from pytest" in val
+
+    WebDriverWait(driver, 3).until(_has_message)
+```
+
+Запуск:
+
+```bash
+pytest -q -k chat_live
+```
+
+> **Примечание:** Для pytest-django необходимо создать файл `pytest.ini` или добавить секцию в `pyproject.toml`:
+> ```ini
+> # pytest.ini
+> [pytest]
+> DJANGO_SETTINGS_MODULE = chatsite.settings
+> ```
+
+## Дополнительные темы
+
+### Аутентификация в WebSocket
+
+В `scope` доступен объект `user`, если используется `AuthMiddlewareStack`:
+
+```python
+# chat/consumers.py
+class ChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.user = self.scope["user"]
+
+        if self.user.is_anonymous:
+            # Отклоняем неаутентифицированных пользователей
+            await self.close()
+            return
+
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_group_name = f'chat_{self.room_name}'
+
+        await self.channel_layer.group_add(
+            self.room_group_name,
+            self.channel_name
+        )
+        await self.accept()
+```
+
+### Альтернативы Django Channels
+
+- **Socket.IO** (с python-socketio) — популярная библиотека с автоматическим fallback на long-polling
+- **Starlette WebSockets** — если используете FastAPI/Starlette
+- **websockets** — низкоуровневая asyncio библиотека для WebSocket
+
+### Полезные ссылки
+
+- [Django Channels Documentation](https://channels.readthedocs.io/en/stable/)
+- [channels_redis Documentation](https://github.com/django/channels_redis)
+- [Daphne Documentation](https://github.com/django/daphne)
+
+---
+
+[← Лекция 32: Asyncio. Aiohttp. Асинхронное программирование на практике.](lesson32.md) | [Лекция 34: Linux. Все что нужно знать для деплоймента. →](lesson34.md)

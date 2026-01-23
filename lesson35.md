@@ -1,441 +1,1685 @@
-# Урок 35. Middleware. Signals. Messages
+# Лекция 35. Deployment
 
-## Middleware
+### Оглавление курса
 
-![](https://memegenerator.net/img/instances/81631865.jpg)
+<details>
+  <summary>Блок 1 — Python Basic (1–6)</summary>
 
-Дока [Тут](https://docs.djangoproject.com/en/4.2/topics/http/middleware/)
+  - [Лекция 1. Введение. Типизации. Переменные. Строки и числа. Булева алгебра. Ветвление](lesson01.md)
+  - [Лекция 2. Обработка исключений. Списки, строки детальнее, срезы, циклы.](lesson02.md)
+  - [Лекция 3: None. Range, list comprehension, sum, max, min, len, sorted, all, any. Работа с файлами](lesson03.md)
+  - [Лекция 4. Хэш таблицы. Set, frozenset. Dict. Tuple. Немного об импортах. Namedtuple, OrderedDict](lesson04.md)
+  - [Лекция 5. Функции, типизация, lambda. Map, zip, filter.](lesson05.md)
+  - [Лекция 6. Алгоритмы и структуры данных](lesson06.md)
+</details>
 
-Мы с вами рассмотрели основные этапы того, какие этапы должен пройти request на всём пути нашей request-response системы,
-но на самом деле каждый request проходит кучу дополнительных обработок, таких как middleware, причём каждый request 
-делает это дважды, при "входе" и при "выходе".
+<details>
+  <summary>Блок 2 — Git (7–8)</summary>
 
-Если открыть файл `settings.py`, то там можно обнаружить переменную `MIDDLEWARE`, или `MIDDLEWARE_CLASSES` (для старых
-версий Django), которая выглядит примерно так:
+  - [Лекция 7. Git. История системы контроля версий. Локальный репозиторий. Базовые команды управления репозиторием.](lesson07.md)
+  - [Лекция 8. Git. Удаленный репозиторий. Remote, push, pull. GitHub, Bitbucket, GitLab, etc. Pull request.](lesson08.md)
+</details>
+
+<details>
+  <summary>Блок 3 — Python Advanced (9–14)</summary>
+
+  - [Лекция 9. Введение в ООП. Основные парадигмы ООП. Классы и объекты. Множественное наследование.](lesson09.md)
+  - [Лекция 10. Magic methods. Итераторы и генераторы.](lesson10.md)
+  - [Лекция 11. Imports. Standard library. PEP8](lesson11.md)
+  - [Лекция 12. Декораторы. Декораторы с параметрами. Декораторы классов (staticmethod, classmethod, property)](lesson12.md)
+  - [Лекция 13. Тестирование](lesson13.md)
+  - [Лекция 14. Проектирование. Паттерны. SOLID.](lesson14.md)
+</details>
+
+<details>
+  <summary>Блок 4 — SQL (15–17)</summary>
+
+  - [Лекция 15. СУБД. PostgreSQL. SQL. DDL. Пользователи. DCL. DML. Связи.](lesson15.md)
+  - [Лекция 16. СУБД. DQL. SELECT. Индексы. Group by. Joins.](lesson16.md)
+  - [Лекция 17. СУБД. Нормализация. Аномалии. Транзакции. ACID. TCL. Backup](lesson17.md)
+</details>
+
+- [Лекция 18. Virtual env. Pip. Устанавливаемые модули. Pyenv.](lesson18.md)
+
+<details>
+  <summary>Блок 5 — Django (19–26)</summary>
+
+  - [Лекция 19. Знакомство с Django](lesson19.md)
+  - [Лекция 20. Templates. Static](lesson20.md)
+  - [Лекция 21. Модели. Связи. Meta. Abstract, proxy.](lesson21.md)
+  - [Лекция 22. Django ORM.](lesson22.md)
+  - [Лекция 23. Forms, ModelForms. User, Authentication.](lesson23.md)
+  - [Лекция 24. ClassBaseView](lesson24.md)
+  - [Лекция 25. NoSQL. Куки, сессии, кеш](lesson25.md)
+  - [Лекция 26. Логирование. Middleware. Signals. Messages. Manage commands](lesson26.md)
+</details>
+
+<details>
+  <summary>Блок 6 — Django Rest Framework (27–30)</summary>
+
+  - [Лекция 27. Что такое API. REST и RESTful. Django REST Framework.](lesson27.md)
+  - [Лекция 28. @api_view, APIView, ViewSets, Pagination, Routers](lesson28.md)
+  - [Лекция 29. REST аутентификация. Авторизация. Permissions. Фильтрация.](lesson29.md)
+  - [Лекция 30. Тестирование. Django, REST API.](lesson30.md)
+</details>
+
+<details>
+  <summary>Блок 7 — Python async (31–33)</summary>
+
+  - [Лекция 31. Celery. Multithreading. GIL. Multiprocessing](lesson31.md)
+  - [Лекция 32. Asyncio. Aiohttp. Асинхронное программирование на практике.](lesson32.md)
+  - [Лекция 33. Сокеты. Django channels.](lesson33.md)
+</details>
+
+<details open>
+  <summary>Блок 8 — Deployment (34–35)</summary>
+
+  - [Лекция 34. Linux. Всё, что нужно знать для деплоймента](lesson34.md)
+  - ▶ **Лекция 35. Deployment**
+</details>
+
+- [Лекция 36. Методологии разработки. CI/CD. Монолит и микросервисы. Docker](lesson36.md)
+
+
+![](https://res.cloudinary.com/practicaldev/image/fetch/s--q_bdVQkA--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/i/9am30hkx4lfoxubt48sv.png)
+
+## Deployment
+
+Что такое деплой? Это развертывание вашего проекта для использования его из интернета, а не локально.
+
+
+Что для этого необходимо? Нужен сервер (на самом деле, им может быть любое устройство: комп, телефон и т. д.), но у
+сервера есть одна особенность, ему нужно работать всегда, мы же не хотим, чтобы наш сайт или приложение переставало
+работать.
+
+Чтобы организовать высокий uptime, чаще всего используются облачные серверы. Популярные провайдеры:
+
+- **AWS (Amazon Web Services)** — один из крупнейших, огромная экосистема сервисов
+- **Google Cloud Platform (GCP)** — хорошая интеграция с ML/AI
+- **Microsoft Azure** — популярен в корпоративном секторе
+- **DigitalOcean, Linode, Hetzner** — проще и дешевле, отлично подходят для обучения и небольших проектов
+
+В этой лекции мы будем использовать AWS, так как он широко распространён в индустрии и имеет развитую экосистему дополнительных сервисов (базы данных, хранилища, DNS и т. д.).
+
+## Общая теория по деплою Django
+
+### Архитектура деплоя Django-приложения
+
+Для деплоя Django-приложения используется два различных сервера: первый — для запуска приложения локально на сервере,
+второй — как прокси, чтобы выход в интернет связать с этим локально запущенным сервером и предоставить доступ
+к статике и медиа. За обработку данных будет отвечать первый сервер, за безопасность и распределение нагрузок — второй.
+
+Первый сервер — это WSGI (*Web-Server Gateway Interface*), работает примерно так:
+
+![](https://miro.medium.com/1*hQ2cFumu-YU2P1iWyg-xKg.jpeg)
+
+В качестве WSGI-сервера может быть использовано достаточно большое количество разных серверов:
+
+- Gunicorn
+- uWSGI
+- mod_wsgi
+- Bjoern
+- Meinheld
+
+И так далее, это далеко не полный список. В качестве примера мы будем использовать Gunicorn (на моей практике самый
+используемый сервер).
+
+Также существует технология ASGI (*Asynchronous Standard Gateway Interface*) — это улучшение технологии WSGI, основные
+серверы для ASGI:
+
+- Daphne
+- Hypercorn
+- Uvicorn
+
+Тоже часто используемые технологии, и, скорее всего, дальше будут использоваться всё чаще.
+
+В качестве прокси-сервера могут быть использованы:
+
+- Nginx
+- Apache
+
+### Зачем нужен прокси-сервер?
+
+Может возникнуть вопрос: зачем нам вообще нужен прокси-сервер (Nginx или Apache)? Почему нельзя просто запустить
+Gunicorn и открыть его напрямую в интернет? На это есть несколько важных причин:
+
+**1. Безопасность**
+
+Прокси-сервер скрывает внутреннюю структуру вашего приложения от внешнего мира. Он может:
+- Фильтровать подозрительные запросы и защищать от некоторых типов DDoS-атак
+- Ограничивать количество запросов с одного IP (rate limiting)
+- Блокировать доступ к определённым URL или типам файлов
+- Скрывать информацию о внутренних сервисах (версии ПО, структуру приложения)
+
+**2. Производительность**
+
+Nginx написан на C и оптимизирован для обработки большого количества одновременных соединений:
+- **Кеширование** — Nginx может кешировать ответы и отдавать их без обращения к Django
+- **Сжатие** — автоматическое сжатие ответов (gzip, brotli) экономит трафик
+- **Буферизация** — Nginx принимает медленные запросы от клиентов и передаёт их Gunicorn только когда они полностью получены, освобождая воркеры Gunicorn для обработки других запросов
+
+**3. Load Balancing (балансировка нагрузки)**
+
+Nginx может распределять запросы между несколькими экземплярами Gunicorn или даже несколькими серверами:
+
+```nginx
+upstream django {
+    server unix:/run/gunicorn/gunicorn1.sock weight=3;
+    server unix:/run/gunicorn/gunicorn2.sock;
+    server 192.168.1.10:8000 backup;  # резервный сервер
+}
+```
+
+Это позволяет:
+- Масштабировать приложение горизонтально (добавлять новые серверы)
+- Обеспечивать отказоустойчивость (если один сервер упал, запросы идут на другие)
+- Распределять нагрузку по весам (более мощные серверы получают больше запросов)
+
+**4. SSL/TLS терминация**
+
+Nginx берёт на себя шифрование HTTPS-соединений:
+- Gunicorn работает по обычному HTTP внутри сервера (что быстрее)
+- Nginx обрабатывает SSL-сертификаты и шифрование
+- Это снижает нагрузку на Python-приложение
+
+**5. Обработка статических и медиафайлов**
+
+Nginx отдаёт статику и медиа напрямую, без участия Django:
+- Это в десятки раз быстрее, чем обработка через Python
+- Освобождает воркеры Gunicorn для обработки динамических запросов
+- Позволяет настроить кеширование и сжатие для статики
+
+**6. Rate Limiting и защита от ботов**
+
+Пример ограничения количества запросов:
+
+```nginx
+# Определяем зону для rate limiting
+limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+
+server {
+    location /api/ {
+        limit_req zone=api burst=20 nodelay;
+        proxy_pass http://django;
+    }
+}
+```
+
+### Почему нельзя использовать runserver?
+
+Может возникнуть идея: а почему бы не использовать команду `runserver`? Зачем нам вообще какие-то дополнительные
+серверы?
+
+Команда `runserver`:
+- **Однопоточная** — обрабатывает только один запрос за раз
+- **Не оптимизирована** — предназначена только для разработки
+- **Небезопасна** — не проходила аудит безопасности для продакшена
+- **Не масштабируется** — даже при условных 100 пользователях будет захлёбываться
+- **Автоперезагрузка** — перезапускается при изменении кода, что неприемлемо для продакшена
+
+Django официально предупреждает: **НЕ ИСПОЛЬЗУЙТЕ runserver в продакшене!**
+
+## Static и Media-файлы
+
+Как мы выяснили выше, одна из важных функций прокси-сервера — обработка статических и медиафайлов. Давайте разберёмся,
+что это такое и как их настроить в Django.
+
+**Static-файлы** — файлы, которые не являются частью обязательных файлов для работы системы (`*.py`, `*.html`), но
+необходимы для изменения отображения (`*.css`, `*.js`, `*.jpg`). К таким файлам есть доступ из кода, и обычно они не
+могут быть изменены с пользовательской стороны (шрифты на сайте, CSS-стили, картинка на фоне и т. д.)
+
+**Media-файлы** — файлы, загруженные пользователями (вне зависимости от привилегий), например, аватарки, картинки
+товаров, голосовые сообщения :) К таким файлам в репозитории нет и не должно быть доступа.
+
+### Где их хранить?
+
+Static-файлы практически всегда разбросаны по приложениям проекта, что очень удобно при разработке, но при
+использовании их гораздо проще хранить в одном месте, и тоже вне проекта.
+
+Media-файлы нужно хранить отдельно от статики, иначе можно получить большое количество проблем.
+
+Проще всего создать две отдельные папки `static` и `media` или одну папку `files`, а в ней уже вложенные папки `static`
+и `media`.
+
+### Как это настраивается в Django?
+
+В рамках Django при создании проекта в начальной версии `settings.py` в `INSTALLED_APPS` автоматически
+добавляется `django.contrib.staticfiles`, именно это приложение отвечает за то, как будут обрабатываться статические
+файлы.
 
 ```python
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+# settings.py
+STATIC_URL = '/static/'
 ```
 
-Каждая из этих строк - это отдельная мидлварина, и абсолютно **каждый** request проходит через код, описанный в этих
-файлах, например, `django.contrib.auth.middleware.AuthenticationMiddleware` отвечает за то, чтобы в нашем request
-всегда был пользователь, если он залогинен, а `django.middleware.csrf.CsrfViewMiddleware` отвечает за проверку наличия и
-правильности CSRF токена, которые мы рассматривали ранее.
+Указанный параметр `STATIC_URL` будет преобразован в URL, по которому можно получить статические файлы.
 
-Причём при "входе" request будет проходить сверху вниз (сначала секьюрити, потом сессии и т. д.), а при "выходе" снизу
-вверх (начиная XFrame и заканчивая Security)
+Например, `"/static/"` или `"http://static.example.com/"`
 
-**Middleware - это декоратор над request**
+В первом случае при запросе к статике будет выполнен запрос на текущий URL с приставкой `http://127.0.0.1:8000/static/`
 
-### Как этим пользоваться?
+Во втором запросы будут произведены на отдельный URL.
 
-Если мы хотим использовать самописные мидлвары, мы должны понимать, как они работают.
+### Где такой URL будет сгенерирован?
 
-Можно описать мидлвар двумя способами: функциональным и основанным на классах. Рассмотрим оба:
-
-Функционально:
-
-```python
-def simple_middleware(get_response):
-    # One-time configuration and initialization.
-
-    def middleware(request):
-        # Code to be executed for each request before
-        # the view (and later middleware) are called.
-
-        response = get_response(request)
-
-        # Code to be executed for each request/response after
-        # the view is called.
-
-        return response
-
-    return middleware
-```
-
-Как вы можете заметить, синтаксис очень близок к декораторам.
-
-`get_response()` - функция, которая отвечает за всё, что происходит вне мидлвары и отвечает за обработку запроса, по сути
-это будет наша `view`, а мы можем дописать любой нужный нам код до или после, соответственно на "входе" реквеста или
-на "выходе" респонса.
-
-Так почти никто не пишет :) Рассмотрим, как этот же функционал работает для классов:
-
-```python
-class SimpleMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-        # One-time configuration and initialization.
-
-    def __call__(self, request):
-        # Code to be executed for each request before
-        # the view (and later middleware) are called.
-
-        response = self.get_response(request)
-
-        # Code to be executed for each request/response after
-        # the view is called.
-
-        return response
-```
-
-При таком подходе функционал работает при помощи магических методов, функционально выполняет то же самое, но по моему
-личному мнению гораздо элегантнее.
-
-При инициализации мы получаем обработчик, а при выполнении вызываем его же, но с возможностью добавить нужный код до
-или после.
-
-Чтобы активировать мидлвар, необходимо дописать путь к нему в переменную `MIDDLEWARE` в `settings.py`.
-
-Допустим, если мы создали файл `middleware.py` в приложении под названием `main`, и в этом файле создали
-класс `CheckUserStatus`, который нужен, чтобы мы могли обработать какой-либо статус пользователя, нужно дописать в
-переменную этот класс:
-
-```python
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'main.middleware.CheckUserStatus',  # Новый мидлвар
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-```
-
-Обратите внимание, я добавил мидлвар после `django.contrib.auth.middleware.AuthenticationMiddleware`, так как до этого
-мидлвара в нашем реквесте нет переменной юзер.
-
-## Миксин для мидлвар
-
-На самом деле для написания мидлвар существует миксин, чтобы упростить наш код.
-
-```python
-django.utils.deprecation.MiddlewareMixin
-```
-
-В нём уже расписаны методы `__init__` и `__call__`.
-
-`__init_()` принимает метод для обработки request, а в `__call__` расписаны методы для обработки request или response.
-
-Метод `__call__` вызывает 4 действия:
-
-1. Вызывает `self.process_request(request)` (если описан) для обработки request.
-2. Вызывает `self.get_response(request)`, чтобы получить response для дальнейшего использования.
-3. Вызывает `self.process_response(request, response)` (если описан) для обработки response.
-4. Возвращает response.
-
-Зачем это нужно?
-
-Чтобы описывать только тот функционал, который мы будем использовать, и случайно не зацепить что-то рядом.
-
-Например, так выглядит мидлвар для добавления юзера в реквест.
-
-```python
-from django.contrib import auth
-from django.utils.deprecation import MiddlewareMixin
-from django.utils.functional import SimpleLazyObject
-
-
-def get_user(request):
-    if not hasattr(request, '_cached_user'):
-        request._cached_user = auth.get_user(request)
-    return request._cached_user
-
-
-class AuthenticationMiddleware(MiddlewareMixin):
-    def process_request(self, request):
-        assert hasattr(request, 'session'), (
-            "The Django authentication middleware requires session middleware "
-            "to be installed. Edit your MIDDLEWARE setting to insert "
-            "'django.contrib.sessions.middleware.SessionMiddleware' before "
-            "'django.contrib.auth.middleware.AuthenticationMiddleware'."
-        )
-        request.user = SimpleLazyObject(lambda: get_user(request))
-```
-Описание: при получении реквеста добавить в него пользователя, информация о котором хранится в сессии.
-
-## Signals
-
-Сигналы. Часто мы оказываемся в ситуации, когда нам нужно выполнять какие-либо действия до или после определённого
-события. Конечно, мы можем прописать код там, где нам нужно, но вместо этого мы можем использовать сигналы.
-
-Сигналы отлавливают, что определённое действие выполнено или будет следующим, и выполняют необходимый нам код.
-
-Список экшенов [тут](https://docs.djangoproject.com/en/4.2/ref/signals/).
-Описание [тут](https://docs.djangoproject.com/en/4.2/topics/signals/).
-
-Примеры сигналов:
-
-```
-django.db.models.signals.pre_save & django.db.models.signals.post_save # Выполняется перед сохранением или сразу после сохранения объекта
-django.db.models.signals.pre_delete & django.db.models.signals.post_delete # Выполняется перед удалением или сразу после удаления объекта
-django.db.models.signals.m2m_changed # Выполняется при изменении любых ManyToMany связей (добавили студента в группу или убрали, например)
-django.core.signals.request_started & django.core.signals.request_finished # Выполняется при начале запроса или при его завершении.
-```
-
-Это далеко не полный список действий, на которые могут реагировать сигналы.
-
-Каждый сигнал имеет функции `connect()` и `disconnect()` для того, чтобы привязать/отвязать сигнал к действию.
-
-```python
-from django.core.signals import request_finished
-
-request_finished.connect(my_callback)
-```
-
-где `my_callback` - это функция, которую нужно выполнять по получению сигнала.
-
-Но гораздо чаще применяется синтаксис с использованием декоратора `receiver`
-
-```python
-from django.core.signals import request_finished
-from django.dispatch import receiver
-
-
-@receiver(request_finished)
-def my_callback(sender, **kwargs):
-    print("Request finished!")
-```
-
-У сигнала есть параметр `receiver` и может быть параметр `sender`. Сендер - это объект, который отправляет сигнал
-(например, модель, для которой описывается сигнал).
-
-```python
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
-from myapp.models import MyModel
-
-
-@receiver(pre_save, sender=MyModel)
-def my_handler(sender, **kwargs):
-    ...
-```
-
-Сигнал можно создать под любое действие, если это необходимо. Допустим, нужно отправить сигнал, что пицца готова.
-
-Сначала создадим сигнал.
-
-```python
-import django.dispatch
-
-pizza_done = django.dispatch.Signal()
-```
-
-И в нужном месте можно отправить:
-
-```python
-class PizzaStore:
-    ...
-
-    def send_pizza(self, toppings, size):
-        pizza_done.send(sender=self.__class__, toppings=toppings, size=size)
-        ...
-```
-
-## Messages
-
-Дока [тут](https://docs.djangoproject.com/en/4.2/ref/contrib/messages/)
-
-Довольно часто в веб-приложениях вам необходимо отображать одноразовое уведомление для пользователя после обработки
-формы или некоторых других типов пользовательского ввода ("Вы успешно зарегистрировались", "Скидка активирована",
-"Недостаточно бонусов").
-
-Для этого Django обеспечивает полную поддержку обмена сообщениями на основе файлов cookie и сеансов как для анонимных,
-так и для аутентифицированных пользователей.
-
-Инфраструктура сообщений позволяет вам временно хранить сообщения в одном запросе и извлекать их для отображения в
-следующем запросе (обычно в следующем).
-
-Каждое сообщение имеет определенный уровень, который определяет его приоритет (например, информация, предупреждение или
-ошибка).
-
-### Подключение
-
-По дефолту, если проект был создан через `django-admin`, то `messages` изначально подключены.
-
-`django.contrib.messages` должны быть в `INSTALLED_APPS`.
-
-В переменной `MIDDLEWARE` должны быть `django.contrib.sessions.middleware.SessionMiddleware`
-and `django.contrib.messages.middleware.MessageMiddleware`.
-
-По дефолту данные сообщений хранятся в сессии, это является причиной, почему мидлвар для сессий должен быть подключен.
-
-В переменной `context_processors` в переменной `TEMPLATES` должны
-содержаться `django.contrib.messages.context_processors.messages`.
-
-#### context_processors
-
-Ключ в переменной `OPTIONS` в переменной `TEMPLATES` отвечает за то, что по дефолту будет присутствовать как переменная
-во всех наших темплейтах. Изначально выглядит вот так:
-
-```python
-'context_processors': [
-    'django.template.context_processors.debug',
-    'django.template.context_processors.request',
-    'django.contrib.auth.context_processors.auth',
-    'django.contrib.messages.context_processors.messages',
-]
-```
-
-`django.template.context_processors.debug`, если в `settings.py` переменная `DEBUG`==`True`, добавляет в темплейт
-информацию о подробностях, если произошла ошибка.
-
-`django.template.context_processors.request` добавляет в контекст данные из реквеста, переменная `request`.
-
-`django.contrib.auth.context_processors.auth` добавляет переменную `user` с информацией о пользователе.
-
-`django.contrib.messages.context_processors.messages` добавляет сообщения на страницу.
-
-### Storage backends
-
-Хранить сообщения можно в разных местах.
-
-По дефолту существует три варианта хранения:
-
-`class storage.session.SessionStorage` - хранение в сессии
-
-`class storage.cookie.CookieStorage` - хранение в куке
-
-`class storage.fallback.FallbackStorage` - пытаемся хранить в куке, если не помещается используем сессию. Будет
-использовано по умолчанию.
-
-Если нужно изменить, добавьте в `settings.py` переменную:
-
-```python
-MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
-```
-
-Если нужно написать свой класс для хранения сообщений, то нужно наследоваться от `class storage.base.BaseStorage` и
-описать 2 метода `_get()` и `_store()`.
-
-### Как этим пользоваться?
-
-Во view необходимо добавить сообщение.
-
-Это можно сделать несколькими способами:
-
-#### add_message()
-
-```python
-from django.contrib import messages
-
-messages.add_message(request, messages.INFO, 'Hello world.')
-```
-
-Метод `add_message()` позволяет добавить сообщение к реквесту, принимает сам реквест, тип сообщения (успех, провал
-информация и т. д.) и сам текст сообщения. На самом деле, второй параметр - это просто цифра, а текст добавлен для чтения.
-
-Чаще всего используется в методах **form_valid()**, **form_invalid()**
-
-#### Сокращенные методы
-
-```python
-messages.debug(request, '%s SQL statements were executed.' % count)
-messages.info(request, 'Three credits remain in your account.')
-messages.success(request, 'Profile details updated.')
-messages.warning(request, 'Your account expires in three days.')
-messages.error(request, 'Document deleted.')
-```
-
-Эти 5 типов сообщений являются стандартными, но, если необходимо, всегда можно добавить свои типы. Как это сделать
-описано в доке.
-
-### Как отобразить?
-
-`context_processors`, который находится в настройках, уже добавляет нам в темплейт переменную `messages`, а дальше 
-мы можем использовать классические темплейт теги.
-
-Примеры:
+В шаблоне, где мы можем использовать template tag `static`:
 
 ```html
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li
-            {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
+{% load static %}
+<img src="{% static 'my_app/example.jpg' %}" alt="My image">
 ```
 
-```html
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li
-            {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-        {{ message }}
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
+### Переменная DEBUG
+
+В `settings.py` есть переменная `DEBUG`, по умолчанию она равна `True`, но за что она отвечает?
+
+В основном она отвечает за то, как вести себя при ошибках (чаще всего 500-х). Если вы делаете неправильный запрос (не
+туда, не те данные и т. д.), то вы видите подробное описание того, почему ваш запрос не удался, на какой строчке кода
+упал, или нет такого URL, но вот такие есть. Всё это отображается только потому, что переменная `DEBUG=True`.
+Запущенный сайт никогда не покажет вам эту информацию.
+
+### Переменная DEBUG и runserver
+
+Команда `runserver` автоматически обслуживает статические файлы, если `django.contrib.staticfiles` добавлен в `INSTALLED_APPS`. Однако при `DEBUG=False` команда `runserver` **отказывается** обслуживать статику — это сделано намеренно, чтобы напомнить разработчику: в продакшене статику должен обслуживать веб-сервер (Nginx, Apache), а не Django.
+
+При загрузке проекта в реальное использование переменную `DEBUG` нужно установить в `False`, а обработку статических
+файлов передать Nginx (или использовать облачное хранилище, например, Amazon S3).
+
+### STATICFILES_DIRS
+
+Список папок, в которых хранится ваша статика для разработки, чаще всего это папки `static` в разных приложениях,
+например, `authenticate/static`, `billing/static` и т. д.
+
+**НЕ ДОЛЖЕН СОДЕРЖАТЬ ЗНАЧЕНИЕ ИЗ ПЕРЕМЕННОЙ `STATIC_ROOT`!!!!**
+
+### STATIC_ROOT
+
+Переменная, содержащая путь к папке, в которую всю найденную статику из папок в переменной `STATICFILES_DIRS`
+соберёт команда `python manage.py collectstatic`.
+
+Как это работает на практике? При разработке используются статические файлы из папок разных приложений, а для
+продакшена настраивается скрипт, который при любом изменении будет запускать команду `collectstatic`, которая будет
+собирать всю статику в то место, которое уже обрабатывается Nginx или другим прокси-сервером.
+
+### MEDIA_URL
+
+По аналогии со статикой такая же настройка для медиа.
+
+### MEDIA_ROOT
+
+Абсолютный путь к папке, в которой мы будем хранить пользовательские файлы.
+
+Медиа собирать не нужно, так как мы не можем её менять, это только пользовательская привилегия.
+
+### Почему Nginx обрабатывает статику быстрее?
+
+Nginx написан на C и оптимизирован для отдачи файлов:
+- Использует системные вызовы `sendfile()` для передачи файлов напрямую из ядра ОС
+- Может обрабатывать тысячи одновременных соединений с минимальным потреблением памяти
+- Поддерживает кеширование и сжатие на уровне сервера
+
+Django же при каждом запросе к статике:
+- Запускает Python-интерпретатор
+- Проходит через middleware
+- Читает файл через Python
+- Отдаёт его через WSGI
+
+Это в десятки раз медленнее и занимает воркеры Gunicorn, которые могли бы обрабатывать динамические запросы.
+
+## Amazon EC2
+
+Сервис, который предоставляет нам выделенные мощности, называется **EC2**.
+
+Для начала нам необходим аккаунт на платформе AWS (Amazon Web Services).
+
+[Ссылка на AWS](https://aws.amazon.com/)
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson47/aws.png)
+
+У Amazon существуют сотни различных сервисов для различных задач, но на данном этапе нас интересует только EC2.
+
+**EC2** — это сервис, который позволяет запускать виртуальные серверы с различной мощностью на различных операционных
+системах.
+
+Для нашего случая будем рассматривать недорогой сервер (t3.micro/x86 или t4g.micro/ARM) на базе Ubuntu Server 24.04 LTS (или 22.04 LTS).
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson47/ec2-ubuntu.png)
+
+На следующей вкладке выбираем мощность сервера и пару ключей для подключения по SSH.
+
+## Пример развёртывания
+
+Рассмотрим, как развернуть наш проект на примере EC2 (Ubuntu 24.04/22.04) + Gunicorn + Nginx
+
+Для начала необходимо зайти на наш EC2 сервер при помощи SSH.
+
+Если вы используете Windows, то самый простой способ использовать SSH — это либо клиент PuTTY, либо установить Git CLI,
+git интерфейс поддерживает команду `ssh`.
+
+Свежесозданный инстанс не содержит вообще ничего, даже интерпретатора Python, а значит, нам необходимо его установить,
+но вместе с ним установим и другие нужные пакеты (БД, серверы и т. д.).
+
+```bash
+# Обновляем список пакетов
+sudo apt update
+
+# Устанавливаем необходимые пакеты
+sudo apt install python3-pip python3-dev python3-venv libpq-dev postgresql postgresql-contrib nginx curl git
+
+# Проверяем версии установленных пакетов
+python3 --version
+pip3 --version
+nginx -v
+psql --version
 ```
 
-Чаще всего такой код располагают в блоке в базовом шаблоне, чтобы не указывать его на каждой странице отдельно.
+### База данных
 
-#### Использование во view
+Как создать базу данных и пользователя с доступом к ней, вы уже знаете, заходим в консоль postgresql и делаем это:
 
-Если нам вдруг необходимо получить список текущих сообщение во view, мы можем это сделать при помощи
-метода `get_messages()`.
+```bash
+# Заходим в консоль PostgreSQL
+sudo -u postgres psql
+
+# В консоли PostgreSQL выполняем следующие команды:
+CREATE DATABASE mydb;
+CREATE USER myuser WITH ENCRYPTED PASSWORD 'mypass';
+GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+
+# Дополнительные права для Django (важно!)
+ALTER USER myuser CREATEDB;
+
+# Выходим из консоли
+\q
+```
+
+**Параметры БД:**
+- User: myuser
+- DB: mydb
+- Password: mypass
+
+## Переменные операционной системы
+
+Чтобы вносить некоторые параметры в код, используются переменные операционной системы. Допустим, в файле `settings.py`
+мы можем хранить пароль от базы данных, ключи от сервисов и много другой информации, которую нельзя разглашать, но в
+случае, если вы оставите эти данные в коде, они попадут на git — этого допускать нельзя.
+
+Для использования переменных в ОС Linux используется команда `export var_name="value"`
+
+Если просто в консоль внести команду экспорта, она обнулится после перезагрузки инстанса, нас это не устраивает,
+поэтому экспорт переменных нужно вносить в файл, загружаемый при каждом запуске, например, `~/.bashrc`, открываем
+`sudo nano ~/.bashrc` и в самом конце дописываем:
+
+```bash
+export PROD='True'
+export DBNAME='mydb'
+export DBUSER='myuser'
+export DBPASS='mypass'
+export DBHOST='127.0.0.1'
+export DBPORT='5432'
+```
+
+Не забываем выполнить source, чтобы применить эти изменения:
+
+```bash
+source ~/.bashrc
+```
+
+**Зачем два файла с переменными?**
+
+- `~/.bashrc` — загружается при интерактивном входе в систему (когда вы подключаетесь по SSH и работаете в терминале). Переменные будут доступны для команд `python manage.py migrate`, `collectstatic` и т. д.
+- `/home/ubuntu/.env` — используется systemd-сервисом gunicorn через директиву `EnvironmentFile`. Systemd не читает `.bashrc`, поэтому нужен отдельный файл.
+
+Создадим файл для gunicorn:
+
+```bash
+sudo nano /home/ubuntu/.env
+```
+
+```bash
+PROD=True
+DBNAME=mydb
+DBUSER=myuser
+DBPASS=mypass
+DBHOST=127.0.0.1
+DBPORT=5432
+```
+
+**Важно:** В файле .env НЕ используйте кавычки вокруг значений!
+
+### Правки в `settings.py`
+
+Один из удобных способов разделить настройки на локальные и продакшен — это всё те же переменные операционной системы,
+например, добавить в проект на уровне файла `settings.py` ещё два файла `settings_prod.py` и `settings_local.py`, в
+основной файл нужно импортировать модуль `os` и в конце дописать:
 
 ```python
-from django.contrib.messages import get_messages
-
-storage = get_messages(request)
-for message in storage:
-    do_something_with_the_message(message)
+if os.environ.get('PROD'):
+    try:
+        from .settings_prod import *
+    except ImportError:
+        pass
+else:
+    try:
+        from .settings_local import *
+    except ImportError:
+        pass
 ```
 
-### Messages и Class-Based Views
+Таким образом мы сможем разделить настройки в зависимости от того, есть ли в операционной системе переменная `PROD`.
 
-Можно добавлять сообщения при помощи миксинов, примеры:
+В `settings_prod.py` укажем:
 
 ```python
-from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic.edit import CreateView
-from myapp.models import Author
+import os
 
+DEBUG = False
+ALLOWED_HOSTS = ['54.186.155.252']  # Замените на ваш IP-адрес
 
-class AuthorCreate(SuccessMessageMixin, CreateView):
-    model = Author
-    success_url = '/success/'
-    success_message = "%(name)s was created successfully"
+# Security for reverse proxy/HTTPS
+CSRF_TRUSTED_ORIGINS = ['http://54.186.155.252', 'https://54.186.155.252']  # Замените на ваш IP
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Настройки безопасности для HTTPS (раскомментировать после настройки SSL)
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+
+# Настройки для статики и медиа
+STATIC_ROOT = '/home/ubuntu/myprojectdir/static/'
+STATIC_URL = '/static/'
+
+MEDIA_ROOT = '/home/ubuntu/myprojectdir/media/'
+MEDIA_URL = '/media/'
+
+# Максимальный размер загружаемых файлов (100MB)
+FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600
+DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DBNAME'),
+        'USER': os.environ.get('DBUSER'),
+        'PASSWORD': os.environ.get('DBPASS'),
+        'HOST': os.environ.get('DBHOST', '127.0.0.1'),
+        'PORT': os.environ.get('DBPORT', '5432'),
+        'OPTIONS': {
+            # Для локальной БД убираем SSL требование
+            # 'sslmode': 'require',  # Раскомментировать для Amazon RDS
+        },
+    }
+}
 ```
+
+Параметр `DEBUG = False`, так как нам не нужно отображать подробности ошибок.
+
+В `ALLOWED_HOSTS` нужно указывать URL и/или IP, по которому будет доступно приложение. Как указать там URL, мы поговорим
+на следующем занятии, а пока можно указать там IP, который мы получили у Amazon после создания инстанса:
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson47/ec2-ip.png)
+
+## git clone и виртуальное окружение
+
+Клонируем код нашего проекта:
+
+```bash
+cd ~/
+git clone https://github.com/your-git/your-repo.git
+# Переименуйте папку проекта, если нужно
+# mv your-repo myprojectdir
+```
+
+Создаём виртуальное окружение:
+
+```bash
+cd ~/
+python3 -m venv venv
+```
+
+И активируем его:
+
+```bash
+source ~/venv/bin/activate
+```
+
+Переходим в раздел с проектом и устанавливаем всё, что есть в `requirements.txt`:
+
+```bash
+cd ~/myprojectdir
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+Если локально вы не работали с базой postgresql, то необходимо доставить модуль для работы с ним:
+
+```bash
+pip install psycopg2-binary
+```
+
+**Важно:** Если возникают ошибки с psycopg2, попробуйте:
+```bash
+sudo apt-get install python3-dev libpq-dev
+pip install psycopg2-binary --no-cache-dir
+```
+
+После чего вы должны успешно применить миграции:
+
+```bash
+python manage.py migrate
+```
+
+Если возникают ошибки с миграциями, проверьте:
+1. Правильность переменных окружения: `echo $DBNAME`
+2. Доступность базы данных: `psql -h $DBHOST -U $DBUSER -d $DBNAME`
+
+Создайте суперпользователя для доступа к админ-панели:
+
+```bash
+python manage.py createsuperuser
+```
+
+Следуйте инструкциям — введите имя пользователя, email и пароль.
+
+**Про медиафайлы в urls.py:**
+
+В локальной разработке Django может обслуживать медиафайлы через встроенный сервер. Для этого в `urls.py` добавляют:
 
 ```python
-from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic.edit import CreateView
-from myapp.models import ComplicatedModel
+# myproject/urls.py
+from django.conf import settings
+from django.conf.urls.static import static
 
+urlpatterns = [
+    # ваши URL...
+]
 
-class ComplicatedCreate(SuccessMessageMixin, CreateView):
-    model = ComplicatedModel
-    success_url = '/success/'
-    success_message = "%(calculated_field)s was created successfully"
-
-    def get_success_message(self, cleaned_data):
-        return self.success_message % dict(
-            cleaned_data,
-            calculated_field=self.object.calculated_field,
-        )
+# Только для разработки! В продакшене медиа обслуживает nginx
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 
-Практика:
+**Важно:** Этот код работает **только при `DEBUG=True`**. В продакшене (`DEBUG=False`) медиафайлы обслуживает nginx напрямую — это быстрее и безопаснее. Мы настроим это ниже в разделе про nginx.
 
-1. Задания с прошлого занятия изменить так, чтобы логика работала не на одной конкретной странице, а вообще на любой.
+## Проверяем работоспособность сервера
 
-2. Для прошлого задания сделать вывод текста не на странице, а при помощи `messages`.
+Для проверки того, что ваше приложение можно разворачивать, запустим его через стандартную команду:
 
-3. Прошлое задание сделать не для всех страниц, а только для любых двух (на ваш выбор). 
+```bash
+# Убедитесь, что виртуальное окружение активировано
+source ~/venv/bin/activate
+
+# Соберите статику (если нужно)
+python manage.py collectstatic --noinput
+
+# Запустите сервер
+python manage.py runserver 0.0.0.0:8000
+```
+
+Чтобы это сработало, необходимо разрешить использовать порт, который мы будем использовать для теста, по стандарту это
+порт номер 8000:
+
+```bash
+sudo ufw allow 8000
+```
+
+Мы открыли порт со стороны сервера, но пока что он закрыт со стороны Amazon, давайте временно откроем его тоже. Для
+этого идём на страницу Amazon с описанием инстанса, открываем вкладку `Security` и кликаем на название секьюрити группы:
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson47/Security-group.png)
+
+Кликаем на `Edit inbound rules`.
+
+Добавляем правило `Custom TCP` для порта 8000:
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson47/edit-rules.png)
+
+После этого можно запустить команду `runserver` с такими правилами:
+
+```bash
+python manage.py runserver 0.0.0.0:8000
+```
+
+Если вы всё сделали правильно, то теперь вы можете открыть в браузере IP-адрес, который вам выдал Amazon, с портом 8000:
+
+```
+# Например
+http://54.186.155.252:8000/
+```
+
+Обратите внимание, сайт откроется БЕЗ СТАТИКИ, потому что `runserver` при `DEBUG = False` не должен обрабатывать
+статику.
+
+**Возможные проблемы и решения:**
+- Если сайт не открывается, проверьте правильность IP в ALLOWED_HOSTS
+- Если ошибка 500, проверьте логи: `python manage.py check --deploy`
+- Если проблемы с БД, проверьте подключение: `python manage.py dbshell`
+
+## Проверяем gunicorn
+
+Устанавливаем gunicorn
+
+```bash
+pip install gunicorn
+```
+
+Как вы помните, **gunicorn** — это WSGI-сервер. Если вы откроете папку с `settings.py`, то увидите там ещё два
+файла `wsgi.py` и `asgi.py`.
+
+Они нужны для того, чтобы запускать серверы в «боевом» режиме.
+
+Для проверки работы gunicorn запустим сервер через него:
+
+```bash
+# Убедитесь, что вы в папке проекта и виртуальное окружение активировано
+cd ~/myprojectdir
+source ~/venv/bin/activate
+
+# Запустите gunicorn (замените myproject на название вашего проекта)
+gunicorn --bind 0.0.0.0:8000 myproject.wsgi:application
+```
+
+Где `myproject` — это название папки, в которой лежит файл `wsgi.py`.
+
+**Важно:** Если возникает ошибка "No module named 'myproject'", проверьте:
+1. Правильность названия проекта в команде
+2. Находитесь ли вы в корневой папке проекта (где manage.py)
+
+Опять же, если вы всё сделали правильно, то тот же самый URL всё ещё будет работать.
+
+```
+# Например
+http://54.186.155.252:8000/
+```
+
+## Понятие сокет-файла
+
+В Linux абсолютно всё — это файл. Развёрнутый сервер — это тоже файл. Так вот, если мы используем два сервера, и один
+слушает второй, то давайте разворачивать первый тоже как файл. Такой файл будет называться сокет-файлом.
+
+## Демонизация gunicorn
+
+Запускать сервер руками очень увлекательно, но не очень эффективно, давайте демонизируем gunicorn для запуска
+сервера в сокет-файл, и сделаем так, чтобы этот сервер запускался сразу при запуске системы, чтобы даже если мы
+перезагрузим инстанс, сервер всё равно работал.
+
+Воспользуемся встроенной в Linux системой `systemd` (системная демонизация).
+
+Сервис будет сам создавать временную директорию под сокет в /run через настройки RuntimeDirectory.
+Никаких дополнительных каталогов вручную создавать не нужно.
+
+Теперь создадим файл сервиса, который и будет выполнять запуск:
+
+```bash
+sudo nano /etc/systemd/system/gunicorn.service
+```
+
+```ini
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/myprojectdir
+EnvironmentFile=/home/ubuntu/.env
+RuntimeDirectory=gunicorn
+RuntimeDirectoryMode=0755
+UMask=0007
+ExecStart=/home/ubuntu/venv/bin/gunicorn \
+  --workers 2 --threads 2 --timeout 30 \
+  --bind unix:/run/gunicorn/gunicorn.sock \
+  myproject.wsgi:application
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+**Важно:** Замените `myproject` на название вашего Django-проекта и убедитесь, что пути правильные:
+- `/home/ubuntu/myprojectdir` — путь к вашему проекту
+- `/home/ubuntu/venv/bin/gunicorn` — путь к gunicorn в виртуальном окружении
+
+Блок `Unit`:
+
+- `Description` — описание.
+- (опционально) socket activation можно настроить отдельно, но здесь мы запускаем сервис напрямую.
+- `After` — отвечает за то, чтобы запускать модуль только после того, как будет доступ в интернет.
+
+Блок `Service`:
+
+- `User` — пользователь, который должен запускать скрипт; если мы используем стандартного юзера, то это будет `ubuntu`.
+
+- `Group` — группа безопасности, по умолчанию — это `www-data`.
+
+- `WorkingDirectory` — папка, из которой будет запускаться скрипт, в нашем случае это папка с проектом, где лежит
+   `manage.py`.
+
+- `EnvironmentFile` — файл с переменными.
+- `RuntimeDirectory=gunicorn` и `RuntimeDirectoryMode=0755` — как это работает:
+  - `/run` — это tmpfs, пересоздаётся при каждом запуске системы.
+  - Перед стартом сервиса systemd создаёт `/run/gunicorn`, владельцем будет `User=`, группой — `Group=` (т. е. `ubuntu:www-data`), права — `0755` (rwxr-xr-x).
+  - Права `0755` дают «проход» (x) всем, поэтому nginx сможет зайти в каталог; доступ к самому сокету ограничивается его правами.
+  - Каталог автоматически удаляется при остановке сервиса — не нужен ручной менеджмент каталогов и прав.
+- `UMask=0007` — почему это важно:
+  - umask — это маска запретов, которая «вычитает» биты из дефолтных прав.
+  - Для файлов (и unix‑сокетов) базовые права 0666 → 0666 − 0007 = 0660 (rw-rw----); для каталогов 0777 → 0770.
+  - В итоге сокет получает `660`: доступ есть у владельца и у группы (`www-data` — nginx), «прочие» не имеют доступа.
+
+
+- `ExecStart` — сам скрипт, нам нужно запустить gunicorn из виртуального окружения, но мы не можем запустить
+  сначала `source`; при создании виртуального окружения мы всего-то складываем все скрипты в другую папку.
+
+  `/home/ubuntu/venv/bin/gunicorn` — это физическое расположение скрипта
+  `--workers 2 --threads 2 --timeout 30 --bind unix:/run/gunicorn/gunicorn.sock myproject.wsgi:application`
+  Это настройки самого скрипта: `worker` — их количество, `threads` — потоки на worker, `timeout` — время ожидания,
+  `bind` — путь к unix-сокету (`/run` — volatiles, создаётся при старте), `myproject` — модуль wsgi-приложения
+
+Блок `Install` отвечает за автоматический запуск при запуске системы для любого пользователя.
+
+Сохраняем файл и закрываем.
+
+Для запуска сокета нужно запустить его из системы:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl start gunicorn
+sudo systemctl enable gunicorn
+```
+
+В следующий раз этого делать не нужно, всё запустится автоматически.
+
+### Проверим статус сервиса
+
+```bash
+sudo systemctl status gunicorn
+```
+
+Если ошибок нет, значит сервис запущен и создал unix-сокет по указанному пути.
+
+**Возможные проблемы:**
+- Если статус "failed", проверьте логи: `sudo journalctl -u gunicorn -f`
+- Если ошибка с путями, убедитесь, что все пути в service-файле правильные
+- Если ошибка с модулем, проверьте название проекта в ExecStart
+
+Должны увидеть примерно такой статус:
+
+```
+● gunicorn.service - gunicorn daemon
+   Loaded: loaded (/etc/systemd/system/gunicorn.service; enabled; vendor preset: enabled)
+   Active: active (running) since ...
+```
+
+Попробуем выполнить запрос к нашему сокету:
+
+```bash
+curl --unix-socket /run/gunicorn/gunicorn.sock http://localhost
+```
+
+Если всё работает правильно, вы должны увидеть HTML код вашего сайта.
+
+### Рестарт gunicorn
+
+Теперь мы можем перезапускать наш сокет за 1 команду:
+
+```bash
+sudo systemctl restart gunicorn
+```
+
+Полезные команды для отладки:
+```bash
+# Просмотр логов в реальном времени
+sudo journalctl -u gunicorn -f
+
+# Остановка сервиса
+sudo systemctl stop gunicorn
+
+# Проверка конфигурации
+sudo systemctl daemon-reload
+```
+
+## Nginx
+
+**Nginx** — это гибкий и мощный веб-сервер.
+
+Для проверки работы Nginx давайте настроим базовый доступ к Nginx для нашего IP-адреса, и не забываем добавить 80 порт
+в секьюрити группы Amazon.
+
+Настроим Nginx, если вы установили Nginx (мы сделали это первым действием на этом инстансе), то у вас будет
+существовать папка с базовыми настройками Nginx, давайте создадим новую настройку:
+
+```bash
+sudo nano /etc/nginx/sites-available/myproject
+```
+
+Где `myproject` — это название вашего проекта.
+
+```nginx
+server {
+    listen 80;
+    server_name 54.186.155.252;  # Замените на ваш IP
+}
+```
+
+Сохранить и закрыть, пробросить симлинк в соседнюю папку, которую по умолчанию обслуживает Nginx:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled/
+```
+
+Проверим конфигурацию Nginx:
+
+```bash
+sudo nginx -t
+```
+
+Если конфигурация корректна, перезапустим Nginx:
+
+```bash
+sudo systemctl restart nginx
+```
+
+**ОБЯЗАТЕЛЬНО! Добавить 80 порт в security groups, разрешенные на Amazon!!!**
+
+Если вы всё сделали правильно, то по вашему IP-адресу без указания порта будет открыта базовая страница Nginx:
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson47/nginx_welcome.png)
+
+Чтобы Nginx начал проксировать наш проект, нужно его указать:
+
+```bash
+sudo nano /etc/nginx/sites-available/myproject
+```
+
+```nginx
+upstream django {
+    server unix:/run/gunicorn/gunicorn.sock;
+}
+
+server {
+    listen 80;
+    server_name 54.186.155.252;  # Замените на ваш IP
+
+    location / {
+        include proxy_params;
+        proxy_pass http://django;
+    }
+}
+```
+
+Проверяем конфигурацию и перезапускаем Nginx:
+
+```bash
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+Всё должно работать, но без статики.
+
+**Возможные проблемы:**
+- Если ошибка 502 Bad Gateway, проверьте статус gunicorn: `sudo systemctl status gunicorn`
+- Если ошибка конфигурации nginx, проверьте синтаксис: `sudo nginx -t`
+- Проверьте логи nginx: `sudo tail -f /var/log/nginx/error.log`
+
+Вспомним самое начало лекции, что мы можем придумать куда команда `collectstatic` должна сложить статику. Сначала соберем статику:
+
+```bash
+cd ~/myprojectdir
+source ~/venv/bin/activate
+python manage.py collectstatic --noinput
+```
+
+Создадим папки для медиафайлов:
+
+```bash
+mkdir -p /home/ubuntu/myprojectdir/media
+```
+
+Теперь обновим конфигурацию Nginx для обработки статики и медиа:
+
+```bash
+sudo nano /etc/nginx/sites-available/myproject
+```
+
+```nginx
+upstream django {
+    server unix:/run/gunicorn/gunicorn.sock;
+}
+
+server {
+    listen 80;
+    server_name 54.186.155.252;  # Замените на ваш IP
+
+    # ВАЖНО: Увеличиваем лимит размера загружаемых файлов
+    client_max_body_size 100M;
+
+    location /static/ {
+        alias /home/ubuntu/myprojectdir/static/;
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        access_log off;
+    }
+
+    location /media/ {
+        alias /home/ubuntu/myprojectdir/media/;
+        expires 30d;
+        add_header Cache-Control "public";
+        access_log off;
+
+        # Безопасность: запрещаем выполнение скриптов
+        location ~* \.(php|py|pl|sh|cgi)$ {
+            deny all;
+        }
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://django;
+    }
+}
+```
+
+Проверяем конфигурацию и перезапускаем Nginx:
+
+```bash
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+Перезапускаем Nginx и наслаждаемся результатом!
+
+**Не забываем закрыть 8000 порт и на инстансе, и на Amazon в секьюрити группе!!**
+
+```bash
+sudo ufw delete allow 8000
+```
+
+**Проверка работы:**
+- Откройте ваш сайт по IP без порта
+- Статика должна загружаться корректно
+- Проверьте в браузере Developer Tools, что статические файлы загружаются с кодом 200
+
+## Сервисы Amazon
+
+Amazon — это не только инстансы, это огромная, нет, **ОГРОМНАЯ** экосистема из очень большого количества различных
+сервисов, которые мы можем использовать для своих нужд, там есть почти всё :) даже генераторы нейросетей.
+
+Нас на данном этапе интересует несколько сервисов:
+
+- **RDS** (*Relational Database Service*) — сервис по использованию SQL-баз данных, которые будут находиться на Amazon.
+  Зачем это нужно? Во-первых, это надёжно. Мы уверены, что БД находится в облаке, мы за неё платим и Amazon гарантирует
+  её сохранность. В случае хранения БД на инстансе, БД в случае чего удалится вместе с инстансом. Во-вторых, в случае
+  микросервисной архитектуры микросервисы физически могут находиться на совершенно разных машинах, а требуется
+  использовать одну и ту же БД. Облачная БД — лучший для этого выбор. В-третьих, при использовании Amazon RDS не
+  требуется настраивать систему резервных копий, она уже предоставлена экосистемой Amazon в несколько кликов.
+
+- **S3 Bucket** — это просто хранилище для файлов. Используется для адекватного хранения статики и медиа. Преимущества
+  очень похожи на RDS. Во-первых, мы не потеряем данные статики и медиа в случае «переезда» на новый сервер. Во-вторых,
+  пользовательские медиа могут занимать огромные объёмы данных (например, видеофайлы). В случае хранения их на
+  выделенном сервере мы упираемся в размер сервера (чем больше, тем дороже), а расширять сервер только для «картинок и
+  видео» не очень разумно. Стоимость S3 Bucket гораздо меньше и удобнее для этих целей. В-третьих, безопасность: когда
+  вы складываете статику и медиа у себя, доступ к ним есть у всех пользователей. Кто угодно может открыть наш JS
+  почитать, это не очень безопасно, вдруг у нас там дыры. :) С медиа всё ещё хуже — это пользовательские данные, а мы
+  выставляем их на всеобщее обозрение. Это не очень правильно. При использовании S3 Bucket мы можем настроить
+  безопасность, создать пользователя в сервисе IAM (о нём дальше). Django из коробки умеет добавлять безопасный токен
+  при использовании Amazon.
+
+- **IAM** — сервис для настроек безопасности. Всё на самом деле просто: там можно создать юзеров и группы юзеров и
+  раздать им права на любые сервисы Amazon. Допустим, одна группа может только настраивать RDS и смотреть на EC2, а
+  другая обладает полными правами. В нашем случае мы будем создавать пользователя с правами на чтение S3 Bucket и
+  использовать его credentials для статики и медиа.
+
+- **Route 53** — сервис для настройки DNS и регистрации доменов; будем использовать его для того, чтобы купить домен и
+  преобразовать наш IP в нормальный URL.
+
+## RDS
+
+Мы будем использовать PostgreSQL.
+
+При создании БД вам будет предложено создать мастер-пароль для пользователя `postgres`, его надо запомнить :)
+
+После создания базы данных нужно открыть подробности и раздел `Connectivity & security`:
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson48/rds-settings.png)
+
+После чего мы можем открыть PostgreSQL консоль из консоли нашего инстанса:
+
+```psql --host=<DB instance endpoint> --port=<port> --username=<master username> --password```
+
+Создаём пользователя и базу — мы это уже умеем делать.
+
+Допустим, у нас опять user — `myuser`, password — `mypass`, db — `mydb`;
+
+Как подключить RDS к приложению? Добавляем URL в переменные окружения, и база будет подключена.
+
+Не забываем провести миграции, мы подключили новую базу!
+
+## IAM
+
+Для использования S3 Bucket нам необходим специальный юзер, которого мы можем создать в IAM
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson48/IAM-accesslevel.png)
+
+Выбираем `Programmatic access` — наш пользователь не будет заходить в настройки, только генерировать токен.
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson48/IAM-permissions.png)
+
+Добавляем пользователю полные права на S3 Bucket.
+
+Обязательно сохраняем ключи от пользователя.
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson48/IAM-creeds.png)
+
+Никогда, нет, **НИКОГДА** не выкладываем эти ключи на git (в `settings.py` или где-либо ещё). Amazon мониторит
+абсолютно весь интернет. :) И если ваши ключи окажутся в открытом репозитории, пользователь будет мгновенно
+заблокирован, а владельцу аккаунта напишут об этом письмо и позвонят, чтобы предупредить.
+
+## S3 Bucket
+
+Создадим новый S3 Bucket в регионе `us-east-1`, с ним самая простая настройка.
+
+С полностью закрытым доступом к файлам.
+
+Для использования S3 в нашем проекте нужно доставить Python модули:
+
+```pip install django-storages boto3```
+
+Если вы будете использовать S3 и локально, то можно установить пакеты и локально, но чаще всего для локальных тестов
+внешние сервисы не используются.
+
+Для использования нужно добавить `storages` в `INSTALLED_APPS`:
+
+```python
+INSTALLED_APPS = [
+    ...,
+    'storages',
+]
+```
+
+после чего достаточно добавить настройки:
+
+```python
+import os
+
+# Optional
+AWS_S3_OBJECT_PARAMETERS = {
+    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+    'CacheControl': 'max-age=94608000',
+}
+# Required
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.environ.get('AWS_REGION', 'us-east-1')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+# НЕ ВПИСЫВАЙТЕ САМИ КЛЮЧИ, ТОЛЬКО os.environ.get('SOME_KEY')
+# Recommended for django-storages >= 1.13: manage ACLs via bucket policy
+AWS_DEFAULT_ACL = None
+
+# Django 4.2+ использует STORAGES вместо устаревших STATICFILES_STORAGE и DEFAULT_FILE_STORAGE
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+}
+```
+
+> **Важно:** Начиная с Django 4.2, настройки `STATICFILES_STORAGE` и `DEFAULT_FILE_STORAGE` устарели.
+> Используйте новый формат `STORAGES`. В Django 5.1+ старые настройки полностью удалены.
+
+Этого достаточно, чтобы команда `collectstatic` собирала всю статику в S3 Bucket от Amazon, а template tag `static`
+генерировал URL с параметрами безопасности, получить такую статику просто так нельзя.
+
+`AWS_S3_OBJECT_PARAMETERS` — необязательный параметр, чтобы указать настройки объектов; параметров довольно много.
+
+Но при такой настройке вся статика будет просто сложена в S3 Bucket, как на свалке, куда же мы поместим медиа?
+
+Чтобы сложить статику и медиа в один S3 Bucket, нужно создать новые классы для storages, где указать папки для хранения
+разных типов данных.
+
+Создадим файл `custom_storages.py` на одном уровне с `settings.py`.
+
+```python
+# custom_storages.py
+from storages.backends.s3boto3 import S3Boto3Storage
+
+
+class StaticStorage(S3Boto3Storage):
+    location = 'static'
+    default_acl = None
+
+
+class MediaStorage(S3Boto3Storage):
+    location = 'media'
+    default_acl = None
+```
+
+А в `settings.py` укажем:
+
+```python
+# settings.py (Django 4.2+)
+STORAGES = {
+    "default": {
+        "BACKEND": "myproject.custom_storages.MediaStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "myproject.custom_storages.StaticStorage",
+    },
+}
+```
+
+> **Для Django < 4.2 (устаревший синтаксис):**
+> ```python
+> STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+> DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+> ```
+
+Этого полностью достаточно, чтобы команда `collectstatic` собрала всю статику в папку `static` на S3 Bucket, а любые
+загруженные пользователями файлы — в папку `media`.
+
+Добавляем все необходимые переменные окружения, запускаем `collectstatic`, убеждаемся, что всё собрано правильно, и
+статика работает, так же можем попробовать загрузить что-либо и убедиться, что медиа грузится правильно (если такой
+функционал заложен в проект).
+
+При таком подходе Nginx не обрабатывает статику и медиа, а значит, что эти строки можно не вносить (или удалить из
+конфига).
+
+## Route 53
+
+Route 53 — это сервис, где вы можете зарегистрировать домен и привязать его к вашему IP-адресу, чтобы использовать URL,
+а не IP.
+
+Я заранее купил домен `a-level-test.com` :) Поэтому, если я открою вкладку `Hosted zones`, то увижу:
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson48/hosted-zones.png)
+
+Создам новую запись в `hosted zone`:
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson48/route53-record.png)
+
+В поле `value` я указал IP, который выдал мне Amazon к моему инстансу.
+
+В `settings.py` в `ALLOWED_HOSTS` нужно добавить новый URL.
+
+```python
+...
+DEBUG = False
+ALLOWED_HOSTS = ['a-level-test.com']
+...
+```
+
+Пулим новый код, перезапускаем gunicorn:
+
+```sudo systemctl restart gunicorn```
+
+После этого мне нужно обновить Nginx и поменять там `server_name`;
+
+```
+server {
+    listen 80;
+    server_name a-level-test.com;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn/gunicorn.sock;
+    }
+}
+```
+
+Перезапускаем Nginx:
+
+```sudo service nginx restart```
+
+Открываем URL, убеждаемся, что всё работает и статика не потерялась.
+
+## HTTPS. Certbot
+
+Наше соединение работает, но при этом абсолютно не защищено. Почему мы не сделали его безопасным раньше? Всё просто:
+сертификат для включения `https` привязывается к URL, а не к IP-адресу.
+
+Сделать это можно очень просто и в практически автоматическом режиме.
+
+Для начала необходимо доставить на сервер некоторые модули:
+
+```sudo apt install certbot python3-certbot-nginx```
+
+И выполнить команду:
+
+```sudo certbot --nginx -d a-level-test.com```
+
+После параметра `-d` указывается `server_name` из Nginx;
+
+Certbot спросит у вас почту, если это первый запуск, попросит принять условия и указать, редиректить небезопасное
+соединение в безопасное или нет, всё зависит от ваших условий.
+
+Он автоматически заменит и перезапустит конфигурацию Nginx:
+
+```
+server {
+    server_name a-level-test.com;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn/gunicorn.sock;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/a-level-test.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/a-level-test.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = a-level-test.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name a-level-test.com;
+    return 404; # managed by Certbot
+
+
+}
+```
+
+### Открыть на Amazon 443 порт
+
+Не забываем открыть порт номер 443 для нашего инстанса.
+
+![](https://djangoalevel.s3.eu-central-1.amazonaws.com/lesson48/https-setting.png)
+
+Всё, пробуем открыть сайт и видим, что он теперь безопасен.
+
+### Автообновление сертификата
+
+Сертификаты *Let’s Encrypt* действительны только в течение 90 дней. Это сделано для стимулирования пользователей к
+автоматизации процесса обновления сертификатов. Установленный нами пакет `certbot` выполняет это автоматически, добавляя
+таймер `systemd`, который будет запускаться два раза в день и автоматически продлевать все сертификаты, истекающие
+менее, чем через 30 дней.
+
+Чтобы протестировать процесс обновления, можно сделать запуск «вхолостую» с помощью `certbot`:
+
+```sudo certbot renew --dry-run```
+
+Если ошибок нет, все нормально. Certbot будет продлевать ваши сертификаты, когда это потребуется, и перезагружать Nginx
+для активации изменений. Если процесс автоматического обновления когда-нибудь не выполнится, то *Let’s Encrypt*
+отправит сообщение на указанный вами адрес электронной почты с предупреждением о том, что срок действия сертификата
+подходит к концу.
+
+## Частые проблемы и их решения
+
+### 1. Ошибки с базой данных
+
+**Проблема:** `FATAL: password authentication failed for user "myuser"`
+
+**Решение:**
+```bash
+# Проверьте переменные окружения
+echo $DBUSER
+echo $DBPASS
+echo $DBNAME
+
+# Проверьте подключение к БД
+psql -h 127.0.0.1 -U myuser -d mydb
+
+# Если не работает, пересоздайте пользователя в PostgreSQL
+sudo -u postgres psql
+DROP USER IF EXISTS myuser;
+CREATE USER myuser WITH ENCRYPTED PASSWORD 'mypass';
+GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+ALTER USER myuser CREATEDB;
+\q
+```
+
+### 2. Ошибки с gunicorn
+
+**Проблема:** `ModuleNotFoundError: No module named 'myproject'`
+
+**Решение:**
+```bash
+# Убедитесь, что вы в правильной папке
+cd ~/myprojectdir
+ls -la  # Должен быть файл manage.py
+
+# Проверьте название проекта
+ls */wsgi.py  # Покажет правильное название
+
+# Обновите service-файл с правильным названием
+sudo nano /etc/systemd/system/gunicorn.service
+sudo systemctl daemon-reload
+sudo systemctl restart gunicorn
+```
+
+### 3. Ошибки с nginx
+
+**Проблема:** `502 Bad Gateway`
+
+**Решение:**
+```bash
+# Проверьте статус gunicorn
+sudo systemctl status gunicorn
+
+# Проверьте существование сокета
+ls -la /run/gunicorn/
+
+# Проверьте логи
+sudo journalctl -u gunicorn -f
+sudo tail -f /var/log/nginx/error.log
+
+# Перезапустите сервисы
+sudo systemctl restart gunicorn
+sudo systemctl restart nginx
+```
+
+### 4. Проблемы со статикой и медиа
+
+**Проблема:** Статические файлы не загружаются
+
+**Решение:**
+```bash
+# Соберите статику заново
+cd ~/myprojectdir
+source ~/venv/bin/activate
+python manage.py collectstatic --clear --noinput
+
+# Проверьте права доступа
+sudo chown -R ubuntu:www-data /home/ubuntu/myprojectdir/static/
+sudo chmod -R 755 /home/ubuntu/myprojectdir/static/
+
+# Проверьте конфигурацию nginx
+sudo nginx -t
+```
+
+**Проблема:** Медиафайлы не загружаются или возвращают 403/404
+
+**Решение:**
+```bash
+# Создайте папку для медиа, если её нет
+mkdir -p /home/ubuntu/myprojectdir/media
+
+# Установите правильные права доступа
+sudo chown -R ubuntu:www-data /home/ubuntu/myprojectdir/media/
+sudo chmod -R 755 /home/ubuntu/myprojectdir/media/
+
+# Проверьте настройки Django
+cd ~/myprojectdir
+source ~/venv/bin/activate
+python manage.py shell
+>>> from django.conf import settings
+>>> print("MEDIA_URL:", settings.MEDIA_URL)
+>>> print("MEDIA_ROOT:", settings.MEDIA_ROOT)
+>>> exit()
+
+# Проверьте, что nginx может читать файлы
+sudo -u www-data ls -la /home/ubuntu/myprojectdir/media/
+
+# Тестовая загрузка файла
+echo "test" | sudo tee /home/ubuntu/myprojectdir/media/test.txt
+curl http://your-ip/media/test.txt
+```
+
+**Проблема:** Ошибка "413 Request Entity Too Large" при загрузке файлов
+
+**Решение:**
+```bash
+# Проверьте текущий лимит в nginx
+grep -r "client_max_body_size" /etc/nginx/
+
+# Если лимит не установлен или слишком мал, отредактируйте конфигурацию
+sudo nano /etc/nginx/sites-available/myproject
+
+# Добавьте в блок server:
+# client_max_body_size 100M;
+
+# Также можно установить глобально в nginx.conf
+sudo nano /etc/nginx/nginx.conf
+
+# Добавьте в блок http:
+# client_max_body_size 100M;
+
+# Перезапустите nginx
+sudo nginx -t
+sudo systemctl restart nginx
+
+# Проверьте настройки Django (должны соответствовать nginx)
+cd ~/myprojectdir
+source ~/venv/bin/activate
+python manage.py shell
+>>> from django.conf import settings
+>>> print("FILE_UPLOAD_MAX_MEMORY_SIZE:", getattr(settings, 'FILE_UPLOAD_MAX_MEMORY_SIZE', 'Not set'))
+>>> print("DATA_UPLOAD_MAX_MEMORY_SIZE:", getattr(settings, 'DATA_UPLOAD_MAX_MEMORY_SIZE', 'Not set'))
+>>> exit()
+```
+
+### 5. Проблемы с переменными окружения
+
+**Проблема:** Переменные не загружаются
+
+**Решение:**
+```bash
+# Проверьте файл .env
+cat /home/ubuntu/.env
+
+# Убедитесь, что нет кавычек в файле .env
+# Неправильно: DBNAME="mydb"
+# Правильно: DBNAME=mydb
+
+# Перезапустите gunicorn после изменений
+sudo systemctl restart gunicorn
+```
+
+### 6. Полезные команды для отладки
+
+```bash
+# Проверка статуса всех сервисов
+sudo systemctl status nginx
+sudo systemctl status gunicorn
+sudo systemctl status postgresql
+
+# Просмотр логов
+sudo journalctl -u gunicorn -f
+sudo tail -f /var/log/nginx/access.log
+sudo tail -f /var/log/nginx/error.log
+
+# Проверка портов
+sudo netstat -tlnp | grep :80
+sudo netstat -tlnp | grep :443
+
+# Проверка Django
+cd ~/myprojectdir
+source ~/venv/bin/activate
+python manage.py check --deploy
+python manage.py collectstatic --dry-run
+```
+
+### 7. Обновление кода на сервере
+
+После первоначального деплоя вам регулярно нужно будет обновлять код. Вот стандартный workflow:
+
+```bash
+# Подключаемся к серверу
+ssh -i your-key.pem ubuntu@your-server-ip
+
+# Переходим в директорию проекта
+cd ~/myprojectdir
+
+# Активируем виртуальное окружение
+source ~/venv/bin/activate
+
+# Получаем последние изменения из репозитория
+git pull origin main
+
+# Устанавливаем новые зависимости (если были добавлены)
+pip install -r requirements.txt
+
+# Применяем миграции (если были добавлены)
+python manage.py migrate
+
+# Собираем статику (если были изменения в CSS/JS)
+python manage.py collectstatic --noinput
+
+# Перезапускаем gunicorn для применения изменений
+sudo systemctl restart gunicorn
+
+# Проверяем статус
+sudo systemctl status gunicorn
+```
+
+**Совет:** Для автоматизации этого процесса используйте CI/CD (GitHub Actions, GitLab CI) — об этом в следующей лекции.
+
+### 8. Чек-лист для успешного деплоя
+
+- [ ] Установлены все необходимые пакеты
+- [ ] Создана база данных и пользователь PostgreSQL
+- [ ] Настроены переменные окружения в ~/.bashrc и ~/.env
+- [ ] Клонирован код проекта
+- [ ] Создано и активировано виртуальное окружение
+- [ ] Установлены зависимости из requirements.txt
+- [ ] Применены миграции Django
+- [ ] Создан и настроен service-файл для gunicorn
+- [ ] Настроен конфигурационный файл nginx
+- [ ] Добавлен client_max_body_size в nginx для загрузки файлов
+- [ ] Собрана статика командой collectstatic
+- [ ] Созданы папки для медиафайлов с правильными правами
+- [ ] Открыты необходимые порты в AWS Security Groups
+- [ ] Проверена работа сайта
+- [ ] Протестирована загрузка медиафайлов
+- [ ] Настроен SSL-сертификат (опционально)
+
+## Мониторинг и логирование
+
+После успешного деплоя важно уметь отслеживать состояние сервера и находить проблемы. Вот основные инструменты и
+команды для мониторинга.
+
+### Где искать логи?
+
+**Логи Nginx:**
+```bash
+# Логи доступа (все запросы)
+sudo tail -f /var/log/nginx/access.log
+
+# Логи ошибок
+sudo tail -f /var/log/nginx/error.log
+```
+
+**Логи Gunicorn (через systemd):**
+```bash
+# Просмотр логов в реальном времени
+sudo journalctl -u gunicorn -f
+
+# Последние 100 строк
+sudo journalctl -u gunicorn -n 100
+
+# Логи за последний час
+sudo journalctl -u gunicorn --since "1 hour ago"
+```
+
+**Логи PostgreSQL:**
+```bash
+sudo tail -f /var/log/postgresql/postgresql-*-main.log
+```
+
+### Проверка состояния сервисов
+
+```bash
+# Статус всех наших сервисов
+sudo systemctl status nginx
+sudo systemctl status gunicorn
+sudo systemctl status postgresql
+
+# Проверка, какие порты слушаются
+sudo netstat -tlnp | grep -E ':(80|443|5432)'
+# или
+sudo ss -tlnp | grep -E ':(80|443|5432)'
+```
+
+### Мониторинг ресурсов
+
+```bash
+# Использование CPU и памяти
+htop  # или top
+
+# Использование диска
+df -h
+
+# Использование памяти
+free -h
+
+# Текущие процессы Python/Gunicorn
+ps aux | grep gunicorn
+```
+
+### Проверка Django
+
+```bash
+cd ~/myprojectdir
+source ~/venv/bin/activate
+
+# Проверка конфигурации для продакшена
+python manage.py check --deploy
+
+# Проверка подключения к БД
+python manage.py dbshell
+
+# Интерактивная оболочка Django
+python manage.py shell
+```
+
+## Альтернативы ручному деплою
+
+Ручной деплой на EC2 даёт полный контроль, но требует много времени на настройку и поддержку. Существуют более простые
+альтернативы, особенно для небольших проектов или обучения.
+
+### PaaS-решения (Platform as a Service)
+
+PaaS-платформы берут на себя всю инфраструктуру: серверы, базы данных, SSL-сертификаты, масштабирование. Вы только
+загружаете код.
+
+**Heroku** — одна из самых популярных платформ:
+- Бесплатный тариф для обучения (с ограничениями)
+- Деплой через `git push heroku main`
+- Автоматические SSL-сертификаты
+- Аддоны для PostgreSQL, Redis, и т. д.
+
+**Railway** — современная альтернатива Heroku:
+- Простой интерфейс
+- Интеграция с GitHub
+- Бесплатный тариф для небольших проектов
+
+**Render** — ещё одна популярная платформа:
+- Автоматический деплой из GitHub
+- Бесплатные SSL-сертификаты
+- Managed PostgreSQL
+
+**PythonAnywhere** — специализированная платформа для Python:
+- Очень простая настройка Django
+- Бесплатный тариф с ограничениями
+- Встроенная консоль и редактор кода
+
+### Контейнеризация (Docker)
+
+Docker позволяет упаковать приложение со всеми зависимостями в контейнер, который можно запустить на любом сервере.
+Это упрощает деплой и делает его воспроизводимым.
+
+Подробнее о Docker мы поговорим в [следующей лекции](lesson36.md).
+
+### Что выбрать?
+
+| Решение                | Сложность | Контроль | Стоимость | Когда использовать                   |
+|------------------------|-----------|----------|-----------|--------------------------------------|
+| PaaS (Heroku, Railway) | Низкая    | Низкий   | Средняя   | Прототипы, небольшие проекты         |
+| EC2 + ручная настройка | Высокая   | Полный   | Низкая    | Когда нужен полный контроль          |
+| Docker + оркестрация   | Средняя   | Высокий  | Зависит   | Микросервисы, масштабируемые проекты |
+
+Для обучения рекомендую попробовать оба подхода: сначала PaaS для быстрого результата, затем EC2 для понимания того,
+как всё работает «под капотом».
+
+---
+
+[← Лекция 34: Linux. Все что нужно знать для деплоймента.](lesson34.md) | [Лекция 36: Методологии разработки. CI/CD. Монолит и микросервисы. Docker →](lesson36.md)
