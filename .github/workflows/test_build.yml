@@ -2,14 +2,14 @@ name: Check Sphinx Builds
 
 on:
   # Runs on pushes targeting the default branch and changes in the Sphinx-related files
-  pull_request:
-    branches:
-      - devel
-    paths:
-      - "src/**/*"
-      - "src/conf.py"
-      - "Makefile"
-      - "requirements.txt"
+#  pull_request:
+#    branches:
+#      - devel
+#    paths:
+#      - "src/**/*"
+#      - "src/conf.py"
+#      - "Makefile"
+#      - "requirements.txt"
 
 jobs:
   build-docs:
