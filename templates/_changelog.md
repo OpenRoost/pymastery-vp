@@ -12,6 +12,7 @@
 <summary>Document Changelog</summary>
 
 [//]: # (order by version number descending)
+
 | ver. | Date       | Author           | Changes description |
 |------|------------|------------------|---------------------|
 | x.x  | YYYY-MM-DD | Name [\<email\>] | Initial draft       |

@@ -49,7 +49,7 @@ This repository uses AI agents for infrastructure, tooling, and documentation ta
 
 ## Actions Requiring Approval
 
-- Any modification to `src/` content
+- Any modification to `content/` content
 - Structural changes to repository
 - Tool/technology selection (requires ADR)
 - Process modifications

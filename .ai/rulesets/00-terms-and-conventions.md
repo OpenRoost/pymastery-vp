@@ -14,7 +14,7 @@ Repositories
 
 ## Roles
 
-### Course Administrator
+### Project Administrator
 
 Identifier: `project-administrator`
 
@@ -26,7 +26,7 @@ Responsible for:
 - Access control documentation
 - ADR documentation
 
-### Course Editor
+### Content Editor
 
 Identifier: `content-editor`
 
