@@ -91,6 +91,8 @@ files:
         description: "Architecture Decision Record template."
       - path: "templates/_changelog.md"
         description: "Changelog partial template for embedding in documents."
+      - path: "templates/WP.md"
+        description: "Work Package template."
   - group: "Documentation"
     path: "docs"
     description: "Project documentation including ADRs, guides, and role definitions."
