@@ -70,13 +70,9 @@ Affected submodules:
 
 **Risk:** The Sphinx build will fail because `conf.py` references `problem-sets/src`.
 
-**Additional Issue:** 5 of 6 submodules use SSH URLs (`git@github.com:`), which:
+~~**Additional Issue:** 5 of 6 submodules use SSH URLs (`git@github.com:`)~~ **Resolved** - All submodule URLs converted to HTTPS.
 
-- Require SSH key authentication
-- Will fail in CI/CD environments without SSH key setup
-- Prevent contributors from cloning without SSH configured
-
-**Recommendation:** Convert SSH URLs to HTTPS in `.gitmodules`.
+**Remaining action:** Run `git submodule update --init --recursive` to populate content.
 
 ### 2.2 Critical: CI/CD Disabled
 
@@ -116,33 +112,18 @@ web_homeworks.md, before_postgres.md, pr_explanation*.md (4+ files)
 
 ### 2.4 Medium: Configuration Inconsistencies
 
-| Location                             | Issue                                                                                                 |
-|--------------------------------------|-------------------------------------------------------------------------------------------------------|
-| `pyproject.toml:15`                  | `repository` URL points to `edu-python-course` not `OpenRoost`                                        |
-| `.ai/rulesets/03-documentation.md:8` | Says "Project README" is `/README.md` but file is `README.rst`                                        |
-| `.github/`                           | Duplicate files: `CONTRIBUTING.md` + `CONTRIBUTING.rst`, `CODE_OF_CONDUCT.md` + `CODE_OF_CONDUCT.rst` |
-| `README.rst:103`                     | Links to `./.github/CONTRIBUTING.rst` - path may not resolve on GitHub                                |
+| Location                             | Issue                                                                | Status                              |
+|--------------------------------------|----------------------------------------------------------------------|-------------------------------------|
+| `pyproject.toml:15`                  | `repository` URL points to `edu-python-course` not `OpenRoost`       | Open                                |
+| `.ai/rulesets/03-documentation.md:8` | Says "Project README" is `/README.md` but file is `README.rst`       | Open                                |
+| ~~`.github/`~~                       | ~~Duplicate `.md` + `.rst` files~~                                   | **Resolved** - `.rst` files removed |
+| ~~`README.rst:103`~~                 | ~~Links to `CONTRIBUTING.rst`~~                                      | **Resolved** - updated to `.md`     |
 
-### 2.5 Medium: Incomplete CODEOWNERS
+### ~~2.5 Medium: Incomplete CODEOWNERS~~ (Resolved)
 
-**Current coverage:**
+**Status:** Resolved - Added `* @shorodilov` as default owner for all contents.
 
-```
-/src/basics/  - @shorodilov @Bandydan @Jules57
-/src/vcs/     - @shorodilov @Bandydan
-/src/rdbms/   - @shorodilov @Bandydan
-/src/oop/     - @shorodilov
-/src/django/  - @PonomaryovVladyslav @shorodilov
-/src/deploy/  - @PonomaryovVladyslav @shorodilov
-```
-
-**Missing coverage:**
-
-- `/src/linux/`
-- `/src/intro/`
-- `/src/appx/`
-- `/.ai/`
-- `/docs/`
+Section-specific owners preserved for collaborative review where applicable.
 
 ### 2.6 Low: Documentation Gaps
 
