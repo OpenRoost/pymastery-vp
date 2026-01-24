@@ -33,6 +33,7 @@
         appx/wtk
         spec/blog/index
         spec/libms/index
+        appx/busybox
 
 .. rubric:: References
 

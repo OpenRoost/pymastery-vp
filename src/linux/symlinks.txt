@@ -1,0 +1,9 @@
+*******************************************************************************
+                                   Symlinks
+*******************************************************************************
+
+This page describes symbolic links (symlinks) on Linux systems, including how
+they differ from hard links and how to create, inspect, and remove them.
+
+The content here is a placeholder and will be expanded with detailed examples
+and usage notes in a future update.

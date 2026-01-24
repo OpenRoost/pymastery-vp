@@ -1,0 +1,86 @@
+*******************************************************************************
+                        File system and file management
+*******************************************************************************
+
+Files
+=====
+
+A simple description of the UNIX system, also applicable to Linux, is this:
+
+    "On a UNIX system, everything is a file; if something is not a file,
+    it is a process"
+
+This statement is true because there are special files that are more than just
+files (named pipes and sockets for instance), but to keep things simple, saying
+that everything is a file is an acceptable generalization. A Linux system, just
+like UNIX, makes no difference between a file and a directory, since
+a directory is just a file containing names of other files. Programs, services,
+texts, images, and so forth, are all files. Input and output devices, and
+generally all devices, are considered to be files, according to the system.
+
+.. rubric:: Sorts of files
+
+:regular files:
+    most files are just *files*, called *regular* files; they contain normal
+    data, for example text files, executable files or programs, input or
+    output from a program and so on.
+
+:directories:
+    files that are lists of other files.
+
+:special files:
+    the mechanism used for input and output.
+    Most special files are in ``/dev``.
+
+:links:
+    a system to make a file or directory visible in multiple parts of
+    the system's file tree.
+
+:sockets:
+    a special file type, similar to TCP/IP sockets, providing inter-process
+    networking protected by the file system's access control.
+
+:named pipes:
+    act more or less like sockets and form a way for processes to communicate
+    with each other, without using network socket semantics.
+
+The ``-l`` option to ``ls`` displays the file type, using the first character
+of each input line:
+
++--------+--------------+
+| Symbol | Meaning      |
++========+==============+
+| ``-``  | Regular file |
++--------+--------------+
+| ``d``  | Directory    |
++--------+--------------+
+| ``l``  | Link         |
++--------+--------------+
+| ``c``  | Special file |
++--------+--------------+
+| ``s``  | Socket       |
++--------+--------------+
+| ``p``  | Named pipe   |
++--------+--------------+
+| ``b``  | Block device |
++--------+--------------+
+
+Linux file system layout
+========================
+
+For convenience, the Linux file system is usually thought of in a tree
+structure.
+
+.. figure:: /../assets/img/linux-fs-layout.png
+    :align: center
+
+    RedHat system layout
+
+The tree of the file system starts at the trunk or *slash*, indicated by
+a forward slash (``/``). This directory, containing all underlying directories
+and files, is also called the *root directory* or the *root* of the file
+system.
+
+Directories that are only one level below the root directory are often preceded
+by a slash, to indicate their position and prevent confusion with other
+directories that could have the same name.

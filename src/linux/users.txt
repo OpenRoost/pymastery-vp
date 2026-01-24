@@ -1,0 +1,12 @@
+*******************************************************************************
+                             Users and Permissions
+*******************************************************************************
+
+Overview
+--------
+
+This section will cover how Linux manages user accounts, groups, and file
+permissions, including basic commands for viewing and modifying them.
+
+Note: This documentation page is currently under construction and will be
+expanded with detailed examples and best practices in a future update.

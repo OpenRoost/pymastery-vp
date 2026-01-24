@@ -1,0 +1,11 @@
+*******************************************************************************
+                              (SSH) Secure Shell
+*******************************************************************************
+
+The :abbr:`SSH (Secure Shell)` Protocol is a network protocol for secure data
+communication and remote command execution. It is a cryptographic network
+protocol for operating network services securely over an unsecured network. Its
+most notable applications are remote login and command-line execution.
+
+SSH uses public-key cryptography to authenticate the remote computer and allow
+it to authenticate the user, if necessary.
