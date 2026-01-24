@@ -1,0 +1,109 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = 119
+tab_width = 4
+ij_continuation_indent_size = 8
+ij_formatter_off_tag = @formatter:off
+ij_formatter_on_tag = @formatter:on
+ij_formatter_tags_enabled = true
+ij_smart_tabs = false
+ij_visual_guides =
+ij_wrap_on_typing = false
+
+[{*.ant,*.fxml,*.jhm,*.jnlp,*.jrxml,*.rng,*.tld,*.wsdl,*.xml,*.xsd,*.xsl,*.xslt,*.xul}]
+indent_size = 2
+ij_xml_align_attributes = true
+ij_xml_align_text = false
+ij_xml_attribute_wrap = normal
+ij_xml_block_comment_add_space = false
+ij_xml_block_comment_at_first_column = true
+ij_xml_keep_blank_lines = 2
+ij_xml_keep_indents_on_empty_lines = false
+ij_xml_keep_line_breaks = true
+ij_xml_keep_line_breaks_in_text = true
+ij_xml_keep_whitespaces = false
+ij_xml_keep_whitespaces_around_cdata = preserve
+ij_xml_keep_whitespaces_inside_cdata = false
+ij_xml_line_comment_at_first_column = true
+ij_xml_space_after_tag_name = false
+ij_xml_space_around_equals_in_attribute = false
+ij_xml_space_inside_empty_tag = false
+ij_xml_text_wrap = normal
+
+[{*.markdown,*.md}]
+ij_markdown_force_one_space_after_blockquote_symbol = true
+ij_markdown_force_one_space_after_header_symbol = true
+ij_markdown_force_one_space_after_list_bullet = true
+ij_markdown_force_one_space_between_words = true
+ij_markdown_format_tables = true
+ij_markdown_insert_quote_arrows_on_wrap = true
+ij_markdown_keep_indents_on_empty_lines = false
+ij_markdown_keep_line_breaks_inside_text_blocks = true
+ij_markdown_max_lines_around_block_elements = 1
+ij_markdown_max_lines_around_header = 1
+ij_markdown_max_lines_between_paragraphs = 1
+ij_markdown_min_lines_around_block_elements = 1
+ij_markdown_min_lines_around_header = 1
+ij_markdown_min_lines_between_paragraphs = 1
+ij_markdown_wrap_text_if_long = true
+ij_markdown_wrap_text_inside_blockquotes = true
+
+[{*.mermaid,*.mmd}]
+ij_mermaid_after_arrow_text_within_sep = false
+ij_mermaid_after_colon = true
+ij_mermaid_after_comma = true
+ij_mermaid_around_arrow = true
+ij_mermaid_around_equality = false
+ij_mermaid_around_inline_arrow_text = true
+ij_mermaid_around_style_separator = false
+ij_mermaid_beetween_line_type_and_relation_type = false
+ij_mermaid_before_arrow_text_within_sep = false
+ij_mermaid_before_colon = false
+ij_mermaid_before_comma = false
+ij_mermaid_before_generic = false
+ij_mermaid_before_open_curly = true
+ij_mermaid_before_open_round = false
+ij_mermaid_before_semicolon = false
+ij_mermaid_between_node_id_and_node_shape = false
+ij_mermaid_between_state_and_annotation = true
+ij_mermaid_force_one_space_between_words = true
+ij_mermaid_keep_indents_on_empty_lines = false
+ij_mermaid_keep_lines_around_structured_statements = 1
+ij_mermaid_keep_lines_between_other_statements = 0
+ij_mermaid_keep_lines_between_structured_statements = 1
+ij_mermaid_keep_lines_within_structures = 0
+ij_mermaid_min_lines_around_structured_statements = 0
+ij_mermaid_min_lines_between_other_statements = 0
+ij_mermaid_min_lines_between_structured_statements = 0
+ij_mermaid_min_lines_within_structures = 0
+ij_mermaid_within_annotation_braces = false
+ij_mermaid_within_arrow_text_sep = false
+ij_mermaid_within_curly = true
+ij_mermaid_within_node_shapes = false
+ij_mermaid_within_round = false
+ij_mermaid_within_square = false
+
+[{*.toml,Cargo.lock,Cargo.toml.orig,Gopkg.lock,Pipfile,pdm.lock,poetry.lock,uv.lock}]
+ij_toml_keep_indents_on_empty_lines = false
+
+[{*.yaml,*.yml}]
+indent_size = 2
+ij_yaml_align_values_properties = do_not_align
+ij_yaml_autoinsert_sequence_marker = true
+ij_yaml_block_mapping_on_new_line = false
+ij_yaml_indent_sequence_value = true
+ij_yaml_keep_indents_on_empty_lines = false
+ij_yaml_keep_line_breaks = true
+ij_yaml_line_comment_add_space = false
+ij_yaml_line_comment_add_space_on_reformat = false
+ij_yaml_line_comment_at_first_column = true
+ij_yaml_sequence_on_new_line = false
+ij_yaml_space_before_colon = false
+ij_yaml_spaces_within_braces = true
+ij_yaml_spaces_within_brackets = true

@@ -1,0 +1,91 @@
+# Ruleset version
+version: "0.1.0"
+
+# Project metadata
+project_name: "Python for Web-Developers"
+project_id: "pymastery-vp"
+project_description: |
+  A Python web development course for complete beginners, designed to prepare
+  learners for junior/trainee developer positions. Covers Python fundamentals
+  through Django and Django REST Framework using a theory-first approach with
+  exercises and projects.
+
+# Project context for AI agents
+project_context:
+  audience: "Complete beginners with no prior programming experience"
+  goal: "Prepare learners for junior/trainee web developer positions"
+  technologies:
+    - Python
+    - Django
+    - Django REST Framework
+  pedagogy: "Theory-first with exercises and projects"
+  languages:
+    primary: "en-US"
+    translations:
+      - "uk-UA"
+  content_location: "src/"
+  history: |
+    Derivative work of a Russian-language course (upstream). The origin
+    repository contains significantly updated and expanded content,
+    translated to English (primary) and Ukrainian.
+  ssg:
+    current: "Sphinx"
+    status: "Under evaluation for replacement"
+
+# Git configuration
+git_remotes:
+  origin: https://github.com/OpenRoost/pymastery-vp.git
+  upstream: https://github.com/PonomaryovVladyslav/PythonCourses.git
+git_remote_default: origin
+git_identities:
+  claude_sonnet_4.5:
+    name: "Claude Sonnet 4.5"
+    email: "noreply@anthropic.com"
+    # additional arguments to pass to `git commit`
+    git_commit_args: >
+      --author="Claude Sonnet 4.5 <noreply@anthropic.com>"
+      --no-signoff
+      --no-gpg-sign
+  claude_opus_4.5:
+    name: "Claude Opus 4.5"
+    email: "noreply@anthropic.com"
+    # additional arguments to pass to `git commit`
+    git_commit_args: >
+      --author="Claude Opus 4.5 <noreply@anthropic.com>"
+      --no-signoff
+      --no-gpg-sign
+
+
+# Project roles for AI agents
+roles:
+  - name: "project-administrator"
+    definition: ".ai/rulesets/00-terms-and-conventions.md#project-administrator"
+  - name: "content-editor"
+    definition: ".ai/rulesets/00-terms-and-conventions.md#content-editor"
+  - name: "devops"
+    definition: ".ai/rulesets/00-terms-and-conventions.md#devops"
+
+# File structure
+files:
+  - group: "AI related"
+    path: ".ai"
+    description: "Global AI rulesets, guidelines, and configurations."
+    files:
+      - path: ".ai/config.yaml"
+        description: "Global AI configuration; this file."
+      - path: ".ai/rulesets/00-terms-and-conventions.md"
+        description: "Global AI ruleset: terms and conventions for the project."
+      - path: ".ai/rulesets/01-general-guidelines.md"
+        description: "Global AI ruleset: general guidelines for the project."
+      - path: ".ai/rulesets/02-grammar-and-style.md"
+        description: "Global AI ruleset: grammar and style conventions for the project."
+      - path: ".ai/rulesets/03-documentation.md"
+        description: "Global AI ruleset: documentation conventions and guidelines for the project."
+  - group: "Templates"
+    path: "templates"
+    description: "Document templates for consistent formatting."
+    files:
+      - path: "templates/ADR.md"
+        description: "Architecture Decision Record template."
+      - path: "templates/_changelog.md"
+        description: "Changelog partial template for embedding in documents."
