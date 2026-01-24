@@ -90,6 +90,6 @@ Responsible for:
 | Group   | Format               | Example                     | Description                                       |
 |---------|----------------------|-----------------------------|---------------------------------------------------|
 | Ruleset | `xx-ruleset-name.md` | 00-terms-and-conventions.md | Two-digit ordering, lowercase, hyphen-separated   |
-| ADR     | `ADR-xxx-slug.md`    | ADR-0001-example-name.md    | Three-digit ordering, lowercase, hyphen-separated |
+| ADR     | `ADR-xxx-slug.md`    | ADR-001-example-name.md     | Three-digit ordering, lowercase, hyphen-separated |
 | Content | `xx-title-slug.md`   | 01-basics.md                | Two-digit ordering, lowercase, hyphen-separated   |
 | Partial | `_*`                 | _changelog.md               | Leading underscore, lowercase, hyphen-separated   |
