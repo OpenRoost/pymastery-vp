@@ -1,4 +1,4 @@
-[//]: # (docs/ADR-0001-ai-guidelines-structure.md)
+[//]: # (docs/ADR-001-ai-guidelines-structure.md)
 
 # ADR-001: AI Guidelines Structure
 
