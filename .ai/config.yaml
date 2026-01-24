@@ -25,7 +25,7 @@ project_context:
     primary: "en-US"
     translations:
       - "uk-UA"
-  content_location: "src/"
+  content_location: "content/"  # directory containing course materials
   history: |
     Derivative work of a Russian-language course (upstream). The origin
     repository contains significantly updated and expanded content,
@@ -41,31 +41,32 @@ git_remotes:
 git_remote_default: origin
 git_identities:
   claude_sonnet_4.5:
-    name: "Claude Sonnet 4.5"
-    email: "noreply@anthropic.com"
-    # additional arguments to pass to `git commit`
-    git_commit_args: >
-      --author="Claude Sonnet 4.5 <noreply@anthropic.com>"
-      --no-signoff
-      --no-gpg-sign
+    git_config__user_name: "Claude Sonnet 4.5"
+    git_config__user_email: "noreply@anthropic.com"
+    git_commit__author: "Claude Sonnet 4.5 <noreply@anthropic.com>"
   claude_opus_4.5:
-    name: "Claude Opus 4.5"
-    email: "noreply@anthropic.com"
-    # additional arguments to pass to `git commit`
-    git_commit_args: >
-      --author="Claude Opus 4.5 <noreply@anthropic.com>"
-      --no-signoff
-      --no-gpg-sign
+    git_config__user_name: "Claude Opus 4.5"
+    git_config__user_email: "noreply@anthropic.com"
+    git_commit__author: "Claude Opus 4.5 <noreply@anthropic.com>"
+  github_copilot:
+    git_config__user_name: "GitHub Copilot"
+    git_config__user_email: "noreply@github.com"
+    git_commit__author: "GitHub Copilot <noreply@github.com>"
 
 
 # Project roles for AI agents
+# See docs/ROLES.md for comprehensive role definitions
 roles:
+  - name: "project-owner"
+    definition: "docs/ROLES.md#1-project-owner"
+  - name: "project-manager"
+    definition: "docs/ROLES.md#2-project-manager"
   - name: "project-administrator"
-    definition: ".ai/rulesets/00-terms-and-conventions.md#project-administrator"
+    definition: "docs/ROLES.md#3-project-administrator"
   - name: "content-editor"
-    definition: ".ai/rulesets/00-terms-and-conventions.md#content-editor"
-  - name: "devops"
-    definition: ".ai/rulesets/00-terms-and-conventions.md#devops"
+    definition: "docs/ROLES.md#4-content-editor"
+  - name: "devops-engineer"
+    definition: "docs/ROLES.md#5-devops-engineer"
 
 # File structure
 files:
@@ -91,3 +92,13 @@ files:
         description: "Architecture Decision Record template."
       - path: "templates/_changelog.md"
         description: "Changelog partial template for embedding in documents."
+  - group: "Documentation"
+    path: "docs"
+    description: "Project documentation including ADRs, guides, and role definitions."
+    files:
+      - path: "docs/ROLES.md"
+        description: "Authoritative source for project role definitions and boundaries."
+      - path: "docs/CONTRIBUTING.md"
+        description: "Contributor guidelines and workflow documentation."
+      - path: "docs/HEALTH-REPORT-2026-01.md"
+        description: "Repository health assessment and improvement tracking."

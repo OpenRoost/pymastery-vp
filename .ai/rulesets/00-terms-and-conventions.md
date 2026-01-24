@@ -16,40 +16,16 @@ Repositories
 
 ## Roles
 
-### Project Administrator
+| Role                    | Identifier               | Primary Scope                  |
+|-------------------------|--------------------------|--------------------------------|
+| Project Owner           | `project-owner`          | Strategic oversight            |
+| Project Manager         | `project-manager`        | Planning & coordination        |
+| Project Administrator   | `project-administrator`  | Infrastructure & tooling       |
+| Content Editor          | `content-editor`         | Pre-release content validation |
+| DevOps Engineer         | `devops-engineer`        | CI/CD & deployment automation  |
 
-Identifier: `project-administrator`
-
-Responsible for:
-
-- Repository structure and organization
-- CI/CD pipelines configuration
-- Static site generator setup and maintenance
-- Access control documentation
-- ADR documentation
-
-### Content Editor
-
-Identifier: `content-editor`
-
-Responsible for:
-
-- Grammar and spelling corrections
-- Formatting consistency
-- Documentation updates and accuracy
-- Metadata validation
-
-### DevOps
-
-Identifier: `devops`
-
-Responsible for:
-
-- CI/CD pipeline implementation and maintenance
-- Build automation and optimization
-- Deployment workflows
-- Infrastructure-as-code configurations
-- Monitoring and alerting setup
+For comprehensive role definitions, boundaries, responsibilities, and escalation paths,
+see [`docs/ROLES.md`](../../docs/ROLES.md).
 
 ## Scopes
 

@@ -25,9 +25,21 @@ This repository uses AI agents for infrastructure, tooling, and documentation ta
 
 ## Critical Rules
 
-1. **Content is immutable** — Do NOT modify course content in `src/` unless explicitly instructed
+1. **Content is immutable** — Do NOT modify course content unless explicitly instructed
 2. **You support, not author** — Organize, advise, build tooling. Do not write curriculum.
 3. **Confirm destructive actions** — File changes, deletions, or structural modifications require explicit approval
+
+## Roles
+
+| Role                    | Assignee       | Primary Scope                  |
+|-------------------------|----------------|--------------------------------|
+| `project-owner`         | Human          | Strategic oversight            |
+| `project-manager`       | AI / Human     | Planning & coordination        |
+| `project-administrator` | AI (Claude Code) | Infrastructure & tooling     |
+| `content-editor`        | AI (Claude Code) | Pre-release content validation |
+| `devops-engineer`       | AI (Claude Code) | CI/CD & deployment automation |
+
+See [`docs/ROLES.md`](docs/ROLES.md) for comprehensive role definitions, boundaries, and escalation paths.
 
 ## Configuration Index
 
@@ -35,10 +47,12 @@ This repository uses AI agents for infrastructure, tooling, and documentation ta
 .ai/
 ├── config.yaml                      # Project context, roles, file index
 └── rulesets/
-    ├── 00-terms-and-conventions.md  # Roles, scopes, naming conventions
+    ├── 00-terms-and-conventions.md  # Scopes, naming conventions
     ├── 01-general-guidelines.md     # Core principles, commit standards
     ├── 02-grammar-and-style.md      # American English, formatting rules
     └── 03-documentation.md          # Documentation types, ADR process
+docs/
+└── ROLES.md                         # Authoritative role definitions
 ```
 
 ## Allowed Autonomous Actions
