@@ -323,7 +323,7 @@ run: |
 
 2. **Updated CODEOWNERS** (`.github/CODEOWNERS`)
     - Added `* @shorodilov` as default rule for all contents
-    - Existing section-specific rules preserved (override default where applicable)
+    - Removed previous section-specific ownership rules so that the wildcard rule now applies to all paths
 
 3. **Removed duplicate .rst files** (`.github/`)
     - Deleted `CODE_OF_CONDUCT.rst` (keeping `.md`)
