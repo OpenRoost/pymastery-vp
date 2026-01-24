@@ -100,4 +100,4 @@ Contributing to the project
 ===========================
 
 This is an open-source project, so anyone is welcome to contribute to it.
-Please see `contributing guide <./.github/CONTRIBUTING.rst>`_ for more details.
+Please see `contributing guide <./.github/CONTRIBUTING.md>`_ for more details.
