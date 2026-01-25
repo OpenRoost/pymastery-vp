@@ -15,10 +15,12 @@
 
 [//]: # (order by version number descending)
 
-| ver. | Date       | Author                                    | Changes description |
-|------|------------|-------------------------------------------|---------------------|
-| 0.2  | 2026-01-25 | Serhii Horodilov                          | Fix typos           |
-| 0.1  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Initial draft       |
+| ver. | Date       | Author                                    | Changes description         |
+|------|------------|-------------------------------------------|-----------------------------|
+| 0.4  | 2026-01-25 | Serhii Horodilov                          | Fix typos                   |
+| 0.3  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Add ADR-004 cross-reference |
+| 0.2  | 2026-01-25 | Serhii Horodilov                          | Fix typos                   |
+| 0.1  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Initial draft               |
 
 </details>
 
@@ -190,9 +192,10 @@ ecosystem.
 This decision should be finalized after:
 
 1. ADR-003 (Repository File Structure) is resolved or decided in parallel
-2. Evaluation of migration effort for each candidate (depends on structure decision)
-3. Testing localization workflow with top candidates
-4. Assessment of feature requirements against course content needs
+2. ADR-004 (Presentation Framework) is resolved (may impact asset organization and SSG choice)
+3. Evaluation of migration effort for each candidate (depends on structure decision)
+4. Testing localization workflow with top candidates
+5. Assessment of feature requirements against course content needs
 
 ## Consequences
 
@@ -233,4 +236,5 @@ Implementation will likely include:
 ## Related
 
 - ADR-003: Repository File Structure (interdependent - structure decision affects migration effort)
+- ADR-004: Presentation Framework Handling (may affect asset requirements and SSG choice)
 - ADR-001: AI Guidelines Structure and Administration Framework
