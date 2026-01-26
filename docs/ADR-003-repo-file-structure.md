@@ -17,6 +17,7 @@
 
 | ver. | Date       | Author                                    | Changes description                          |
 |------|------------|-------------------------------------------|----------------------------------------------|
+| 0.5  | 2026-01-25 | Serhii Horodilov                          | Add `upstream` repository link               |
 | 0.4  | 2026-01-25 | Serhii Horodilov                          | Fix typos                                    |
 | 0.3  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Reframe as ru-RU localization, add pictures/ |
 | 0.2  | 2026-01-25 | Serhii Horodilov                          | Fix typos                                    |
@@ -321,7 +322,7 @@ Similar to Option 1, but use `_archive/ru-RU/` path instead of `locales/ru-RU/`.
 - [ADR-002][ADR-002]: Static Site Generator Replacement (interdependent – SSG may have i18n/locale expectations)
 - [ADR-004][ADR-004]: Presentation Framework Handling (may affect assets directory organization)
 - [ADR-001][ADR-001]: AI Guidelines Structure and Administration Framework
-- Upstream repository: [URL to be documented]
+- [Upstream repository][upstream]: Original work by @PonomaryovVladyslav and contributors
 
 [//]: # (@formatter:off)
 <!-- ADR references -->
@@ -329,4 +330,6 @@ Similar to Option 1, but use `_archive/ru-RU/` path instead of `locales/ru-RU/`.
 [ADR-002]: ./ADR-002-ssg-replacement.md
 [ADR-003]: ./ADR-003-repo-file-structure.md
 [ADR-004]: ./ADR-004-presentation-framework.md
+<!-- upstream repository -->
+[upstream]: https://github.com/PonomaryovVladyslav/PythonCourses.git
 [//]: # (formatter:on)
