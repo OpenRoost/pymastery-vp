@@ -1,12 +1,14 @@
+[//]: # (docs/ADR-003-repo-file-structure.md)
+
 # ADR-003: Repository File Structure
 
 [//]: # (@formatter:off)
 <!-- document status badges -->
 [draft]: https://img.shields.io/badge/document_status-draft-orange.svg
-[accepted]: https://img.shields.io/badge/document_status-accepted-green.svg
-[deprecated]: https://img.shields.io/badge/document_status-deprecated-lightgrey.svg
-[rejected]: https://img.shields.io/badge/document_status-rejected-red.svg
 [final]: https://img.shields.io/badge/document_status-final-blue.svg
+[accepted]: https://img.shields.io/badge/document_status-accepted-green.svg
+[rejected]: https://img.shields.io/badge/document_status-rejected-red.svg
+[deprecated]: https://img.shields.io/badge/document_status-deprecated-lightgrey.svg
 [//]: # (@formatter:on)
 ![status][accepted]
 

@@ -1,8 +1,7 @@
-[//]: # (templates/WP.md)
+[//]: # (docs/templates/WP.md)
 
 # Work Package: [Title]
 
-**Assignment Date:** YYYY-MM-DD
 **Assigned To:** `role-identifier` (Tool)
 **Assigned By:** `project-manager` (Claude Chat)
 **Priority:** High/Medium/Low
