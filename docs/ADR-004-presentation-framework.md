@@ -385,4 +385,4 @@ If issues arise, the presentation can temporarily reference CDN:
 [ADR-002]: ./ADR-002-ssg-replacement.md
 [ADR-003]: ./ADR-003-repo-file-structure.md
 [ADR-004]: ./ADR-004-presentation-framework.md
-[//]: # (formatter:on)
+[//]: # (@formatter:on)

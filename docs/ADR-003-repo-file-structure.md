@@ -454,4 +454,4 @@ If critical issues emerge:
 [ADR-004]: ./ADR-004-presentation-framework.md
 <!-- upstream repository -->
 [upstream]: https://github.com/PonomaryovVladyslav/PythonCourses.git
-[//]: # (formatter:on)
+[//]: # (@formatter:on)
