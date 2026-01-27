@@ -331,8 +331,8 @@ import 'impress.js';
 > [!NOTE]
 > **CSS Dependencies:** If the presentation uses impress.js CSS files, update those import paths as well following the
 > same pattern. For example:
-> - Before: `import '../assets/impress.js/css/impress-demo.css';`
-> - After: `import 'impress.js/css/impress-demo.css';`
+> - Before: `import '../assets/impress.js/css/impress-common.css';`
+> - After: `import 'impress.js/css/impress-common.css';`
 
 **3. Remove git submodule:**
 
