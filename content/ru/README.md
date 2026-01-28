@@ -14,7 +14,10 @@ This course was originally created by Vladyslav Ponomaryov and contributors. The
 
 ## Structure
 
-- `lessons/` - Original lesson files (`lesson*.md`, `module*.md`)
+- `lessons/` - Original lesson files (`lesson*.md`)
+- `modules/` - Module assignment files (`module*.md`)
+- `tasks/` - Task and homework files (`tasks_block*.md`, `web_homeworks.md`)
+- `extras/` - Additional materials (`before_postgres.md`, `pr_explanation*.md`)
 - `pictures/` - Images and diagrams for legacy lessons
 
 ## Active Content
