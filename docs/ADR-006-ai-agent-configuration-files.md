@@ -15,9 +15,10 @@
 
 [//]: # (order by version number descending)
 
-| ver. | Date       | Author                                    | Changes description |
-|------|------------|-------------------------------------------|---------------------|
-| 0.1  | 2025-01-29 | Claude Sonnet 4.5 <noreply@anthropic.com> | Initial draft       |
+| ver. | Date       | Author                                    | Changes description           |
+|------|------------|-------------------------------------------|-------------------------------|
+| 0.2  | 2026-01-29 | Claude Sonnet 4.5 <noreply@anthropic.com> | Remove implementation section |
+| 0.1  | 2026-01-29 | Claude Sonnet 4.5 <noreply@anthropic.com> | Initial draft                 |
 
 </details>
 
@@ -180,9 +181,8 @@ docs/
 
 ### Negative
 
-- **Synchronization Risk**: Two sources of truth (ROLES.md + agent files) must stay aligned
-- **Learning Curve**: Team must understand new format and YAML frontmatter
 - **Maintenance Overhead**: Additional files to keep updated
+- **Learning Curve**: Team must understand new format and YAML frontmatter
 - **Abstraction Complexity**: Introduces another layer in configuration architecture
 
 ### Neutral
@@ -190,111 +190,15 @@ docs/
 - **File Count Increase**: 4-5 new agent files added to repository
 - **Documentation Split**: Role information now spans ROLES.md and agent files
 - **Migration Effort**: Requires extracting operational instructions from ROLES.md
-
-## Implementation
-
-### Phase 1: Pilot (Validate Structure)
-
-1. **Create minimal `project-manager.agent.md`** as pilot
-2. Test with Claude Code in real conversation
-3. Validate YAML frontmatter parsing
-4. Confirm tool restrictions work as expected
-5. Gather learnings about what works/doesn't
-
-**Success Criteria:**
-- Agent file loads without errors
-- Tool restrictions are respected
-- Instructions are clear and actionable
-- Format is maintainable
-
-### Phase 2: Template Creation
-
-1. Extract patterns from pilot
-2. Create `templates/AGENT.md` with:
-   - Frontmatter property documentation
-   - Section structure guidelines
-   - Tool access examples
-   - Best practices notes
-3. Document frontmatter properties (name, description, tools, target)
-4. Provide examples of good vs. poor agent instructions
-
-### Phase 3: Rollout
-
-1. Create remaining agent files using template:
-   - `project-administrator.agent.md`
-   - `content-editor.agent.md`
-   - `devops-engineer.agent.md`
-2. Create `.github/agents` symlink
-3. Test each agent configuration
-4. Update ROLES.md to reference agent files
-
-### Phase 4: Documentation & Maintenance
-
-1. Document agent file format in project documentation
-2. Establish review process for agent file changes
-3. Create guidelines for keeping ROLES.md and agent files synchronized
-4. Add agent file validation to CI (future consideration)
-
-### Tool Access Strategy
-
-**Restrictive Approach** (recommended):
-- Explicitly grant only tools an agent truly needs
-- Makes capabilities clear and prevents accidental overreach
-- Forces conscious thinking about role boundaries
-
-**Per-Role Tool Assignments:**
-```yaml
-# project-manager: Planning and analysis only
-tools: ["read", "search"]
-
-# project-administrator: Full execution capabilities
-tools: ["read", "edit", "search", "shell"]
-
-# content-editor: Content validation and correction
-tools: ["read", "edit"]
-
-# devops-engineer: CI/CD and deployment
-tools: ["read", "edit", "search", "shell"]
-```
-
-### Agent File Content Balance
-
-Each agent file should contain:
-- **Frontmatter**: Metadata, tool access (structured)
-- **Body**: 
-  - Identity and purpose (concise, 1-2 paragraphs)
-  - Core responsibilities (actionable bullet points)
-  - Decision boundaries (specific examples)
-  - Key workflows (high-level, details referenced)
-  - Reference to ROLES.md for complete context
-
-**Philosophy**: Agent files should be self-contained for common cases but reference ROLES.md for edge cases and complete context.
-
-### Synchronization Strategy
-
-**To minimize drift between ROLES.md and agent files:**
-
-1. **ROLES.md is Source**: Role definitions, scope, authority remain in ROLES.md
-2. **Agent Files are Implementation**: Operational instructions derived from ROLES.md
-3. **Change Process**: 
-   - Role changes → Update ROLES.md first
-   - Extract operational implications → Update agent files
-4. **Review Checklist**: When updating either, ask "Does the other need updating?"
-
-### Migration Notes
-
-- No MCP server configuration in agent files (repository-level limitation)
-- MCP servers configured separately in repository settings
-- Agent files can reference available MCP tools in `tools` property
-- Template will document MCP integration patterns for future use
+- **Synchronization Consideration**: ROLES.md and agent files need to stay aligned (could be addressed with file partials in future)
 
 ## Related
 
 - [ROLES.md](./ROLES.md): Authoritative human-readable role definitions
 - [ADR-001](./ADR-001-ai-guidelines-structure.md): AI Guidelines Structure
 - [GitHub Copilot Custom Agents Documentation](https://docs.github.com/en/copilot/reference/custom-agents-configuration)
-- Template: `templates/AGENT.md` (to be created in Phase 2)
-- Pilot: `.ai/agents/project-manager.agent.md` (to be created in Phase 1)
+- Template: `templates/AGENT.md` (to be created)
+- Pilot: `.ai/agents/project-manager.agent.md` (to be created)
 
 [//]: # (@formatter:off)
 <!-- ADR references -->
