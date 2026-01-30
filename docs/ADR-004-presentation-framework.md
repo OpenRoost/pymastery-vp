@@ -1,14 +1,12 @@
-[//]: # (docs/ADR-004-presentation-framework.md)
-
 # ADR-004: Presentation Framework Handling
 
 [//]: # (@formatter:off)
 <!-- document status badges -->
 [draft]: https://img.shields.io/badge/document_status-draft-orange.svg
-[final]: https://img.shields.io/badge/document_status-final-blue.svg
 [accepted]: https://img.shields.io/badge/document_status-accepted-green.svg
-[rejected]: https://img.shields.io/badge/document_status-rejected-red.svg
 [deprecated]: https://img.shields.io/badge/document_status-deprecated-lightgrey.svg
+[rejected]: https://img.shields.io/badge/document_status-rejected-red.svg
+[final]: https://img.shields.io/badge/document_status-final-blue.svg
 [//]: # (@formatter:on)
 ![status][accepted]
 
@@ -19,6 +17,7 @@
 
 | ver. | Date       | Author                                    | Changes description                               |
 |------|------------|-------------------------------------------|---------------------------------------------------|
+| 1.1  | 2026-01-31 | Serhii Horodilov, Claude Sonnet 4.5       | Revise decision: Option 5→3 (separate repo)       |
 | 1.0  | 2026-01-27 | Serhii Horodilov                          | Accepted                                          |
 | 0.6  | 2026-01-27 | Claude Sonnet 4.5 <noreply@anthropic.com> | Final review improvements and status finalization |
 | 0.5  | 2026-01-27 | Serhii Horodilov                          | Fix typos and formatting                          |
@@ -28,16 +27,6 @@
 | 0.1  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Initial draft                                     |
 
 </details>
-
-> [!NOTE]
-> **Scope of PR #238**: This ADR is part of a comprehensive documentation effort that introduces three interdependent
-> Architecture Decision Records:
-> - **ADR-002**: Static Site Generator Replacement (Sphinx → MkDocs)
-> - **ADR-003**: Repository File Structure (locale-based content organization)
-> - **ADR-004** (this document): Presentation Framework Handling (impress.js submodule → npm dependency)
->
-> These ADRs address related aspects of the project's documentation infrastructure and should be reviewed together
-> to understand the full scope of changes being proposed.
 
 ## Context
 
@@ -210,208 +199,109 @@ dependency in `package.json` and use build tools to bundle it.
 
 ## Decision
 
-**Decision:** **Option 5 (npm Dependency)** - Lowest-effort implementation
+**Decision:** **Option 3 (Extract to Separate Repository)** - REVISED from v1.0
+
+**Revision Rationale (v1.1 - 2026-01-31):**
+
+During the planning phase, architectural clarification revealed:
+
+- **Presentations are standalone**: Not embedded in lesson pages, delivered separately from course content
+- **Separate build process**: Presentations require webpack/vite build, independent of MkDocs SSG
+- **Multiple presentations planned**: One per topic (multiple expected)
+- **Independent deployment**: Presentations hosted/deployed separately from the course site
+
+**Option 3 (Separate Repository) better matches this architecture** than the original Option 5 (npm in the main repo)
+because:
+
+1. Separates concerns: Course content (MkDocs) vs. presentation tools (webpack/vite)
+2. Independent scaling: Presentation repo grows without affecting course repo
+3. Build simplicity: Each repo has a single build responsibility
+4. Deployment flexibility: Independent release cycles
+5. Eliminates webpack from the main course repo (MkDocs only)
+
+**Previous Decision (v1.0):** Option 5 (npm Dependency)  
+**Why changed:** New understanding of presentation architecture emerged before implementation
+
+---
 
 **Findings:**
 
 After verification, exactly **one presentation exists** in the repository at `src/rdbms/presentations/normalization/`,
 with impress.js imported via `src/conf.js` webpack entry point.
 
+Additional findings during planning:
+
+- Presentations are **not embedded** in MkDocs-generated pages
+- Presentations require **separate build** (webpack/vite + impress.js)
+- One presentation planned **per course topic** (multiple expected)
+- Presentations are **standalone tools**, not integral lesson content
+
 **Rationale:**
 
-1. **Keep presentation in the main repository**: No need for a separate submodule or repository
-2. **Remove impress.js git submodule**: Eliminates submodule management complexity
-3. **Add impress.js as npm build dependency**: Modern dependency management using existing package.json
-4. **Leverage existing webpack setup**: Zero new tooling required; webpack 5 already configured
+1. **Extract presentation to separate repository**: `pymastery-presentations`
+2. **Remove impress.js git submodule**: Eliminates submodule complexity from main repo
+3. **Add impress.js as npm dependency in presentation repo**: Modern dependency management
+4. **Separate build systems**: The main repo uses MkDocs only, presentation repo uses webpack/vite
+5. **Clean architectural separation**: Content vs. tools
 
-**Why Option 5 (npm Dependency):**
+**Why Option 3 (Separate Repository):**
 
-- **Matches existing pattern**: Project already uses npm for dependencies (mermaid@10.8.0, webpack tooling)
-- **Leverages existing infrastructure**: Webpack 5 + html-webpack-plugin already in place
-- **Self-contained development**: Works offline (unlike the CDN approach in Option 2)
-- **Version locked**: package-lock.json ensures consistency across environments
-- **Minimal implementation effort**: Single line addition to package.json + import path update
-- **Future-proof**: If more presentations are added, infrastructure is ready
-- **Eliminates submodule complexity**: Standard git workflow, no `--recurse-submodules` needed
-- **Standard workflow**: Contributors already familiar with npm (mermaid pattern)
+- **Architectural clarity**: Course content repo vs. presentation tools repo
+- **Build separation**: Main repo = MkDocs only; Presentation repo = webpack/vite only
+- **Independent scaling**: Adding presentations doesn't bloat course repo
+- **Deployment independence**: Deploy course updates without rebuilding presentations
+- **Single responsibility**: Each repo has one clear purpose
+- **Eliminates webpack from main repo**: Simplifies course contributor workflow
+- **Future-proof**: Natural pattern for multiple standalone presentations
+- **Flexible presentation hosting**: Can host at subdomain/separate path
 
-**Implementation Approach, Lowest Effort:**
+**Implementation Approach:**
 
-1. Add `impress.js` as dependency to package.json (one line: `npm install impress.js --save`)
-2. Update webpack entry point imports (change `import '../assets/impress.js/...'` to `import 'impress.js'` in
-   `src/conf.js`)
-3. Remove git submodule at `/assets/impress.js/` (`git submodule deinit` and `git rm`)
-4. Verify webpack bundles impress.js correctly (npm run build)
-5. Test presentation functionality with bundled output
+1. Create new repository: `pymastery-presentations`
+2. Extract presentation with git history using `git subtree split`
+3. Push to a new repository
+4. Set up webpack/vite + impress.js (npm or CDN) in the presentation repo
+5. Remove presentation and git submodule from the main course repo
+6. Update the course lesson to link to the presentation (external reference)
+7. Set up independent CI/CD for presentation repo
+
+**Estimated Implementation Time:** 2–4 hours (repo setup + extraction + CI/CD configuration)
 
 **Dependencies Resolved:**
 
-This decision removes the blocker for ADR-002 (SSG Replacement), as presentation requirements are now clarified and
-asset organization is simplified.
+This decision removes the blocker for ADR-002 (SSG Replacement), as presentation requirements are now clarified.
+Main course repo can focus entirely on MkDocs, without webpack complexity.
 
 ## Consequences
 
-**Based on Chosen Option 5 (npm Dependency):**
+**Based on Chosen Option 3 (Separate Repository):**
 
 ### Positive
 
-- **Eliminates submodule complexity**: Standard git workflow without special commands
-- **Faster clone times**: No submodule to recurse, improved contributor onboarding experience
-- **Modern dependency management**: Uses npm ecosystem properly, matches an existing mermaid pattern
-- **Clearer project structure**: Assets directory contains only actual course assets
-- **Reduced maintenance burden**: npm handles library updates via standard tooling
-- **Version control**: Exact version pinning in package.json and package-lock.json
-- **Self-contained development**: Works offline during development (unlike the CDN approach)
-- **Minimal migration effort**: Leverages existing webpack configuration, zero new tooling
-- **No learning curve**: Contributors already familiar with npm workflow from mermaid
+- **Architectural clarity**: Clean separation between course content and presentation tools
+- **Eliminates submodule complexity**: Main repo has a standard git workflow, no special commands
+- **Faster clone times**: The Main repo is significantly smaller without a presentation framework
+- **Build simplicity**: The main repo uses MkDocs only; no webpack complexity for course contributors
+- **Independent scaling**: Presentation repo grows independently without affecting course repo
+- **Deployment independence**: Course updates and presentation updates have separate release cycles
+- **Single responsibility**: Each repository has one clear purpose
+- **Focused contributor workflow**: Course contributors don't need presentation build knowledge
+- **Flexible hosting**: Presentations can be hosted at subdomain or separate infrastructure
+- **Future-proof**: Natural pattern for adding multiple standalone presentations
 
 ### Negative
 
-- **One-time migration effort**: update presentation imports and remove submodule
-- **Dependency added**: Project now has one additional npm dependency (minimal impact)
-- **Build process required**: Presentation now requires `npm install` and webpack build (already required for mermaid
-  and other assets)
+- **Repository coordination**: Managing two repositories instead of one
+- **Initial extraction effort**: ~2–4 hours to set up a separate repo with proper CI/CD
+- **Cross-repository references**: Course lessons link to external presentation URLs
+- **Two CI/CD pipelines**: Separate build/deployment workflows to maintain
 
 ### Neutral
 
-- **No impact on course content**: Single presentation continues to work identically after migration
-- **Future presentations enabled**: Infrastructure ready if more presentations are added
-- **Webpack requirement unchanged**: Build tooling already in place for existing dependencies
-
-## Implementation
-
-**Chosen Implementation: Option 5 (npm Dependency), Lowest Effort Approach**
-
-### Step-by-Step Implementation:
-
-**1. Add impress.js as `npm` dependency:**
-
-```bash
-npm install impress.js --save
-```
-
-This updates `package.json`:
-
-```json
-{
-    "dependencies": {
-        "@mermaid-js/mermaid-cli": "^10.8.0",
-        "mermaid": "^10.8.0",
-        "impress.js": "^2.0.0"
-    }
-}
-```
-
-> [!NOTE]
-> The caret range (`^2.0.0`) allows patch and minor updates (2.0.x, 2.x.x) while `package-lock.json` locks the exact
-> installed version. For stricter control, use an exact version without a caret (e.g., `"2.0.0"`).
-
-**2. Update webpack entry point imports** (in `src/conf.js` or presentation entry point):
-
-**Before** (git submodule reference):
-
-```javascript
-// In src/conf.js or presentation entry point
-import '../assets/impress.js/js/impress.js';
-```
-
-**After** (npm package import):
-
-```javascript
-// In src/conf.js or presentation entry point
-import 'impress.js';
-```
-
-> [!IMPORTANT]
-> **Technical Detail:** Presentation HTML files that are part of the webpack build reference webpack's **bundled
-> output** (currently `_build/webpack/js/main.bundle.js`, per `webpack.config.js`), not npm package names directly.
-> Changes are made to JavaScript import statements in webpack entry points, which webpack then bundles for browser
-> consumption. Legacy standalone presentations (for example
-> `src/rdbms/presentations/normalization.html`) may still reference `assets/impress.js/...` directly; they are not
-> wired through the webpack bundle and should be updated or deprecated separately if needed.
-
-> [!NOTE]
-> **CSS Dependencies:** If the presentation uses impress.js CSS files, update those import paths as well following the
-> same pattern. For example:
-> - Before: `import '../assets/impress.js/css/impress-common.css';`
-> - After: `import 'impress.js/css/impress-common.css';`
-
-**3. Remove git submodule:**
-
-```bash
-git submodule deinit assets/impress.js
-git rm assets/impress.js
-rm -rf .git/modules/assets/impress.js
-```
-
-**4. Verify build:**
-
-```bash
-npm install
-npm run build
-```
-
-Existing webpack configuration will automatically bundle impress.js with the presentation.
-
-**5. Test presentation:**
-
-```bash
-npm start  # Development server
-# OR
-npm run build  # Production build
-```
-
-**Verification Checklist:**
-
-- ✅ Presentation loads without console errors
-- ✅ Slide navigation works (arrow keys, click targets)
-- ✅ Visual styles render correctly (no missing CSS)
-- ✅ Transitions/animations function as expected
-- ✅ No webpack bundling errors in build output
-
----
-
-### Technical Details:
-
-- **Webpack configuration**: No changes required, existing html-webpack-plugin handles bundling
-- **Version pinning**: Locked to a specific version in package-lock.json (e.g., `impress.js@2.0.0`)
-- **Build output**: Presentation HTML with bundled impress.js in the output directory
-- **Development workflow**: `npm start` for dev server, `npm run build` for production
-
----
-
-### Rollback Plan:
-
-If issues arise during or after implementation, use one of the following rollback strategies:
-
-**Option 1: Temporary CDN Reference** (Quick fix for broken presentation):
-
-```html
-
-<script src="https://cdn.jsdelivr.net/gh/impress/impress.js@2.0.0/js/impress.js"></script>
-```
-
-This provides immediate functionality while investigating npm/webpack issues.
-
-**Option 2: Restore Git Submodule** (If npm approach is fundamentally incompatible):
-
-```bash
-git revert [commit-hash]  # Revert the submodule removal commit
-git submodule update --init --recursive
-```
-
-This restores the original submodule-based setup completely.
-
----
-
-### Success Criteria:
-
-- ✅ Git submodule removed, standard git workflow restored
-- ✅ Presentation loads and functions correctly
-- ✅ Build process completes without errors
-- ✅ No git submodule references remain
-- ✅ package.json and package-lock.json updated
-- ✅ Contributors can clone and build without additional steps beyond standard `npm install`
+- **Same total content**: Presentation moved to different location, not removed
+- **Git history preserved**: Full history maintained through `git subtree split`
+- **Presentation functionality unchanged**: Works identically in the new repository
+- **Same team ownership**: Content creators maintain both repositories
 
 ## Related
 
