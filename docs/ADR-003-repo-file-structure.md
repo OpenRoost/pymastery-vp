@@ -39,7 +39,7 @@
 > Architecture Decision Records:
 > - **ADR-002**: Static Site Generator Replacement (Sphinx → MkDocs)
 > - **ADR-003** (this document): Repository File Structure (locale-based content organization)
-> - **ADR-004**: Presentation Framework Handling (impress.js submodule → npm dependency)
+> - **ADR-004**: Presentation Framework Handling (Extract to Separate Repository)
 >
 > These ADRs address related aspects of the project's documentation infrastructure and should be reviewed together
 > to understand the full scope of changes being proposed.
