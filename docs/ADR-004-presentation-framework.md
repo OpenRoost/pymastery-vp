@@ -8,7 +8,7 @@
 [deprecated]: https://img.shields.io/badge/document_status-deprecated-lightgrey.svg
 [final]: https://img.shields.io/badge/document_status-final-blue.svg
 [//]: # (@formatter:on)
-![status][accepted]
+![status][final]
 
 <details>
 <summary>Document Changelog</summary>
@@ -17,6 +17,7 @@
 
 | ver. | Date       | Author                                    | Changes description                               |
 |------|------------|-------------------------------------------|---------------------------------------------------|
+| 1.2  | 2026-01-31 | Serhii Horodilov, Claude Sonnet 4.5       | Simplify scope: remove submodule; final           |
 | 1.1  | 2026-01-31 | Serhii Horodilov, Claude Sonnet 4.5       | Revise decision: Option 5→3 (separate repo)       |
 | 1.0  | 2026-01-27 | Serhii Horodilov                          | Accepted                                          |
 | 0.6  | 2026-01-27 | Claude Sonnet 4.5 <noreply@anthropic.com> | Final review improvements and status finalization |
@@ -199,113 +200,69 @@ dependency in `package.json` and use build tools to bundle it.
 
 ## Decision
 
-**Decision:** **Option 3 (Extract to Separate Repository)** - REVISED from v1.0
+**Decision:** **Remove impress.js Git Submodule** – SIMPLIFIED SCOPE from v1.1
 
-**Revision Rationale (v1.1 - 2026-01-31):**
+**Scope Clarification (v1.2 - 2026-01-31):**
 
-During the planning phase, architectural clarification revealed:
+This ADR addresses **only the impress.js framework/submodule question**: "What do we do with `/assets/impress.js/`
+submodule?"
 
-- **Presentations are standalone**: Not embedded in lesson pages, delivered separately from course content
-- **Separate build process**: Presentations require webpack/vite build, independent of MkDocs SSG
-- **Multiple presentations planned**: One per topic (multiple expected)
-- **Independent deployment**: Presentations hosted/deployed separately from the course site
-
-**Option 3 (Separate Repository) better matches this architecture** than the original Option 5 (npm in the main repo)
-because:
-
-1. Separates concerns: Course content (MkDocs) vs. presentation tools (webpack/vite)
-2. Independent scaling: Presentation repo grows without affecting course repo
-3. Build simplicity: Each repo has a single build responsibility
-4. Deployment flexibility: Independent release cycles
-5. Eliminates webpack from the main course repo (MkDocs only)
-
-**Previous Decision (v1.0):** Option 5 (npm Dependency)  
-**Why changed:** New understanding of presentation architecture emerged before implementation
-
----
-
-**Findings:**
-
-After verification, exactly **one presentation exists** in the repository at `src/rdbms/presentations/normalization/`,
-with impress.js imported via `src/conf.js` webpack entry point.
-
-Additional findings during planning:
-
-- Presentations are **not embedded** in MkDocs-generated pages
-- Presentations require **separate build** (webpack/vite + impress.js)
-- One presentation planned **per course topic** (multiple expected)
-- Presentations are **standalone tools**, not integral lesson content
+**Decision:** Remove the git submodule entirely from the main repository.
 
 **Rationale:**
 
-1. **Extract presentation to separate repository**: `pymastery-presentations`
-2. **Remove impress.js git submodule**: Eliminates submodule complexity from main repo
-3. **Add impress.js as npm dependency in presentation repo**: Modern dependency management
-4. **Separate build systems**: The main repo uses MkDocs only, presentation repo uses webpack/vite
-5. **Clean architectural separation**: Content vs. tools
+- Git submodule adds development friction (requires `--recurse-submodules`, manual updates)
+- Presentation content will be extracted to a separate repository (see ADR-006)
+- The separate presentation repository will handle impress.js dependency (npm or CDN)
+- The main course repository focuses on content delivery (MkDocs), no presentation framework needed
 
-**Why Option 3 (Separate Repository):**
+**Presentation Content:** Addressed separately in [ADR-006][ADR-006] (Presentation Content Repository Separation)
 
-- **Architectural clarity**: Course content repo vs. presentation tools repo
-- **Build separation**: Main repo = MkDocs only; Presentation repo = webpack/vite only
-- **Independent scaling**: Adding presentations doesn't bloat course repo
-- **Deployment independence**: Deploy course updates without rebuilding presentations
-- **Single responsibility**: Each repo has one clear purpose
-- **Eliminates webpack from main repo**: Simplifies course contributor workflow
-- **Future-proof**: Natural pattern for multiple standalone presentations
-- **Flexible presentation hosting**: Can host at subdomain/separate path
+---
 
-**Implementation Approach:**
+**Previous Decision (v1.0):** Option 5 (npm Dependency)  
+**Previous Revision (v1.1):** Option 3 (Extract to Separate Repository) – scope was too broad  
+**Current Decision (v1.2):** Remove submodule - presentation extraction covered in ADR-006
 
-1. Create new repository: `pymastery-presentations`
-2. Extract presentation with git history using `git subtree split`
-3. Push to a new repository
-4. Set up webpack/vite + impress.js (npm or CDN) in the presentation repo
-5. Remove presentation and git submodule from the main course repo
-6. Update the course lesson to link to the presentation (external reference)
-7. Set up independent CI/CD for presentation repo
+---
 
-**Estimated Implementation Time:** 2–4 hours (repo setup + extraction + CI/CD configuration)
+**Implementation:**
 
-**Dependencies Resolved:**
+1. Remove git submodule: `git submodule deinit && git rm assets/impress.js`
+2. Presentation content extraction handled by ADR-006
 
-This decision removes the blocker for ADR-002 (SSG Replacement), as presentation requirements are now clarified.
-Main course repo can focus entirely on MkDocs, without webpack complexity.
+**Estimated Time:** 5 minutes
+
+**Dependencies:**
+
+- This decision complements [ADR-006][ADR-006] (Presentation Content Repository Separation)
+- Unblocks [ADR-002][ADR-002] (SSG Replacement) – the main repo can focus on MkDocs
 
 ## Consequences
 
-**Based on Chosen Option 3 (Separate Repository):**
+**Based on Decision: Remove impress.js Git Submodule**
 
 ### Positive
 
-- **Architectural clarity**: Clean separation between course content and presentation tools
-- **Eliminates submodule complexity**: Main repo has a standard git workflow, no special commands
-- **Faster clone times**: The Main repo is significantly smaller without a presentation framework
-- **Build simplicity**: The main repo uses MkDocs only; no webpack complexity for course contributors
-- **Independent scaling**: Presentation repo grows independently without affecting course repo
-- **Deployment independence**: Course updates and presentation updates have separate release cycles
-- **Single responsibility**: Each repository has one clear purpose
-- **Focused contributor workflow**: Course contributors don't need presentation build knowledge
-- **Flexible hosting**: Presentations can be hosted at subdomain or separate infrastructure
-- **Future-proof**: Natural pattern for adding multiple standalone presentations
+- **Eliminates submodule complexity**: Standard git workflow, no `--recurse-submodules` needed
+- **Faster clones**: No submodule to download
+- **Simpler contributor workflow**: One less thing to understand
+- **Cleaner repository**: Presentation framework managed elsewhere (ADR-006)
+- **Focuses main repo**: Course content only, no presentation tooling
 
 ### Negative
 
-- **Repository coordination**: Managing two repositories instead of one
-- **Initial extraction effort**: ~2–4 hours to set up a separate repo with proper CI/CD
-- **Cross-repository references**: Course lessons link to external presentation URLs
-- **Two CI/CD pipelines**: Separate build/deployment workflows to maintain
+- **None**: Submodule removal is purely beneficial (presentations handled in ADR-006)
 
 ### Neutral
 
-- **Same total content**: Presentation moved to different location, not removed
-- **Git history preserved**: Full history maintained through `git subtree split`
-- **Presentation functionality unchanged**: Works identically in the new repository
-- **Same team ownership**: Content creators maintain both repositories
+- **Presentation content handling**: Covered separately in [ADR-006][ADR-006]
+- **Git history**: Submodule reference removed, but history preserved in the main repo
 
 ## Related
 
-- [ADR-002][ADR-002]: Static Site Generator Replacement (may affect presentation delivery approach)
+- [ADR-006][ADR-006]: Presentation Content Repository Separation (where presentation content will live)
+- [ADR-002][ADR-002]: Static Site Generator Replacement (unblocked by removing a presentation framework)
 - [ADR-003][ADR-003]: Repository File Structure (affects overall assets organization)
 - [ADR-001][ADR-001]: AI Guidelines Structure and Administration Framework
 
@@ -315,4 +272,5 @@ Main course repo can focus entirely on MkDocs, without webpack complexity.
 [ADR-002]: ./ADR-002-ssg-replacement.md
 [ADR-003]: ./ADR-003-repo-file-structure.md
 [ADR-004]: ./ADR-004-presentation-framework.md
+[ADR-006]: ./ADR-006-presentation-content.md
 [//]: # (@formatter:on)
