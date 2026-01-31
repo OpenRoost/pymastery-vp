@@ -14,8 +14,5 @@ import "../assets/icons/cross-mark-svgrepo-com.svg"
 import "../assets/icons/moon-svgrepo-com.svg"
 import "../assets/icons/sun-svgrepo-com.svg"
 
-// import and initialize impress.js presentation framework
-import "../assets/impress.js/js/impress"
-import "../assets/impress.js/css/impress-common.css"
-
-impress().init()
+// impress.js presentation framework removed per ADR-004
+// Presentation content will be handled in a separate repository (see ADR-006)
