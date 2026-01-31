@@ -1,3 +1,5 @@
+[//]: # (docs/ADR-006-presentation-content.md)
+
 # ADR-006: Presentation Content Repository Separation
 
 [//]: # (@formatter:off)
