@@ -1,43 +1,33 @@
-[//]: # (docs/ADR-004-presentation-framework.md)
-
 # ADR-004: Presentation Framework Handling
 
 [//]: # (@formatter:off)
 <!-- document status badges -->
 [draft]: https://img.shields.io/badge/document_status-draft-orange.svg
-[final]: https://img.shields.io/badge/document_status-final-blue.svg
 [accepted]: https://img.shields.io/badge/document_status-accepted-green.svg
 [rejected]: https://img.shields.io/badge/document_status-rejected-red.svg
 [deprecated]: https://img.shields.io/badge/document_status-deprecated-lightgrey.svg
+[final]: https://img.shields.io/badge/document_status-final-blue.svg
 [//]: # (@formatter:on)
-![status][accepted]
+![status][final]
 
 <details>
 <summary>Document Changelog</summary>
 
 [//]: # (order by version number descending)
 
-| ver. | Date       | Author                                    | Changes description                               |
-|------|------------|-------------------------------------------|---------------------------------------------------|
-| 1.0  | 2026-01-27 | Serhii Horodilov                          | Accepted                                          |
-| 0.6  | 2026-01-27 | Claude Sonnet 4.5 <noreply@anthropic.com> | Final review improvements and status finalization |
-| 0.5  | 2026-01-27 | Serhii Horodilov                          | Fix typos and formatting                          |
-| 0.4  | 2026-01-27 | Claude Sonnet 4.5 <noreply@anthropic.com> | Technical corrections per implementation review   |
-| 0.3  | 2026-01-26 | Claude Sonnet 4.5 <noreply@anthropic.com> | Complete final draft                              |
-| 0.2  | 2026-01-25 | Serhii Horodilov                          | Fix links and typos                               |
-| 0.1  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Initial draft                                     |
+| ver. | Date       | Author                              | Changes description                               |
+|------|------------|-------------------------------------|---------------------------------------------------|
+| 1.2  | 2026-01-31 | Serhii Horodilov, Claude Sonnet 4.5 | Simplify scope: remove submodule; final           |
+| 1.1  | 2026-01-31 | Serhii Horodilov, Claude Sonnet 4.5 | Revise decision: Option 5→3 (separate repo)       |
+| 1.0  | 2026-01-27 | Serhii Horodilov                    | Accepted                                          |
+| 0.6  | 2026-01-27 | Claude Sonnet 4.5                   | Final review improvements and status finalization |
+| 0.5  | 2026-01-27 | Serhii Horodilov                    | Fix typos and formatting                          |
+| 0.4  | 2026-01-27 | Claude Sonnet 4.5                   | Technical corrections per implementation review   |
+| 0.3  | 2026-01-26 | Claude Sonnet 4.5                   | Complete final draft                              |
+| 0.2  | 2026-01-25 | Serhii Horodilov                    | Fix links and typos                               |
+| 0.1  | 2026-01-25 | Claude Sonnet 4.5                   | Initial draft                                     |
 
 </details>
-
-> [!NOTE]
-> **Scope of PR #238**: This ADR is part of a comprehensive documentation effort that introduces three interdependent
-> Architecture Decision Records:
-> - **ADR-002**: Static Site Generator Replacement (Sphinx → MkDocs)
-> - **ADR-003**: Repository File Structure (locale-based content organization)
-> - **ADR-004** (this document): Presentation Framework Handling (impress.js submodule → npm dependency)
->
-> These ADRs address related aspects of the project's documentation infrastructure and should be reviewed together
-> to understand the full scope of changes being proposed.
 
 ## Context
 
@@ -210,212 +200,68 @@ dependency in `package.json` and use build tools to bundle it.
 
 ## Decision
 
-**Decision:** **Option 5 (npm Dependency)** - Lowest-effort implementation
+**Decision:** **Remove impress.js Git Submodule** – SIMPLIFIED SCOPE from v1.1
 
-**Findings:**
+**Scope Clarification (v1.2 - 2026-01-31):**
 
-After verification, exactly **one presentation exists** in the repository at `src/rdbms/presentations/normalization/`,
-with impress.js imported via `src/conf.js` webpack entry point.
+This ADR addresses **only the impress.js framework/submodule question**: "What do we do with `/assets/impress.js/`
+submodule?"
+
+**Decision:** Remove the git submodule entirely from the main repository.
 
 **Rationale:**
 
-1. **Keep presentation in the main repository**: No need for a separate submodule or repository
-2. **Remove impress.js git submodule**: Eliminates submodule management complexity
-3. **Add impress.js as npm build dependency**: Modern dependency management using existing package.json
-4. **Leverage existing webpack setup**: Zero new tooling required; webpack 5 already configured
+- Git submodule adds development friction (requires `--recurse-submodules`, manual updates)
+- Presentation content will be extracted to a separate repository (see ADR-006)
+- The separate presentation repository will handle impress.js dependency (npm or CDN)
+- The main course repository focuses on content delivery (MkDocs), no presentation framework needed
 
-**Why Option 5 (npm Dependency):**
+**Presentation Content:** Addressed separately in [ADR-006][ADR-006] (Presentation Content Repository Separation)
 
-- **Matches existing pattern**: Project already uses npm for dependencies (mermaid@10.8.0, webpack tooling)
-- **Leverages existing infrastructure**: Webpack 5 + html-webpack-plugin already in place
-- **Self-contained development**: Works offline (unlike the CDN approach in Option 2)
-- **Version locked**: package-lock.json ensures consistency across environments
-- **Minimal implementation effort**: Single line addition to package.json + import path update
-- **Future-proof**: If more presentations are added, infrastructure is ready
-- **Eliminates submodule complexity**: Standard git workflow, no `--recurse-submodules` needed
-- **Standard workflow**: Contributors already familiar with npm (mermaid pattern)
+---
 
-**Implementation Approach, Lowest Effort:**
+**Previous Decision (v1.0):** Option 5 (npm Dependency)  
+**Previous Revision (v1.1):** Option 3 (Extract to Separate Repository) – scope was too broad  
+**Current Decision (v1.2):** Remove submodule - presentation extraction covered in ADR-006
 
-1. Add `impress.js` as dependency to package.json (one line: `npm install impress.js --save`)
-2. Update webpack entry point imports (change `import '../assets/impress.js/...'` to `import 'impress.js'` in
-   `src/conf.js`)
-3. Remove git submodule at `/assets/impress.js/` (`git submodule deinit` and `git rm`)
-4. Verify webpack bundles impress.js correctly (npm run build)
-5. Test presentation functionality with bundled output
+---
 
-**Dependencies Resolved:**
+**Dependencies:**
 
-This decision removes the blocker for ADR-002 (SSG Replacement), as presentation requirements are now clarified and
-asset organization is simplified.
+- This decision complements [ADR-006][ADR-006] (Presentation Content Repository Separation)
+- Unblocks [ADR-002][ADR-002] (SSG Replacement) – the main repo can focus on MkDocs
 
 ## Consequences
 
-**Based on Chosen Option 5 (npm Dependency):**
+**Based on Decision: Remove impress.js Git Submodule**
 
 ### Positive
 
-- **Eliminates submodule complexity**: Standard git workflow without special commands
-- **Faster clone times**: No submodule to recurse, improved contributor onboarding experience
-- **Modern dependency management**: Uses npm ecosystem properly, matches an existing mermaid pattern
-- **Clearer project structure**: Assets directory contains only actual course assets
-- **Reduced maintenance burden**: npm handles library updates via standard tooling
-- **Version control**: Exact version pinning in package.json and package-lock.json
-- **Self-contained development**: Works offline during development (unlike the CDN approach)
-- **Minimal migration effort**: Leverages existing webpack configuration, zero new tooling
-- **No learning curve**: Contributors already familiar with npm workflow from mermaid
+- **Eliminates submodule complexity**: Standard git workflow, no `--recurse-submodules` needed
+- **Faster clones**: No submodule to download
+- **Simpler contributor workflow**: One less thing to understand
+- **Cleaner repository**: Presentation framework managed elsewhere (ADR-006)
+- **Focuses main repo**: Course content only, no presentation tooling
 
 ### Negative
 
-- **One-time migration effort**: update presentation imports and remove submodule
-- **Dependency added**: Project now has one additional npm dependency (minimal impact)
-- **Build process required**: Presentation now requires `npm install` and webpack build (already required for mermaid
-  and other assets)
+- **Potential build and presentation breakage if sequencing is wrong**: The current repo still imports/references
+  `assets/impress.js` (for example from `src/conf.js` and `src/rdbms/presentations/normalization.html`). Removing the
+  `impress.js` git submodule *before* updating or removing these references (or providing an equivalent asset path)
+  will break the webpack build and/or existing presentations.
+- **Additional migration work required**: All references to `assets/impress.js` must be updated, removed, or redirected
+  as part of the implementation of this ADR (and related work in [ADR-006][ADR-006]) before the submodule can be safely
+  removed without disrupting contributors or learners.
 
 ### Neutral
 
-- **No impact on course content**: Single presentation continues to work identically after migration
-- **Future presentations enabled**: Infrastructure ready if more presentations are added
-- **Webpack requirement unchanged**: Build tooling already in place for existing dependencies
-
-## Implementation
-
-**Chosen Implementation: Option 5 (npm Dependency), Lowest Effort Approach**
-
-### Step-by-Step Implementation:
-
-**1. Add impress.js as `npm` dependency:**
-
-```bash
-npm install impress.js --save
-```
-
-This updates `package.json`:
-
-```json
-{
-    "dependencies": {
-        "@mermaid-js/mermaid-cli": "^10.8.0",
-        "mermaid": "^10.8.0",
-        "impress.js": "^2.0.0"
-    }
-}
-```
-
-> [!NOTE]
-> The caret range (`^2.0.0`) allows patch and minor updates (2.0.x, 2.x.x) while `package-lock.json` locks the exact
-> installed version. For stricter control, use an exact version without a caret (e.g., `"2.0.0"`).
-
-**2. Update webpack entry point imports** (in `src/conf.js` or presentation entry point):
-
-**Before** (git submodule reference):
-
-```javascript
-// In src/conf.js or presentation entry point
-import '../assets/impress.js/js/impress.js';
-```
-
-**After** (npm package import):
-
-```javascript
-// In src/conf.js or presentation entry point
-import 'impress.js';
-```
-
-> [!IMPORTANT]
-> **Technical Detail:** Presentation HTML files that are part of the webpack build reference webpack's **bundled
-> output** (currently `_build/webpack/js/main.bundle.js`, per `webpack.config.js`), not npm package names directly.
-> Changes are made to JavaScript import statements in webpack entry points, which webpack then bundles for browser
-> consumption. Legacy standalone presentations (for example
-> `src/rdbms/presentations/normalization.html`) may still reference `assets/impress.js/...` directly; they are not
-> wired through the webpack bundle and should be updated or deprecated separately if needed.
-
-> [!NOTE]
-> **CSS Dependencies:** If the presentation uses impress.js CSS files, update those import paths as well following the
-> same pattern. For example:
-> - Before: `import '../assets/impress.js/css/impress-common.css';`
-> - After: `import 'impress.js/css/impress-common.css';`
-
-**3. Remove git submodule:**
-
-```bash
-git submodule deinit assets/impress.js
-git rm assets/impress.js
-rm -rf .git/modules/assets/impress.js
-```
-
-**4. Verify build:**
-
-```bash
-npm install
-npm run build
-```
-
-Existing webpack configuration will automatically bundle impress.js with the presentation.
-
-**5. Test presentation:**
-
-```bash
-npm start  # Development server
-# OR
-npm run build  # Production build
-```
-
-**Verification Checklist:**
-
-- ✅ Presentation loads without console errors
-- ✅ Slide navigation works (arrow keys, click targets)
-- ✅ Visual styles render correctly (no missing CSS)
-- ✅ Transitions/animations function as expected
-- ✅ No webpack bundling errors in build output
-
----
-
-### Technical Details:
-
-- **Webpack configuration**: No changes required, existing html-webpack-plugin handles bundling
-- **Version pinning**: Locked to a specific version in package-lock.json (e.g., `impress.js@2.0.0`)
-- **Build output**: Presentation HTML with bundled impress.js in the output directory
-- **Development workflow**: `npm start` for dev server, `npm run build` for production
-
----
-
-### Rollback Plan:
-
-If issues arise during or after implementation, use one of the following rollback strategies:
-
-**Option 1: Temporary CDN Reference** (Quick fix for broken presentation):
-
-```html
-
-<script src="https://cdn.jsdelivr.net/gh/impress/impress.js@2.0.0/js/impress.js"></script>
-```
-
-This provides immediate functionality while investigating npm/webpack issues.
-
-**Option 2: Restore Git Submodule** (If npm approach is fundamentally incompatible):
-
-```bash
-git revert [commit-hash]  # Revert the submodule removal commit
-git submodule update --init --recursive
-```
-
-This restores the original submodule-based setup completely.
-
----
-
-### Success Criteria:
-
-- ✅ Git submodule removed, standard git workflow restored
-- ✅ Presentation loads and functions correctly
-- ✅ Build process completes without errors
-- ✅ No git submodule references remain
-- ✅ package.json and package-lock.json updated
-- ✅ Contributors can clone and build without additional steps beyond standard `npm install`
+- **Presentation content handling**: Covered separately in [ADR-006][ADR-006]
+- **Git history**: Submodule reference removed, but history preserved in the main repo
 
 ## Related
 
-- [ADR-002][ADR-002]: Static Site Generator Replacement (may affect presentation delivery approach)
+- [ADR-006][ADR-006]: Presentation Content Repository Separation (where presentation content will live)
+- [ADR-002][ADR-002]: Static Site Generator Replacement (unblocked by removing a presentation framework)
 - [ADR-003][ADR-003]: Repository File Structure (affects overall assets organization)
 - [ADR-001][ADR-001]: AI Guidelines Structure and Administration Framework
 
@@ -425,4 +271,5 @@ This restores the original submodule-based setup completely.
 [ADR-002]: ./ADR-002-ssg-replacement.md
 [ADR-003]: ./ADR-003-repo-file-structure.md
 [ADR-004]: ./ADR-004-presentation-framework.md
+[ADR-006]: ./ADR-006-presentation-content.md
 [//]: # (@formatter:on)
