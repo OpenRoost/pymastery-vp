@@ -226,13 +226,6 @@ submodule?"
 
 ---
 
-**Implementation:**
-
-1. Remove git submodule: `git submodule deinit && git rm assets/impress.js`
-2. Presentation content extraction handled by ADR-006
-
-**Estimated Time:** 5 minutes
-
 **Dependencies:**
 
 - This decision complements [ADR-006][ADR-006] (Presentation Content Repository Separation)
