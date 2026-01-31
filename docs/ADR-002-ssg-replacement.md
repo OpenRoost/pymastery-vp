@@ -17,16 +17,16 @@
 
 [//]: # (order by version number descending)
 
-| ver. | Date       | Author                                    | Changes description                      |
-|------|------------|-------------------------------------------|------------------------------------------|
-| 1.0  | 2026-01-27 | Serhii Horodilov                          | Accepted                                 |
-| 0.7  | 2026-01-27 | Claude Sonnet 4.5 <noreply@anthropic.com> | Revise Implementation to high-level only |
-| 0.6  | 2026-01-26 | Serhii Horodilov                          | Fix typos                                |
-| 0.5  | 2026-01-26 | Claude Sonnet 4.5 <noreply@anthropic.com> | Complete final draft with decision       |
-| 0.4  | 2026-01-25 | Serhii Horodilov                          | Fix typos                                |
-| 0.3  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Add ADR-004 cross-reference              |
-| 0.2  | 2026-01-25 | Serhii Horodilov                          | Fix typos                                |
-| 0.1  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Initial draft                            |
+| ver. | Date       | Author            | Changes description                      |
+|------|------------|-------------------|------------------------------------------|
+| 1.0  | 2026-01-27 | Serhii Horodilov  | Accepted                                 |
+| 0.7  | 2026-01-27 | Claude Sonnet 4.5 | Revise Implementation to high-level only |
+| 0.6  | 2026-01-26 | Serhii Horodilov  | Fix typos                                |
+| 0.5  | 2026-01-26 | Claude Sonnet 4.5 | Complete final draft with decision       |
+| 0.4  | 2026-01-25 | Serhii Horodilov  | Fix typos                                |
+| 0.3  | 2026-01-25 | Claude Sonnet 4.5 | Add ADR-004 cross-reference              |
+| 0.2  | 2026-01-25 | Serhii Horodilov  | Fix typos                                |
+| 0.1  | 2026-01-25 | Claude Sonnet 4.5 | Initial draft                            |
 
 </details>
 
