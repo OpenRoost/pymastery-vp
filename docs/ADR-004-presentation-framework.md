@@ -252,7 +252,8 @@ submodule?"
 
 ### Negative
 
-- **None**: Submodule removal is purely beneficial (presentations handled in ADR-006)
+- **Potential build and presentation breakage if sequencing is wrong**: The current repo still imports/references `assets/impress.js` (for example from `src/conf.js` and `src/rdbms/presentations/normalization.html`). Removing the `impress.js` git submodule *before* updating or removing these references (or providing an equivalent asset path) will break the webpack build and/or existing presentations.
+- **Additional migration work required**: All references to `assets/impress.js` must be updated, removed, or redirected as part of the implementation of this ADR (and related work in [ADR-006][ADR-006]) before the submodule can be safely removed without disrupting contributors or learners.
 
 ### Neutral
 
