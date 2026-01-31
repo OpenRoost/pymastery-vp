@@ -31,11 +31,12 @@
 </details>
 
 > [!NOTE]
-> **Scope of PR #238**: This ADR is part of a comprehensive documentation effort that introduces three interdependent
+> **Scope of PR #238**: This ADR is part of a comprehensive documentation effort that introduces interdependent
 > Architecture Decision Records:
 > - **ADR-002** (this document): Static Site Generator Replacement (Sphinx → MkDocs)
 > - **ADR-003**: Repository File Structure (locale-based content organization)
-> - **ADR-004**: Presentation Framework Handling (impress.js submodule → npm dependency)
+> - **ADR-004**: Presentation Framework Handling (removing impress.js submodule)
+> - **ADR-006**: Presentation Content Repository Separation
 >
 > These ADRs address related aspects of the project's documentation infrastructure and should be reviewed together
 > to understand the full scope of changes being proposed.
