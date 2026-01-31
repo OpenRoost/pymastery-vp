@@ -8,23 +8,25 @@
 [deprecated]: https://img.shields.io/badge/document_status-deprecated-lightgrey.svg
 [final]: https://img.shields.io/badge/document_status-final-blue.svg
 [//]: # (@formatter:on)
-![status][accepted]
+![status][draft]
 
 <details>
 <summary>Document Changelog</summary>
 
 [//]: # (order by version number descending)
 
-| ver. | Date       | Author                          | Changes description |
-|------|------------|---------------------------------|---------------------|
-| 1.0  | 2026-01-31 | Serhii Horodilov, Claude Sonnet 4.5 | Accepted            |
-| 0.1  | 2026-01-31 | Claude Sonnet 4.5               | Initial draft       |
+| ver. | Date       | Author            | Changes description      |
+|------|------------|-------------------|--------------------------|
+| 0.2  | 2026-01-31 | Serhii Horodilov  | Fix typos and formatting |
+| 0.1  | 2026-01-31 | Claude Sonnet 4.5 | Initial draft            |
 
 </details>
 
 ## Context
 
-The repository currently contains presentation content at `src/rdbms/presentations/normalization/` as part of the main course repository. This presentation is built separately using webpack and is delivered as a standalone tool, not embedded in MkDocs-generated lesson pages.
+The repository currently contains presentation content at `src/rdbms/presentations/normalization/` as part of the main
+course repository. This presentation is built separately using webpack and is delivered as a standalone tool, not
+embedded in MkDocs-generated lesson pages.
 
 **Current State:**
 
@@ -42,9 +44,9 @@ The repository currently contains presentation content at `src/rdbms/presentatio
 
 **Problems:**
 
-1. **Mixed build systems**: Main repo requires BOTH MkDocs (for content) AND webpack (for presentations)
+1. **Mixed build systems**: The main repo requires BOTH MkDocs (for content) AND webpack (for presentations)
 2. **Unclear scope**: Course content mixed with presentation tools
-3. **Scaling concerns**: Each new presentation adds webpack complexity to course repo
+3. **Scaling concerns**: Each new presentation adds webpack complexity to the course repo
 4. **Deployment coupling**: Presentation updates require full course repo build
 5. **Contributor confusion**: Course contributors need presentation build knowledge
 6. **Repository bloat**: As presentations grow, course repo grows unnecessarily
@@ -52,13 +54,15 @@ The repository currently contains presentation content at `src/rdbms/presentatio
 **Planning Findings:**
 
 During ADR-004 planning, architectural clarification revealed:
+
 - **Presentations are standalone**: Not embedded in lesson pages
-- **Separate build process**: Webpack/vite build, independent from MkDocs
-- **Multiple presentations planned**: One per topic (multiple anticipated)
-- **Independent deployment**: Presentations hosted/deployed separately from course
+- **Separate build process**: Webpack/vite build, independent of MkDocs
+- **Multiple presentations planned**: One per topic (multiple expected)
+- **Independent deployment**: Presentations hosted/deployed separately from the course
 
 > [!IMPORTANT]
-> This decision is related to [ADR-004][ADR-004] (Presentation Framework Handling), which addresses removing the impress.js submodule.
+> This decision is related to [ADR-004][ADR-004] (Presentation Framework Handling), which addresses removing the
+> impress.js submodule.
 
 ## Decision Drivers
 
@@ -68,7 +72,7 @@ During ADR-004 planning, architectural clarification revealed:
 - **Deployment flexibility**: Independent release cycles for content vs. presentations
 - **Contributor workflow**: Course contributors don't need presentation build knowledge
 - **Future growth**: Multiple presentations planned (one per topic)
-- **Maintenance overhead**: Managing mixed concerns in single repository
+- **Maintenance overhead**: Managing mixed concerns in a single repository
 
 ## Considered Options
 
@@ -80,12 +84,12 @@ During ADR-004 planning, architectural clarification revealed:
 
 - **No migration needed**: Zero implementation effort
 - **Single repository**: Everything in one place
-- **Git history intact**: All changes in same repository
+- **Git history intact**: All changes in the same repository
 - **Simpler for small scale**: Works fine for one or two presentations
 
 **Cons**:
 
-- **Mixed build systems**: Both MkDocs AND webpack in same repo
+- **Mixed build systems**: Both MkDocs AND webpack in the same repo
 - **Unclear scope**: Course content mixed with presentation tools
 - **Scaling problems**: Each presentation adds complexity
 - **Coupled deployment**: Presentation changes trigger full course builds
@@ -108,24 +112,24 @@ During ADR-004 planning, architectural clarification revealed:
 **Cons**:
 
 - **Repository coordination**: Managing two repositories
-- **Initial extraction effort**: ~2-4 hours setup
+- **Initial extraction effort**: ~2–4 hours setup
 - **Cross-repository references**: Lessons link to external URLs
 - **Two CI/CD pipelines**: Separate workflows to maintain
 
 ### Option 3: Submodule Approach
 
-**Description**: Keep presentations in separate repository, reference as git submodule in main repo.
+**Description**: Keep presentations in a separate repository, reference as git submodule in the main repo.
 
 **Pros**:
 
-- **Technically linked**: Submodule reference in main repo
-- **Git history separated**: Each repo maintains own history
+- **Technically linked**: Submodule reference in the main repo
+- **Git history separated**: Each repo maintains its own history
 
 **Cons**:
 
 - **Submodule complexity**: Same issues as ADR-004 identified
-- **Worst of both worlds**: Coordination overhead + submodule friction
-- **Already rejecting submodules**: ADR-004 removes impress.js submodule
+- **Worst of both worlds**: Coordination overhead and submodule friction
+- **Already rejecting submodules**: ADR-004 removes the impress.js submodule
 
 ## Decision
 
@@ -144,6 +148,7 @@ Presentations should be in a separate repository (`pymastery-presentations`) bec
 **Why This Architecture:**
 
 The current situation has two distinct responsibilities:
+
 - **Course repository**: Educational content delivery via MkDocs
 - **Presentation repository**: Interactive visualization tools via webpack
 
@@ -151,14 +156,15 @@ These should be separate repositories with clear boundaries.
 
 **Framework Handling:**
 
-The separate presentation repository will handle impress.js dependency independently (npm or CDN), as covered in [ADR-004][ADR-004].
+The separate presentation repository will handle impress.js dependency independently (npm or CDN), as covered
+in [ADR-004][ADR-004].
 
 ## Consequences
 
 ### Positive
 
 - **Architectural clarity**: Course content vs. presentation tools cleanly separated
-- **Build simplicity**: Main repo uses MkDocs only (no webpack)
+- **Build simplicity**: The main repo uses MkDocs only (no webpack)
 - **Faster course builds**: No presentation webpack compilation
 - **Independent scaling**: Add presentations without bloating course repo
 - **Deployment independence**: Separate release cycles
@@ -169,7 +175,7 @@ The separate presentation repository will handle impress.js dependency independe
 ### Negative
 
 - **Repository coordination**: Managing two repositories instead of one
-- **Initial extraction effort**: ~2-4 hours to set up with CI/CD
+- **Initial extraction effort**: ~2–4 hours to set up with CI/CD
 - **Cross-repository references**: Course lessons link to external presentation URLs
 - **Two CI/CD pipelines**: Separate build/deployment workflows
 
@@ -177,13 +183,13 @@ The separate presentation repository will handle impress.js dependency independe
 
 - **Same total content**: Moved, not removed
 - **Git history preserved**: Full history via `git subtree split`
-- **Presentation functionality unchanged**: Works identically in new repository
+- **Presentation functionality unchanged**: Works identically in the new repository
 - **Same team ownership**: Content creators maintain both repositories
 
 ## Related
 
 - [ADR-004][ADR-004]: Presentation Framework Handling (removes impress.js submodule)
-- [ADR-002][ADR-002]: Static Site Generator Replacement (main repo focuses on MkDocs)
+- [ADR-002][ADR-002]: Static Site Generator Replacement (the main repo focuses on MkDocs)
 - [ADR-003][ADR-003]: Repository File Structure (affects content organization)
 - [ADR-001][ADR-001]: AI Guidelines Structure and Administration Framework
 
