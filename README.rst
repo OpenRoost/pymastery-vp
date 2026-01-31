@@ -105,7 +105,7 @@ a modern documentation experience with Markdown authoring.
 Prerequisites
 -------------
 
-- Python 3.11 or higher
+- Python 3.9 or higher (MkDocs setup is regularly tested on Python 3.11+)
 - `uv`_ (Python package manager)
 
 .. _uv: https://docs.astral.sh/uv/
