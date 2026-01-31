@@ -392,7 +392,7 @@ sequenceDiagram
 
 All work assignments to executor roles should follow the [work package template][work_package_template].
 
-[work_package_template]: ../templates/WP.md
+[work_package_template]: templates/WP.md
 
 ### ADR Requirement Triggers
 
