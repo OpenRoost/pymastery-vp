@@ -17,14 +17,14 @@
 
 [//]: # (order by version number descending)
 
-| ver. | Date       | Author                                    | Changes description                          |
-|------|------------|-------------------------------------------|----------------------------------------------|
-| 1.1  | 2026-01-24 | Serhii Horodilov                          | Mermaid diagram and WP template              |
-| 1.0  | 2026-01-24 | Serhii Horodilov                          | Final                                        |
-| 0.4  | 2026-01-24 | Serhii Horodilov                          | Remove concrete content directory mention    |
-| 0.3  | 2026-01-24 | Claude Sonnet 4.5 <noreply@anthropic.com> | Trim scenarios, fix escalation inconsistency |
-| 0.2  | 2026-01-24 | Serhii Horodilov                          | Update escalation paths                      |
-| 0.1  | 2026-01-24 | Claude Sonnet 4.5 <noreply@anthropic.com> | Initial draft                                |
+| ver. | Date       | Author            | Changes description                          |
+|------|------------|-------------------|----------------------------------------------|
+| 1.1  | 2026-01-24 | Serhii Horodilov  | Mermaid diagram and WP template              |
+| 1.0  | 2026-01-24 | Serhii Horodilov  | Final                                        |
+| 0.4  | 2026-01-24 | Serhii Horodilov  | Remove concrete content directory mention    |
+| 0.3  | 2026-01-24 | Claude Sonnet 4.5 | Trim scenarios, fix escalation inconsistency |
+| 0.2  | 2026-01-24 | Serhii Horodilov  | Update escalation paths                      |
+| 0.1  | 2026-01-24 | Claude Sonnet 4.5 | Initial draft                                |
 
 </details>
 

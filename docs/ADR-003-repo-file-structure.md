@@ -17,20 +17,20 @@
 
 [//]: # (order by version number descending)
 
-| ver. | Date       | Author                                    | Changes description                               |
-|------|------------|-------------------------------------------|---------------------------------------------------|
-| 1.0  | 2026-01-27 | Serhii Horodilov                          | Accepted                                          |
-| 0.11 | 2026-01-27 | Claude Sonnet 4.5 <noreply@anthropic.com> | Revise Implementation to high-level only          |
-| 0.10 | 2026-01-27 | Serhii Horodilov                          | Fix typos, final draft                            |
-| 0.9  | 2026-01-27 | Claude Sonnet 4.5 <noreply@anthropic.com> | Expand scope to comprehensive repo reorganization |
-| 0.8  | 2026-01-26 | Serhii Horodilov                          | Fix typos                                         |
-| 0.7  | 2026-01-26 | Claude Sonnet 4.5 <noreply@anthropic.com> | Complete final draft with decision                |
-| 0.6  | 2026-01-26 | Serhii Horodilov                          | Replace `locales/**` with `content/**`            |
-| 0.5  | 2026-01-26 | Serhii Horodilov                          | Add `upstream` repository link                    |
-| 0.4  | 2026-01-25 | Serhii Horodilov                          | Fix typos                                         |
-| 0.3  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Reframe as ru localization, add pictures/         |
-| 0.2  | 2026-01-25 | Serhii Horodilov                          | Fix typos                                         |
-| 0.1  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Initial draft                                     |
+| ver. | Date       | Author            | Changes description                               |
+|------|------------|-------------------|---------------------------------------------------|
+| 1.0  | 2026-01-27 | Serhii Horodilov  | Accepted                                          |
+| 0.11 | 2026-01-27 | Claude Sonnet 4.5 | Revise Implementation to high-level only          |
+| 0.10 | 2026-01-27 | Serhii Horodilov  | Fix typos, final draft                            |
+| 0.9  | 2026-01-27 | Claude Sonnet 4.5 | Expand scope to comprehensive repo reorganization |
+| 0.8  | 2026-01-26 | Serhii Horodilov  | Fix typos                                         |
+| 0.7  | 2026-01-26 | Claude Sonnet 4.5 | Complete final draft with decision                |
+| 0.6  | 2026-01-26 | Serhii Horodilov  | Replace `locales/**` with `content/**`            |
+| 0.5  | 2026-01-26 | Serhii Horodilov  | Add `upstream` repository link                    |
+| 0.4  | 2026-01-25 | Serhii Horodilov  | Fix typos                                         |
+| 0.3  | 2026-01-25 | Claude Sonnet 4.5 | Reframe as ru localization, add pictures/         |
+| 0.2  | 2026-01-25 | Serhii Horodilov  | Fix typos                                         |
+| 0.1  | 2026-01-25 | Claude Sonnet 4.5 | Initial draft                                     |
 
 </details>
 
