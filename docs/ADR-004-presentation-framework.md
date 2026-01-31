@@ -15,17 +15,17 @@
 
 [//]: # (order by version number descending)
 
-| ver. | Date       | Author                                    | Changes description                               |
-|------|------------|-------------------------------------------|---------------------------------------------------|
-| 1.2  | 2026-01-31 | Serhii Horodilov, Claude Sonnet 4.5       | Simplify scope: remove submodule; final           |
-| 1.1  | 2026-01-31 | Serhii Horodilov, Claude Sonnet 4.5       | Revise decision: Option 5→3 (separate repo)       |
-| 1.0  | 2026-01-27 | Serhii Horodilov                          | Accepted                                          |
-| 0.6  | 2026-01-27 | Claude Sonnet 4.5 <noreply@anthropic.com> | Final review improvements and status finalization |
-| 0.5  | 2026-01-27 | Serhii Horodilov                          | Fix typos and formatting                          |
-| 0.4  | 2026-01-27 | Claude Sonnet 4.5 <noreply@anthropic.com> | Technical corrections per implementation review   |
-| 0.3  | 2026-01-26 | Claude Sonnet 4.5 <noreply@anthropic.com> | Complete final draft                              |
-| 0.2  | 2026-01-25 | Serhii Horodilov                          | Fix links and typos                               |
-| 0.1  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Initial draft                                     |
+| ver. | Date       | Author                              | Changes description                               |
+|------|------------|-------------------------------------|---------------------------------------------------|
+| 1.2  | 2026-01-31 | Serhii Horodilov, Claude Sonnet 4.5 | Simplify scope: remove submodule; final           |
+| 1.1  | 2026-01-31 | Serhii Horodilov, Claude Sonnet 4.5 | Revise decision: Option 5→3 (separate repo)       |
+| 1.0  | 2026-01-27 | Serhii Horodilov                    | Accepted                                          |
+| 0.6  | 2026-01-27 | Claude Sonnet 4.5                   | Final review improvements and status finalization |
+| 0.5  | 2026-01-27 | Serhii Horodilov                    | Fix typos and formatting                          |
+| 0.4  | 2026-01-27 | Claude Sonnet 4.5                   | Technical corrections per implementation review   |
+| 0.3  | 2026-01-26 | Claude Sonnet 4.5                   | Complete final draft                              |
+| 0.2  | 2026-01-25 | Serhii Horodilov                    | Fix links and typos                               |
+| 0.1  | 2026-01-25 | Claude Sonnet 4.5                   | Initial draft                                     |
 
 </details>
 
