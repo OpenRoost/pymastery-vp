@@ -69,37 +69,36 @@ roles:
 
 # File structure
 files:
-  - group: "AI related"
-    path: ".ai"
-    description: "Global AI rulesets, guidelines, and configurations."
-    files:
-      - path: ".ai/config.yaml"
-        description: "Global AI configuration; this file."
-      - path: ".ai/rulesets/00-terms-and-conventions.md"
-        description: "Global AI ruleset: terms and conventions for the project."
-      - path: ".ai/rulesets/01-general-guidelines.md"
-        description: "Global AI ruleset: general guidelines for the project."
-      - path: ".ai/rulesets/02-grammar-and-style.md"
-        description: "Global AI ruleset: grammar and style conventions for the project."
-      - path: ".ai/rulesets/03-documentation.md"
-        description: "Global AI ruleset: documentation conventions and guidelines for the project."
-  - group: "Templates"
-    path: "templates"
-    description: "Document templates for consistent formatting."
-    files:
-      - path: "templates/ADR.md"
-        description: "Architecture Decision Record template."
-      - path: "templates/_changelog.md"
-        description: "Changelog partial template for embedding in documents."
-      - path: "templates/WP.md"
-        description: "Work Package template."
-  - group: "Documentation"
-    path: "docs"
-    description: "Project documentation including ADRs, guides, and role definitions."
-    files:
-      - path: "docs/ROLES.md"
-        description: "Authoritative source for project role definitions and boundaries."
-      - path: "docs/CONTRIBUTING.md"
-        description: "Contributor guidelines and workflow documentation."
-      - path: "docs/HEALTH-REPORT-2026-01.md"
-        description: "Repository health assessment and improvement tracking."
+  - path: ".ai/config.yaml"
+    description: "Global AI configuration; this file."
+    categories: [ "ai" ]
+  - path: ".ai/rulesets/00-terms-and-conventions.md"
+    description: "Global AI ruleset: terms and conventions for the project."
+    categories: [ "ai" ]
+  - path: ".ai/rulesets/01-general-guidelines.md"
+    description: "Global AI ruleset: general guidelines for the project."
+    categories: [ "ai" ]
+  - path: ".ai/rulesets/02-grammar-and-style.md"
+    description: "Global AI ruleset: grammar and style conventions for the project."
+    categories: [ "ai" ]
+  - path: ".ai/rulesets/03-documentation.md"
+    description: "Global AI ruleset: documentation conventions and guidelines for the project."
+    categories: [ "ai" ]
+  - path: "docs/templates/ADR.md"
+    description: "Architecture Decision Record template."
+    categories: [ "template" ]
+  - path: "docs/templates/_changelog.md"
+    description: "Changelog partial template for embedding in documents."
+    categories: [ "template" ]
+  - path: ".github/ISSUE_TEMPLATE/work_package.md"
+    description: "Work package template."
+    categories: [ "ai", "template" ]
+  - path: "docs/ROLES.md"
+    description: "Authoritative source for project role definitions and boundaries."
+    categories: [ "documentation" ]
+  - path: "docs/CONTRIBUTING.md"
+    description: "Contributor guidelines and workflow documentation."
+    categories: [ "documentation", "community" ]
+  - path: "docs/HEALTH-REPORT-2026-01.md"
+    description: "Repository health assessment and improvement tracking."
+    categories: [ "reporting" ]

@@ -5,10 +5,10 @@
 [//]: # (@formatter:off)
 <!-- document status badges -->
 [draft]: https://img.shields.io/badge/document_status-draft-orange.svg
-[final]: https://img.shields.io/badge/document_status-final-blue.svg
 [accepted]: https://img.shields.io/badge/document_status-accepted-green.svg
 [rejected]: https://img.shields.io/badge/document_status-rejected-red.svg
 [deprecated]: https://img.shields.io/badge/document_status-deprecated-lightgrey.svg
+[final]: https://img.shields.io/badge/document_status-final-blue.svg
 [//]: # (@formatter:on)
 ![status][accepted]
 
@@ -17,25 +17,26 @@
 
 [//]: # (order by version number descending)
 
-| ver. | Date       | Author                                    | Changes description                      |
-|------|------------|-------------------------------------------|------------------------------------------|
-| 1.0  | 2026-01-27 | Serhii Horodilov                          | Accepted                                 |
-| 0.7  | 2026-01-27 | Claude Sonnet 4.5 <noreply@anthropic.com> | Revise Implementation to high-level only |
-| 0.6  | 2026-01-26 | Serhii Horodilov                          | Fix typos                                |
-| 0.5  | 2026-01-26 | Claude Sonnet 4.5 <noreply@anthropic.com> | Complete final draft with decision       |
-| 0.4  | 2026-01-25 | Serhii Horodilov                          | Fix typos                                |
-| 0.3  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Add ADR-004 cross-reference              |
-| 0.2  | 2026-01-25 | Serhii Horodilov                          | Fix typos                                |
-| 0.1  | 2026-01-25 | Claude Sonnet 4.5 <noreply@anthropic.com> | Initial draft                            |
+| ver. | Date       | Author            | Changes description                      |
+|------|------------|-------------------|------------------------------------------|
+| 1.0  | 2026-01-27 | Serhii Horodilov  | Accepted                                 |
+| 0.7  | 2026-01-27 | Claude Sonnet 4.5 | Revise Implementation to high-level only |
+| 0.6  | 2026-01-26 | Serhii Horodilov  | Fix typos                                |
+| 0.5  | 2026-01-26 | Claude Sonnet 4.5 | Complete final draft with decision       |
+| 0.4  | 2026-01-25 | Serhii Horodilov  | Fix typos                                |
+| 0.3  | 2026-01-25 | Claude Sonnet 4.5 | Add ADR-004 cross-reference              |
+| 0.2  | 2026-01-25 | Serhii Horodilov  | Fix typos                                |
+| 0.1  | 2026-01-25 | Claude Sonnet 4.5 | Initial draft                            |
 
 </details>
 
 > [!NOTE]
-> **Scope of PR #238**: This ADR is part of a comprehensive documentation effort that introduces three interdependent
+> **Scope of PR #238**: This ADR is part of a comprehensive documentation effort that introduces interdependent
 > Architecture Decision Records:
 > - **ADR-002** (this document): Static Site Generator Replacement (Sphinx → MkDocs)
 > - **ADR-003**: Repository File Structure (locale-based content organization)
-> - **ADR-004**: Presentation Framework Handling (impress.js submodule → npm dependency)
+> - **ADR-004**: Presentation Framework Handling (removing impress.js submodule)
+> - **ADR-006**: Presentation Content Repository Separation
 >
 > These ADRs address related aspects of the project's documentation infrastructure and should be reviewed together
 > to understand the full scope of changes being proposed.
