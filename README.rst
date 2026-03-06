@@ -96,6 +96,60 @@ installed, you can run builds manually:
     sphinx-build -b html -D language=en src _build/html/en
     sphinx-build -b html -D language=uk src _build/html/uk
 
+Building with MkDocs (New)
+===========================
+
+The project is being migrated to MkDocs with Material theme. MkDocs provides
+a modern documentation experience with Markdown authoring.
+
+Prerequisites
+-------------
+
+- Python 3.9 or higher (MkDocs setup is regularly tested on Python 3.11+)
+- `uv`_ (Python package manager)
+
+.. _uv: https://docs.astral.sh/uv/
+
+Local Development
+-----------------
+
+.. code-block:: shell
+
+    # Clone repository
+    git clone https://github.com/OpenRoost/pymastery-vp.git
+    cd pymastery-vp
+
+    # Install dependencies
+    uv sync
+
+    # Serve documentation locally (with live reload)
+    uv run mkdocs serve
+
+    # Open http://127.0.0.1:8000 in your browser
+
+Building for Production
+------------------------
+
+.. code-block:: shell
+
+    # Build static site
+    uv run mkdocs build
+
+    # Output will be in ./site/ directory
+
+Project Structure
+-----------------
+
+::
+
+    content/
+      en/           # English course content (Markdown)
+      uk/           # Ukrainian translations (in progress)
+      ru/           # Legacy Russian content (historical)
+    mkdocs.yml      # MkDocs configuration
+    pyproject.toml  # Project dependencies
+    src/            # Legacy Sphinx source (being phased out)
+
 Contributing to the project
 ===========================
 

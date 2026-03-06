@@ -1,0 +1,98 @@
+site_name: Python for Web Developers
+site_url: https://openroost.github.io/pymastery-vp/
+repo_url: https://github.com/OpenRoost/pymastery-vp
+repo_name: OpenRoost/pymastery-vp
+edit_uri: edit/main/content/
+
+docs_dir: content
+site_dir: site
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  palette:
+    # Light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+plugins:
+  - search:
+      lang:
+        - en
+        - uk
+  - i18n:
+      docs_structure: folder
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: en
+          name: English
+          build: true
+          default: true
+        - locale: uk
+          name: Українська
+          build: true
+
+markdown_extensions:
+  # Admonitions
+  - admonition
+  - pymdownx.details
+  
+  # Code blocks
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  
+  # Content features
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - attr_list
+  - md_in_html
+  - def_list
+  
+  # Navigation
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/OpenRoost/pymastery-vp
+      name: GitHub Repository
+  generator: false  # Hide "Made with Material for MkDocs" footer
+
+copyright: >
+  Copyright &copy; 2024-2026 OpenRoost. 
+  Derivative work based on 
+  <a href="https://github.com/PonomaryovVladyslav/PythonCourses">original course</a> 
+  by Vladyslav Ponomaryov.

@@ -29,6 +29,9 @@ builds/
 build/
 *.egg-info
 
+# MkDocs generated site
+site/
+
 # translation object files
 *.pot
 *.mo
